@@ -44,6 +44,15 @@
       "searchVolume": "high",
       "status": "live",
       "dateAdded": "2026-03-10"
+    },
+    {
+      "slug": "jwt-decoder",
+      "name": "JWT Decoder",
+      "description": "Decode and inspect JSON Web Tokens — view header, payload claims, expiration status, and signature",
+      "category": "developer",
+      "searchVolume": "high",
+      "status": "live",
+      "dateAdded": "2026-03-11"
     }
   ],
   "categories": {
@@ -53,8 +62,8 @@
     "conversion": { "label": "Conversion", "color": "orange" }
   },
   "meta": {
-    "totalTools": 5,
-    "lastUpdated": "2026-03-10",
-    "nextPriority": ["jwt-decoder", "markdown-preview", "css-gradient-generator", "url-encoder", "hash-generator", "lorem-ipsum-generator", "timestamp-converter", "qr-code-generator"]
+    "totalTools": 6,
+    "lastUpdated": "2026-03-11",
+    "nextPriority": ["markdown-preview", "css-gradient-generator", "url-encoder", "hash-generator", "lorem-ipsum-generator", "timestamp-converter", "qr-code-generator"]
   }
 }
