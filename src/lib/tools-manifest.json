@@ -71,6 +71,15 @@
       "searchVolume": "high",
       "status": "live",
       "dateAdded": "2026-03-11"
+    },
+    {
+      "slug": "uuid-generator",
+      "name": "UUID Generator",
+      "description": "Generate UUIDs (v1, v4) with bulk generation, format options, and validation",
+      "category": "developer",
+      "searchVolume": "high",
+      "status": "live",
+      "dateAdded": "2026-03-11"
     }
   ],
   "categories": {
@@ -80,8 +89,8 @@
     "conversion": { "label": "Conversion", "color": "orange" }
   },
   "meta": {
-    "totalTools": 8,
+    "totalTools": 9,
     "lastUpdated": "2026-03-11",
-    "nextPriority": ["uuid-generator", "timestamp-converter", "css-gradient-generator", "sql-formatter", "html-beautifier", "markdown-editor", "url-encoder", "hash-generator", "password-generator"]
+    "nextPriority": ["timestamp-converter", "css-gradient-generator", "sql-formatter", "html-beautifier", "markdown-editor", "url-encoder", "hash-generator", "password-generator"]
   }
 }
