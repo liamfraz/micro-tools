@@ -107,6 +107,15 @@
       "searchVolume": "high",
       "status": "live",
       "dateAdded": "2026-03-11"
+    },
+    {
+      "slug": "html-beautifier",
+      "name": "HTML Beautifier & Formatter",
+      "description": "Beautify, format, and minify HTML with proper indentation and void element handling",
+      "category": "developer",
+      "searchVolume": "high",
+      "status": "live",
+      "dateAdded": "2026-03-11"
     }
   ],
   "categories": {
@@ -116,8 +125,8 @@
     "conversion": { "label": "Conversion", "color": "orange" }
   },
   "meta": {
-    "totalTools": 12,
+    "totalTools": 13,
     "lastUpdated": "2026-03-11",
-    "nextPriority": ["html-beautifier", "markdown-editor", "url-encoder", "hash-generator", "password-generator", "json-to-csv", "xml-formatter", "css-minifier", "javascript-minifier"]
+    "nextPriority": ["markdown-editor", "url-encoder", "hash-generator", "password-generator", "json-to-csv", "xml-formatter", "css-minifier", "javascript-minifier"]
   }
 }
