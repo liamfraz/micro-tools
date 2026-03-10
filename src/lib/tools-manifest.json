@@ -98,6 +98,15 @@
       "searchVolume": "medium",
       "status": "live",
       "dateAdded": "2026-03-11"
+    },
+    {
+      "slug": "sql-formatter",
+      "name": "SQL Formatter & Beautifier",
+      "description": "Format, beautify, and minify SQL queries with keyword casing and custom indentation",
+      "category": "developer",
+      "searchVolume": "high",
+      "status": "live",
+      "dateAdded": "2026-03-11"
     }
   ],
   "categories": {
@@ -107,8 +116,8 @@
     "conversion": { "label": "Conversion", "color": "orange" }
   },
   "meta": {
-    "totalTools": 11,
+    "totalTools": 12,
     "lastUpdated": "2026-03-11",
-    "nextPriority": ["sql-formatter", "html-beautifier", "markdown-editor", "url-encoder", "hash-generator", "password-generator"]
+    "nextPriority": ["html-beautifier", "markdown-editor", "url-encoder", "hash-generator", "password-generator", "json-to-csv", "xml-formatter", "css-minifier", "javascript-minifier"]
   }
 }
