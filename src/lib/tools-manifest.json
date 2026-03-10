@@ -35,6 +35,15 @@
       "searchVolume": "medium",
       "status": "live",
       "dateAdded": "2026-03-10"
+    },
+    {
+      "slug": "regex-tester",
+      "name": "Regex Tester",
+      "description": "Test and debug regular expressions with real-time matching, highlighting, and replacement preview",
+      "category": "developer",
+      "searchVolume": "high",
+      "status": "live",
+      "dateAdded": "2026-03-10"
     }
   ],
   "categories": {
@@ -44,8 +53,8 @@
     "conversion": { "label": "Conversion", "color": "orange" }
   },
   "meta": {
-    "totalTools": 4,
+    "totalTools": 5,
     "lastUpdated": "2026-03-10",
-    "nextPriority": ["regex-tester", "jwt-decoder", "markdown-preview", "css-gradient-generator"]
+    "nextPriority": ["jwt-decoder", "markdown-preview", "css-gradient-generator", "url-encoder", "hash-generator", "lorem-ipsum-generator", "timestamp-converter", "qr-code-generator"]
   }
 }
