@@ -116,6 +116,15 @@
       "searchVolume": "high",
       "status": "live",
       "dateAdded": "2026-03-11"
+    },
+    {
+      "slug": "markdown-editor",
+      "name": "Markdown Editor & Preview",
+      "description": "Write Markdown with live HTML preview, cheat sheet, and export to HTML",
+      "category": "text",
+      "searchVolume": "medium",
+      "status": "live",
+      "dateAdded": "2026-03-11"
     }
   ],
   "categories": {
@@ -125,8 +134,8 @@
     "conversion": { "label": "Conversion", "color": "orange" }
   },
   "meta": {
-    "totalTools": 13,
+    "totalTools": 14,
     "lastUpdated": "2026-03-11",
-    "nextPriority": ["markdown-editor", "url-encoder", "hash-generator", "password-generator", "json-to-csv", "xml-formatter", "css-minifier", "javascript-minifier"]
+    "nextPriority": ["url-encoder", "hash-generator", "password-generator", "json-to-csv", "xml-formatter", "css-minifier", "javascript-minifier"]
   }
 }
