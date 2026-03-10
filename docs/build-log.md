@@ -105,3 +105,13 @@
 - **Status**: Deployed
 - **Total tools**: 14
 - **Next up**: URL Encoder/Decoder
+
+### Hourly Build #11
+- **Tool built**: URL Encoder & Decoder (`/tools/url-encoder`)
+- **Category**: Conversion (second conversion tool)
+- **Features**: Three encoding modes (encodeURIComponent, encodeURI, query string with + for spaces), bidirectional encode/decode, URL parser that extracts protocol/host/path/query/hash and individual query parameters, common encoded characters reference table (18 characters), mode descriptions, example loader, copy buttons, FAQ section
+- **Search volume**: Medium ("url encoder online" — 40-60K monthly searches)
+- **Status**: Deployed
+- **Total tools**: 15
+- **Notes**: Added lorem-ipsum-generator, image-compressor, color-converter to priority queue to maintain buffer.
+- **Next up**: Hash Generator
