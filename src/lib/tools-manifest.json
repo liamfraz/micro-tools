@@ -145,6 +145,6 @@
   "meta": {
     "totalTools": 15,
     "lastUpdated": "2026-03-11",
-    "nextPriority": ["hash-generator", "password-generator", "json-to-csv", "xml-formatter", "css-minifier", "javascript-minifier", "lorem-ipsum-generator", "image-compressor", "color-converter"]
+    "nextPriority": ["hash-generator", "password-generator", "json-to-csv", "xml-formatter", "css-minifier", "javascript-minifier", "color-converter", "image-resizer", "text-case-converter", "lorem-ipsum-generator", "json-to-yaml", "cron-expression-parser"]
   }
 }
