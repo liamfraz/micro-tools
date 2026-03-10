@@ -96,3 +96,12 @@
 - **Status**: Deployed
 - **Total tools**: 13
 - **Next up**: Markdown Editor
+
+### Hourly Build #10
+- **Tool built**: Markdown Editor & Preview (`/tools/markdown-editor`)
+- **Category**: Text (second text tool — diversifying from developer-heavy mix)
+- **Features**: Live split-pane editor with custom Markdown-to-HTML renderer, supports headings (h1-h6), bold/italic/strikethrough, links, images, fenced code blocks with language labels, blockquotes, ordered/unordered/task lists with checkboxes, tables, horizontal rules. Three view modes (split/editor/preview), copy as Markdown or HTML, word/char/line stats bar, comprehensive cheat sheet reference, fully styled dark-theme prose output, example document loader, FAQ section
+- **Search volume**: Medium ("markdown editor online" — 30-60K monthly searches)
+- **Status**: Deployed
+- **Total tools**: 14
+- **Next up**: URL Encoder/Decoder
