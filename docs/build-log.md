@@ -144,3 +144,13 @@
 - **Total tools**: 18
 - **Notes**: First tool in the converter suite. Paired with planned json-to-yaml for topical authority in data conversion.
 - **Next up**: XML Formatter
+
+### Hourly Build #15
+- **Tool built**: XML Formatter & Beautifier (`/tools/xml-formatter`)
+- **Category**: Developer (third tool in the code formatter suite — SQL + HTML + XML)
+- **Features**: Custom XML tokenizer/parser, beautify and minify modes, configurable indentation (2-space/4-space/tab), comment preservation toggle, alphabetical attribute sorting, CDATA section handling, processing instruction support (<?xml?>), DOCTYPE handling, short text inlining (<60 chars stays on one line), XML syntax reference table (8 constructs), two example loaders (catalog/nested), input stats (chars/tags), output stats (chars/lines), copy/clear buttons, FAQ section
+- **Search volume**: High ("xml formatter online" — 80-120K monthly searches; codebeautify.org's #2 traffic driver)
+- **Status**: Deployed
+- **Total tools**: 19
+- **Notes**: Code formatter suite now has 3 tools (SQL + HTML + XML). Adding CSS Minifier and JS Minifier completes a 5-tool cluster.
+- **Next up**: CSS Minifier
