@@ -20,3 +20,14 @@
 - **Status**: Deployed
 - **Total tools**: 5
 - **Next up**: JWT Decoder
+
+## 2026-03-11
+
+### Hourly Build #2
+- **Tool built**: JWT Decoder (`/tools/jwt-decoder`)
+- **Category**: Developer
+- **Features**: Color-coded token parts (header/payload/signature), claims table with known claim descriptions, expiration status indicator with countdown, timestamp formatting, example JWT loader, copy buttons for header/payload/full decoded output
+- **Search volume**: High ("jwt decoder online" — very popular developer tool)
+- **Status**: Deployed
+- **Total tools**: 6
+- **Next up**: Markdown Preview
