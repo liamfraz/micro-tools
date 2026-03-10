@@ -161,6 +161,15 @@
       "searchVolume": "high",
       "status": "live",
       "dateAdded": "2026-03-11"
+    },
+    {
+      "slug": "xml-formatter",
+      "name": "XML Formatter & Beautifier",
+      "description": "Format, beautify, and minify XML with proper indentation, comment handling, and attribute sorting",
+      "category": "developer",
+      "searchVolume": "high",
+      "status": "live",
+      "dateAdded": "2026-03-11"
     }
   ],
   "categories": {
@@ -170,8 +179,8 @@
     "conversion": { "label": "Conversion", "color": "orange" }
   },
   "meta": {
-    "totalTools": 18,
+    "totalTools": 19,
     "lastUpdated": "2026-03-11",
-    "nextPriority": ["xml-formatter", "css-minifier", "javascript-minifier", "color-converter", "image-resizer", "text-case-converter", "lorem-ipsum-generator", "json-to-yaml", "cron-expression-parser"]
+    "nextPriority": ["css-minifier", "javascript-minifier", "color-converter", "image-resizer", "text-case-converter", "lorem-ipsum-generator", "json-to-yaml", "cron-expression-parser"]
   }
 }
