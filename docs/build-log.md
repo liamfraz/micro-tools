@@ -77,3 +77,13 @@
 - **Status**: Deployed
 - **Total tools**: 11
 - **Next up**: SQL Formatter
+
+### Hourly Build #8
+- **Tool built**: SQL Formatter & Beautifier (`/tools/sql-formatter`)
+- **Category**: Developer (starts the code formatter suite per business analyst recommendation)
+- **Features**: Custom SQL tokenizer, keyword-aware formatting, clause-based line breaking (SELECT, FROM, WHERE, JOIN, etc.), subquery indentation, keyword casing (UPPER/lower/preserve), configurable indent size (2/4 spaces), SQL minification with comment stripping, example query loader, copy button, FAQ section
+- **Search volume**: High ("sql formatter online" — 100-180K monthly searches)
+- **Status**: Deployed
+- **Total tools**: 12
+- **Notes**: Added json-to-csv, xml-formatter, css-minifier, javascript-minifier to priority queue to continue building the code formatter suite.
+- **Next up**: HTML Beautifier
