@@ -53,6 +53,15 @@
       "searchVolume": "high",
       "status": "live",
       "dateAdded": "2026-03-11"
+    },
+    {
+      "slug": "qr-code-generator",
+      "name": "QR Code Generator",
+      "description": "Generate QR codes from text, URLs, Wi-Fi credentials, and more. Download as PNG or SVG",
+      "category": "developer",
+      "searchVolume": "very-high",
+      "status": "live",
+      "dateAdded": "2026-03-11"
     }
   ],
   "categories": {
@@ -62,8 +71,8 @@
     "conversion": { "label": "Conversion", "color": "orange" }
   },
   "meta": {
-    "totalTools": 6,
+    "totalTools": 7,
     "lastUpdated": "2026-03-11",
-    "nextPriority": ["qr-code-generator", "diff-checker", "uuid-generator", "timestamp-converter", "css-gradient-generator", "sql-formatter", "html-beautifier", "markdown-editor", "url-encoder", "hash-generator"]
+    "nextPriority": ["diff-checker", "uuid-generator", "timestamp-converter", "css-gradient-generator", "sql-formatter", "html-beautifier", "markdown-editor", "url-encoder", "hash-generator", "password-generator"]
   }
 }
