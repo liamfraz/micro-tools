@@ -1,0 +1,51 @@
+{
+  "tools": [
+    {
+      "slug": "json-formatter",
+      "name": "JSON Formatter & Validator",
+      "description": "Format, validate, and beautify JSON data with syntax highlighting",
+      "category": "developer",
+      "searchVolume": "high",
+      "status": "live",
+      "dateAdded": "2026-03-10"
+    },
+    {
+      "slug": "base64-encoder",
+      "name": "Base64 Encoder/Decoder",
+      "description": "Encode and decode Base64 strings instantly",
+      "category": "developer",
+      "searchVolume": "high",
+      "status": "live",
+      "dateAdded": "2026-03-10"
+    },
+    {
+      "slug": "word-counter",
+      "name": "Word & Character Counter",
+      "description": "Count words, characters, sentences, and paragraphs in your text",
+      "category": "text",
+      "searchVolume": "high",
+      "status": "live",
+      "dateAdded": "2026-03-10"
+    },
+    {
+      "slug": "color-palette-generator",
+      "name": "Color Palette Generator",
+      "description": "Generate beautiful color palettes with hex, RGB, and HSL values",
+      "category": "design",
+      "searchVolume": "medium",
+      "status": "live",
+      "dateAdded": "2026-03-10"
+    }
+  ],
+  "categories": {
+    "developer": { "label": "Developer", "color": "blue" },
+    "text": { "label": "Text", "color": "green" },
+    "design": { "label": "Design", "color": "purple" },
+    "conversion": { "label": "Conversion", "color": "orange" }
+  },
+  "meta": {
+    "totalTools": 4,
+    "lastUpdated": "2026-03-10",
+    "nextPriority": ["regex-tester", "jwt-decoder", "markdown-preview", "css-gradient-generator"]
+  }
+}
