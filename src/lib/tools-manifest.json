@@ -62,6 +62,15 @@
       "searchVolume": "very-high",
       "status": "live",
       "dateAdded": "2026-03-11"
+    },
+    {
+      "slug": "diff-checker",
+      "name": "Diff Checker",
+      "description": "Compare two texts and find differences with unified and side-by-side views",
+      "category": "developer",
+      "searchVolume": "high",
+      "status": "live",
+      "dateAdded": "2026-03-11"
     }
   ],
   "categories": {
@@ -71,8 +80,8 @@
     "conversion": { "label": "Conversion", "color": "orange" }
   },
   "meta": {
-    "totalTools": 7,
+    "totalTools": 8,
     "lastUpdated": "2026-03-11",
-    "nextPriority": ["diff-checker", "uuid-generator", "timestamp-converter", "css-gradient-generator", "sql-formatter", "html-beautifier", "markdown-editor", "url-encoder", "hash-generator", "password-generator"]
+    "nextPriority": ["uuid-generator", "timestamp-converter", "css-gradient-generator", "sql-formatter", "html-beautifier", "markdown-editor", "url-encoder", "hash-generator", "password-generator"]
   }
 }
