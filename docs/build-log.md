@@ -41,3 +41,12 @@
 - **Total tools**: 7
 - **Notes**: Priority #1 from business analyst report. Largest single tool built so far (718 lines). Implements QR Code Model 2 encoding directly in browser with no external dependencies.
 - **Next up**: Diff Checker
+
+### Hourly Build #4
+- **Tool built**: Diff Checker (`/tools/diff-checker`)
+- **Category**: Developer
+- **Features**: LCS-based diff algorithm, unified and side-by-side views, ignore whitespace/case options, line numbers, stats bar (added/removed/unchanged counts), example loader, swap button, performance guard for large inputs
+- **Search volume**: High ("diff checker online" — 200-350K monthly searches)
+- **Status**: Deployed
+- **Total tools**: 8
+- **Next up**: UUID Generator
