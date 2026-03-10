@@ -125,6 +125,15 @@
       "searchVolume": "medium",
       "status": "live",
       "dateAdded": "2026-03-11"
+    },
+    {
+      "slug": "url-encoder",
+      "name": "URL Encoder & Decoder",
+      "description": "Encode and decode URLs with encodeURIComponent, encodeURI, and query string modes",
+      "category": "conversion",
+      "searchVolume": "medium",
+      "status": "live",
+      "dateAdded": "2026-03-11"
     }
   ],
   "categories": {
@@ -134,8 +143,8 @@
     "conversion": { "label": "Conversion", "color": "orange" }
   },
   "meta": {
-    "totalTools": 14,
+    "totalTools": 15,
     "lastUpdated": "2026-03-11",
-    "nextPriority": ["url-encoder", "hash-generator", "password-generator", "json-to-csv", "xml-formatter", "css-minifier", "javascript-minifier"]
+    "nextPriority": ["hash-generator", "password-generator", "json-to-csv", "xml-formatter", "css-minifier", "javascript-minifier", "lorem-ipsum-generator", "image-compressor", "color-converter"]
   }
 }
