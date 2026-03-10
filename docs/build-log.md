@@ -87,3 +87,12 @@
 - **Total tools**: 12
 - **Notes**: Added json-to-csv, xml-formatter, css-minifier, javascript-minifier to priority queue to continue building the code formatter suite.
 - **Next up**: HTML Beautifier
+
+### Hourly Build #9
+- **Tool built**: HTML Beautifier & Formatter (`/tools/html-beautifier`)
+- **Category**: Developer (second tool in the code formatter suite)
+- **Features**: Custom HTML tokenizer, proper indentation with depth tracking, void element recognition (br, img, input, etc.), self-closing tag handling, script/style/pre content preservation (inlined for short content, indented for long), comment and DOCTYPE support, spaces or tabs indent options, HTML minification with comment stripping and whitespace collapse, example loader with full-page HTML, copy button, FAQ section
+- **Search volume**: High ("html beautifier online" — 200-300K monthly searches; codebeautify.org's #1 traffic driver)
+- **Status**: Deployed
+- **Total tools**: 13
+- **Next up**: Markdown Editor
