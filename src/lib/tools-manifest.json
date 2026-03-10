@@ -80,6 +80,15 @@
       "searchVolume": "high",
       "status": "live",
       "dateAdded": "2026-03-11"
+    },
+    {
+      "slug": "timestamp-converter",
+      "name": "Unix Timestamp Converter",
+      "description": "Convert Unix timestamps to human-readable dates and vice versa with live clock",
+      "category": "conversion",
+      "searchVolume": "high",
+      "status": "live",
+      "dateAdded": "2026-03-11"
     }
   ],
   "categories": {
@@ -89,8 +98,8 @@
     "conversion": { "label": "Conversion", "color": "orange" }
   },
   "meta": {
-    "totalTools": 9,
+    "totalTools": 10,
     "lastUpdated": "2026-03-11",
-    "nextPriority": ["timestamp-converter", "css-gradient-generator", "sql-formatter", "html-beautifier", "markdown-editor", "url-encoder", "hash-generator", "password-generator"]
+    "nextPriority": ["css-gradient-generator", "sql-formatter", "html-beautifier", "markdown-editor", "url-encoder", "hash-generator", "password-generator"]
   }
 }
