@@ -126,7 +126,7 @@ export default function Base64EncoderPage() {
 
   return (
     <>
-      <title>Base64 Encoder & Decoder - Free Online Tool | Micro Tools</title>
+      <title>Base64 Encoder & Decoder - Free Online Tool | DevTools Hub</title>
       <meta
         name="description"
         content="Encode and decode Base64 online for free. Supports UTF-8 text and file uploads. Convert text to Base64 or decode Base64 strings instantly in your browser."

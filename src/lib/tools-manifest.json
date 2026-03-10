@@ -64,6 +64,6 @@
   "meta": {
     "totalTools": 6,
     "lastUpdated": "2026-03-11",
-    "nextPriority": ["markdown-preview", "css-gradient-generator", "url-encoder", "hash-generator", "lorem-ipsum-generator", "timestamp-converter", "qr-code-generator"]
+    "nextPriority": ["qr-code-generator", "diff-checker", "uuid-generator", "timestamp-converter", "css-gradient-generator", "sql-formatter", "html-beautifier", "markdown-editor", "url-encoder", "hash-generator"]
   }
 }

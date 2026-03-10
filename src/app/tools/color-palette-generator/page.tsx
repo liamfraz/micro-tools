@@ -145,7 +145,7 @@ export default function ColorPaletteGeneratorPage() {
   return (
     <>
       <title>
-        Color Palette Generator - Free Online Tool | Micro Tools
+        Color Palette Generator - Free Online Tool | DevTools Hub
       </title>
       <meta
         name="description"

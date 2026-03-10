@@ -61,7 +61,7 @@ export default function WordCounterPage() {
 
   return (
     <>
-      <title>Word & Character Counter - Free Online Tool | Micro Tools</title>
+      <title>Word & Character Counter - Free Online Tool | DevTools Hub</title>
       <meta
         name="description"
         content="Count words, characters, sentences, and paragraphs instantly. See reading time, top keywords, and keyword density analysis. Free online word counter tool."

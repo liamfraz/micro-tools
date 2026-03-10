@@ -75,7 +75,7 @@ export default function JsonFormatterPage() {
 
   return (
     <>
-      <title>JSON Formatter & Validator - Free Online Tool | Micro Tools</title>
+      <title>JSON Formatter & Validator - Free Online Tool | DevTools Hub</title>
       <meta
         name="description"
         content="Format, validate, and minify JSON online for free. Pretty-print JSON with customizable indentation, error highlighting with line numbers, and one-click copy."
