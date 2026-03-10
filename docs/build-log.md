@@ -134,3 +134,13 @@
 - **Total tools**: 17
 - **Notes**: Highest search volume tool built so far. Key crossover tool that attracts non-developer audience per business analyst recommendation.
 - **Next up**: JSON to CSV Converter
+
+### Hourly Build #14
+- **Tool built**: JSON to CSV Converter (`/tools/json-to-csv`)
+- **Category**: Conversion (third conversion tool — opens the converter suite)
+- **Features**: Bidirectional JSON↔CSV conversion, nested object flattening with dot notation (address.city), custom delimiters (comma/tab/semicolon/pipe), proper RFC 4180 CSV escaping (quoted fields, escaped quotes, newlines), include/exclude headers toggle, array values preserved as JSON strings, CSV→JSON reverse mode with quoted field parser, file download (.csv or .json), simple and nested JSON examples, row/column stats, copy/clear buttons, FAQ section
+- **Search volume**: High ("json to csv" — 80-150K monthly searches; transform.tools' bread and butter)
+- **Status**: Deployed
+- **Total tools**: 18
+- **Notes**: First tool in the converter suite. Paired with planned json-to-yaml for topical authority in data conversion.
+- **Next up**: XML Formatter
