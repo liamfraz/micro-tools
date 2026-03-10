@@ -134,6 +134,15 @@
       "searchVolume": "medium",
       "status": "live",
       "dateAdded": "2026-03-11"
+    },
+    {
+      "slug": "hash-generator",
+      "name": "Hash Generator",
+      "description": "Generate MD5, SHA-1, SHA-256, SHA-384, and SHA-512 hashes from any text input",
+      "category": "developer",
+      "searchVolume": "medium",
+      "status": "live",
+      "dateAdded": "2026-03-11"
     }
   ],
   "categories": {
@@ -143,8 +152,8 @@
     "conversion": { "label": "Conversion", "color": "orange" }
   },
   "meta": {
-    "totalTools": 15,
+    "totalTools": 16,
     "lastUpdated": "2026-03-11",
-    "nextPriority": ["hash-generator", "password-generator", "json-to-csv", "xml-formatter", "css-minifier", "javascript-minifier", "color-converter", "image-resizer", "text-case-converter", "lorem-ipsum-generator", "json-to-yaml", "cron-expression-parser"]
+    "nextPriority": ["password-generator", "json-to-csv", "xml-formatter", "css-minifier", "javascript-minifier", "color-converter", "image-resizer", "text-case-converter", "lorem-ipsum-generator", "json-to-yaml", "cron-expression-parser"]
   }
 }
