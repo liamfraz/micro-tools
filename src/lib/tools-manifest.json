@@ -89,6 +89,15 @@
       "searchVolume": "high",
       "status": "live",
       "dateAdded": "2026-03-11"
+    },
+    {
+      "slug": "css-gradient-generator",
+      "name": "CSS Gradient Generator",
+      "description": "Create beautiful CSS gradients visually with linear, radial, and conic options",
+      "category": "design",
+      "searchVolume": "medium",
+      "status": "live",
+      "dateAdded": "2026-03-11"
     }
   ],
   "categories": {
@@ -98,8 +107,8 @@
     "conversion": { "label": "Conversion", "color": "orange" }
   },
   "meta": {
-    "totalTools": 10,
+    "totalTools": 11,
     "lastUpdated": "2026-03-11",
-    "nextPriority": ["css-gradient-generator", "sql-formatter", "html-beautifier", "markdown-editor", "url-encoder", "hash-generator", "password-generator"]
+    "nextPriority": ["sql-formatter", "html-beautifier", "markdown-editor", "url-encoder", "hash-generator", "password-generator"]
   }
 }
