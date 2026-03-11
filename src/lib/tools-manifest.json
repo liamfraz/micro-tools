@@ -278,6 +278,15 @@
       "searchVolume": "very-high",
       "status": "live",
       "dateAdded": "2026-03-11"
+    },
+    {
+      "slug": "aspect-ratio-calculator",
+      "name": "Aspect Ratio Calculator",
+      "description": "Calculate and convert aspect ratios for images, videos, and screens with social media and video presets",
+      "category": "design",
+      "searchVolume": "medium",
+      "status": "live",
+      "dateAdded": "2026-03-11"
     }
   ],
   "categories": {
@@ -287,8 +296,8 @@
     "conversion": { "label": "Conversion", "color": "orange" }
   },
   "meta": {
-    "totalTools": 31,
+    "totalTools": 32,
     "lastUpdated": "2026-03-11",
-    "nextPriority": ["aspect-ratio-calculator", "svg-to-png", "json-schema-validator", "character-map", "markdown-to-html", "json-path-tester", "placeholder-image-generator", "tailwind-css-converter", "toml-formatter", "emoji-picker"]
+    "nextPriority": ["svg-to-png", "json-schema-validator", "character-map", "markdown-to-html", "json-path-tester", "placeholder-image-generator", "tailwind-css-converter", "toml-formatter", "emoji-picker"]
   }
 }
