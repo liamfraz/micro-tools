@@ -242,6 +242,15 @@
       "searchVolume": "medium",
       "status": "live",
       "dateAdded": "2026-03-11"
+    },
+    {
+      "slug": "yaml-formatter",
+      "name": "YAML Formatter & Beautifier",
+      "description": "Format, beautify, minify, and sort YAML with proper indentation for Kubernetes, Docker, and config files",
+      "category": "developer",
+      "searchVolume": "medium",
+      "status": "live",
+      "dateAdded": "2026-03-11"
     }
   ],
   "categories": {
@@ -251,8 +260,8 @@
     "conversion": { "label": "Conversion", "color": "orange" }
   },
   "meta": {
-    "totalTools": 27,
+    "totalTools": 28,
     "lastUpdated": "2026-03-11",
-    "nextPriority": ["yaml-formatter", "html-entity-encoder", "number-base-converter", "aspect-ratio-calculator", "character-map", "ip-address-lookup"]
+    "nextPriority": ["html-entity-encoder", "number-base-converter", "aspect-ratio-calculator", "character-map", "ip-address-lookup"]
   }
 }
