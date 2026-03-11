@@ -359,6 +359,15 @@
       "searchVolume": "medium",
       "status": "live",
       "dateAdded": "2026-03-12"
+    },
+    {
+      "slug": "emoji-picker",
+      "name": "Emoji Picker & Search",
+      "description": "Search and copy 500+ emojis by name, keyword, or category. Click to copy, collect multiple, view Unicode details",
+      "category": "text",
+      "searchVolume": "high",
+      "status": "live",
+      "dateAdded": "2026-03-12"
     }
   ],
   "categories": {
@@ -368,8 +377,8 @@
     "conversion": { "label": "Conversion", "color": "orange" }
   },
   "meta": {
-    "totalTools": 40,
+    "totalTools": 41,
     "lastUpdated": "2026-03-12",
-    "nextPriority": ["emoji-picker", "csv-to-json", "ip-address-lookup", "text-diff-merger", "color-picker-from-image", "slug-generator", "htaccess-generator", "open-graph-preview"]
+    "nextPriority": ["csv-to-json", "ip-address-lookup", "text-diff-merger", "color-picker-from-image", "slug-generator", "htaccess-generator", "open-graph-preview"]
   }
 }
