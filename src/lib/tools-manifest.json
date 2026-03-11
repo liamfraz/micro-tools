@@ -350,6 +350,15 @@
       "searchVolume": "medium",
       "status": "live",
       "dateAdded": "2026-03-12"
+    },
+    {
+      "slug": "toml-formatter",
+      "name": "TOML Formatter & Validator",
+      "description": "Format, beautify, minify, sort, and validate TOML files for Cargo.toml, pyproject.toml, and configs",
+      "category": "developer",
+      "searchVolume": "medium",
+      "status": "live",
+      "dateAdded": "2026-03-12"
     }
   ],
   "categories": {
@@ -359,8 +368,8 @@
     "conversion": { "label": "Conversion", "color": "orange" }
   },
   "meta": {
-    "totalTools": 39,
+    "totalTools": 40,
     "lastUpdated": "2026-03-12",
-    "nextPriority": ["toml-formatter", "emoji-picker", "csv-to-json", "ip-address-lookup", "text-diff-merger", "color-picker-from-image", "slug-generator"]
+    "nextPriority": ["emoji-picker", "csv-to-json", "ip-address-lookup", "text-diff-merger", "color-picker-from-image", "slug-generator", "htaccess-generator", "open-graph-preview"]
   }
 }
