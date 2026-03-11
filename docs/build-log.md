@@ -184,3 +184,13 @@
 - **Total tools**: 22
 - **Notes**: First of 5 non-developer tools in category rebalancing batch. Design category now has 3 tools (palette + gradient + converter).
 - **Next up**: Image Resizer
+
+### Hourly Build #19
+- **Tool built**: Image Resizer (`/tools/image-resizer`)
+- **Category**: Design (fourth design tool — category rebalancing continues)
+- **Features**: Client-side Canvas API resizing, drag-and-drop or click upload, custom width/height inputs with lock aspect ratio toggle, 6 percentage scale buttons (25-200%), 10 social media presets (Instagram Post/Story, Twitter Header, Facebook Cover, YouTube Thumbnail, HD, Full HD, Favicon, Profile Photo, Thumbnail), PNG/JPEG/WebP output format selection, quality slider for JPEG/WebP (10-100%), resized image preview with size comparison, download button with descriptive filename, original image info display, FAQ section
+- **Search volume**: Very High ("image resizer online" — 150-300K monthly searches)
+- **Status**: Deployed
+- **Total tools**: 23
+- **Notes**: Second non-developer rebalancing tool. Design category now has 4 tools. This is the highest-volume non-developer tool in our lineup. Attracts content creators, social media managers, and general users.
+- **Next up**: Text Case Converter
