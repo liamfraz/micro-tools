@@ -376,3 +376,13 @@
 - **Total tools**: 41
 - **Notes**: First high-engagement non-developer tool targeting social media managers, content creators, and general users. At 11.2 kB JS it's our second-largest tool (after Tailwind Converter) due to inline emoji data — but this avoids external API dependencies. Text category now has 6 tools.
 - **Next up**: CSV to JSON Converter
+
+### Hourly Build #38
+- **Tool built**: CSV to JSON Converter (`/tools/csv-to-json`)
+- **Category**: Conversion (9th conversion tool — completes the CSV↔JSON bidirectional pair)
+- **Features**: RFC 4180-compliant CSV parser handling quoted fields, escaped quotes (""), and multiline values inside quotes. Auto delimiter detection (comma/tab/semicolon/pipe). Three output formats: Array of Objects (default), Key-Value Object (col1→key, col2→value), Nested (unflatten dotted headers like address.city into nested objects). Type inference for numbers, booleans, and null. Trim whitespace toggle. Skip empty rows toggle. Four preset examples: Simple CSV, Quoted Fields, Nested Keys, TSV Data. .json file download, copy button, 10-row feature reference table, related tools cross-links (JSON to CSV, JSON Formatter, JSON to YAML), FAQ section
+- **Search volume**: High ("csv to json" — 40-80K monthly searches; very common data conversion need)
+- **Status**: Deployed
+- **Total tools**: 42
+- **Notes**: Completes the CSV↔JSON bidirectional pair (JSON→CSV was tool #18). The nested key unflattening feature is a differentiator — it reverses the dot-notation flattening from JSON→CSV. Converter cluster now has 9 tools, making it the largest non-developer cluster. At 4.69 kB JS it's very lightweight.
+- **Next up**: IP Address Lookup
