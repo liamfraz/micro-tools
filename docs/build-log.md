@@ -294,3 +294,13 @@
 - **Total tools**: 33
 - **Notes**: Grows the image tool cluster (Image Resizer + Image Compressor + SVG to PNG). Conversion category now has 6 tools. Targets designers and developers who need rasterized SVGs for email, social media, or icon sets.
 - **Next up**: JSON Schema Validator
+
+### Hourly Build #30
+- **Tool built**: JSON Schema Validator (`/tools/json-schema-validator`)
+- **Category**: Developer (strengthens JSON tool cluster)
+- **Features**: Client-side JSON Schema Draft-07 validation, type/required/enum/const/format checks, string constraints (minLength/maxLength/pattern), number constraints (min/max/multipleOf), array constraints (items/minItems/maxItems/uniqueItems/contains), object constraints (properties/additionalProperties/patternProperties/dependencies), combinators (allOf/anyOf/oneOf/not), conditionals (if/then/else), $ref resolution, format validation (email/uri/date-time/date/time/ipv4/ipv6/uuid), detailed error list with JSON path and keyword badges, valid/invalid example loaders, supported keywords reference table, related tools cross-links (JSON Formatter, JSON to YAML, JSON to CSV), FAQ section
+- **Search volume**: High ("json schema validator" — 50-100K monthly searches)
+- **Status**: Deployed
+- **Total tools**: 34
+- **Notes**: Completes the JSON tool cluster (JSON Formatter + JSON↔CSV + JSON↔YAML + JSON Schema Validator). Developer category now has 18 tools. This is a high-value sticky tool — developers return repeatedly when building APIs.
+- **Next up**: Character Map
