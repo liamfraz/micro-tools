@@ -244,3 +244,13 @@
 - **Total tools**: 28
 - **Notes**: Extends the formatter suite to 6 tools (SQL + HTML + XML + CSS + JS + YAML). Pairs with JSON↔YAML converter for topical authority in YAML/DevOps niche. K8s/Docker/GitHub Actions users are a growing audience segment.
 - **Next up**: HTML Entity Encoder
+
+### Hourly Build #25
+- **Tool built**: HTML Entity Encoder & Decoder (`/tools/html-entity-encoder`)
+- **Category**: Developer (pairs with HTML Beautifier for HTML topical cluster)
+- **Features**: 4 encoding modes (named entities, decimal numeric, hex numeric, all chars), full decode support (named + decimal + hex), 60+ named entity mappings (symbols, currency, accented chars, arrows, typography), bidirectional with swap button, common HTML entities reference table (18 entries with character, named, decimal, hex, and description), encode/decode example loaders, related tools cross-links (HTML Beautifier, URL Encoder, Base64 Encoder), copy button, FAQ section
+- **Search volume**: Medium ("html entity encoder" — 20-40K monthly searches)
+- **Status**: Deployed
+- **Total tools**: 29
+- **Notes**: Builds HTML topical cluster (HTML Beautifier + HTML Entity Encoder). Also extended nextPriority queue with svg-to-png, json-path-tester, markdown-to-html to maintain buffer above 5 items.
+- **Next up**: Number Base Converter
