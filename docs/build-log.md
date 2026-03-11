@@ -214,3 +214,13 @@
 - **Total tools**: 25
 - **Notes**: Fourth non-developer rebalancing tool. Text category now has 4 tools. Milestone — 25 tools live! Per business report, should consider adding JSON-LD structured data soon.
 - **Next up**: JSON to YAML Converter
+
+### Hourly Build #22
+- **Tool built**: JSON to YAML Converter (`/tools/json-to-yaml`)
+- **Category**: Conversion (fourth conversion tool — completes the converter duo with JSON↔CSV)
+- **Features**: Custom JSON→YAML serializer with proper string quoting, multiline block scalars, empty collection handling. Custom YAML→JSON parser supporting mappings, sequences, block scalars, inline collections, comments, document start markers. Direction toggle with swap button, example loaders for both directions, JSON vs YAML comparison table, related converter tools cross-links (JSON Formatter, JSON↔CSV, XML Formatter), copy button, FAQ section
+- **Search volume**: Medium ("json to yaml" — 30-50K monthly searches)
+- **Status**: Deployed
+- **Total tools**: 26
+- **Notes**: Fifth and final non-developer rebalancing tool. Category rebalancing batch complete! Developer: 15/26 (58%, down from 71%). Converter suite now has JSON↔CSV + JSON↔YAML — targets transform.tools niche.
+- **Next up**: Cron Expression Parser
