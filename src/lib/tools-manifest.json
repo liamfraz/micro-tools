@@ -368,6 +368,15 @@
       "searchVolume": "high",
       "status": "live",
       "dateAdded": "2026-03-12"
+    },
+    {
+      "slug": "csv-to-json",
+      "name": "CSV to JSON Converter",
+      "description": "Convert CSV and TSV data to JSON with type detection, nested key unflattening, and RFC 4180 parsing",
+      "category": "conversion",
+      "searchVolume": "high",
+      "status": "live",
+      "dateAdded": "2026-03-12"
     }
   ],
   "categories": {
@@ -377,8 +386,8 @@
     "conversion": { "label": "Conversion", "color": "orange" }
   },
   "meta": {
-    "totalTools": 41,
+    "totalTools": 42,
     "lastUpdated": "2026-03-12",
-    "nextPriority": ["csv-to-json", "ip-address-lookup", "text-diff-merger", "color-picker-from-image", "slug-generator", "htaccess-generator", "open-graph-preview"]
+    "nextPriority": ["ip-address-lookup", "text-diff-merger", "color-picker-from-image", "slug-generator", "htaccess-generator", "open-graph-preview"]
   }
 }
