@@ -154,3 +154,13 @@
 - **Total tools**: 19
 - **Notes**: Code formatter suite now has 3 tools (SQL + HTML + XML). Adding CSS Minifier and JS Minifier completes a 5-tool cluster.
 - **Next up**: CSS Minifier
+
+### Hourly Build #16
+- **Tool built**: CSS Minifier & Beautifier (`/tools/css-minifier`)
+- **Category**: Developer (fourth tool in the code formatter suite — SQL + HTML + XML + CSS)
+- **Features**: Minify and beautify modes, comment stripping, whitespace collapse, hex color shortening (#ffffff→#fff), zero-unit removal (0px→0), decimal shortening (0.5→.5), trailing semicolon removal, empty rule removal, combinator space trimming, configurable indent (2/4 spaces), real-time byte savings display with percentage, rich example CSS (layout + nav + hero + cards), optimizations reference grid, copy/clear buttons, FAQ section
+- **Search volume**: High ("css minifier online" — 60-90K monthly searches)
+- **Status**: Deployed
+- **Total tools**: 20
+- **Notes**: Milestone — 20 tools live! Code formatter suite now has 4 tools. Adding JS Minifier completes the 5-tool cluster.
+- **Next up**: JavaScript Minifier
