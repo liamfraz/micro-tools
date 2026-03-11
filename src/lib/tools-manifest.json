@@ -260,6 +260,15 @@
       "searchVolume": "medium",
       "status": "live",
       "dateAdded": "2026-03-11"
+    },
+    {
+      "slug": "number-base-converter",
+      "name": "Number Base Converter",
+      "description": "Convert numbers between binary, octal, decimal, and hexadecimal with BigInt precision and formatting",
+      "category": "conversion",
+      "searchVolume": "medium",
+      "status": "live",
+      "dateAdded": "2026-03-11"
     }
   ],
   "categories": {
@@ -269,8 +278,8 @@
     "conversion": { "label": "Conversion", "color": "orange" }
   },
   "meta": {
-    "totalTools": 29,
+    "totalTools": 30,
     "lastUpdated": "2026-03-11",
-    "nextPriority": ["number-base-converter", "aspect-ratio-calculator", "character-map", "ip-address-lookup", "svg-to-png", "json-path-tester", "markdown-to-html"]
+    "nextPriority": ["aspect-ratio-calculator", "character-map", "ip-address-lookup", "svg-to-png", "json-path-tester", "markdown-to-html"]
   }
 }
