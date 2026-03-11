@@ -254,3 +254,13 @@
 - **Total tools**: 29
 - **Notes**: Builds HTML topical cluster (HTML Beautifier + HTML Entity Encoder). Also extended nextPriority queue with svg-to-png, json-path-tester, markdown-to-html to maintain buffer above 5 items.
 - **Next up**: Number Base Converter
+
+### Hourly Build #26
+- **Tool built**: Number Base Converter (`/tools/number-base-converter`)
+- **Category**: Conversion (fifth conversion tool — grows the conversion category)
+- **Features**: Real-time conversion between binary/octal/decimal/hexadecimal, BigInt precision for arbitrarily large numbers, auto-prefix detection (0b/0o/0x), formatted output (4-bit binary groups, hex pairs, thousand separators), bit count display, 8 quick presets (255, 256, 1024, 65535, FF, DEADBEEF, 11111111, 777), 0-15 base conversion reference table, common programming values guide (uint8/int8/uint16/int32/Unix permissions), per-result copy buttons, FAQ section
+- **Search volume**: Medium ("number base converter" — 20-35K monthly searches)
+- **Status**: Deployed
+- **Total tools**: 30
+- **Notes**: MILESTONE — 30 tools live! Conversion category now has 5 tools (Timestamp + URL Encoder + JSON↔CSV + JSON↔YAML + Number Base). Education traffic driver — students and new programmers frequently search for base conversion.
+- **Next up**: Aspect Ratio Calculator
