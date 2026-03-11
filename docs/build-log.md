@@ -194,3 +194,13 @@
 - **Total tools**: 23
 - **Notes**: Second non-developer rebalancing tool. Design category now has 4 tools. This is the highest-volume non-developer tool in our lineup. Attracts content creators, social media managers, and general users.
 - **Next up**: Text Case Converter
+
+### Hourly Build #20
+- **Tool built**: Text Case Converter (`/tools/text-case-converter`)
+- **Category**: Text (third text tool — category rebalancing continues)
+- **Features**: 13 case formats (UPPER, lower, Title, Sentence, camelCase, PascalCase, snake_case, kebab-case, CONSTANT_CASE, dot.case, path/case, alternating, inverse), smart word splitting on camelCase/snake/kebab/dots/slashes boundaries, all-at-once view with per-format copy buttons, use case reference guide, example text loader, word/char stats, FAQ section
+- **Search volume**: High ("text case converter online" — 50-80K monthly searches)
+- **Status**: Deployed
+- **Total tools**: 24
+- **Notes**: Third non-developer rebalancing tool. Text category now has 3 tools (word counter + markdown editor + text case converter). 3 of 5 non-developer rebalancing targets complete.
+- **Next up**: Lorem Ipsum Generator
