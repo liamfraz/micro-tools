@@ -206,6 +206,15 @@
       "searchVolume": "very-high",
       "status": "live",
       "dateAdded": "2026-03-11"
+    },
+    {
+      "slug": "text-case-converter",
+      "name": "Text Case Converter",
+      "description": "Convert text between UPPERCASE, lowercase, Title Case, camelCase, snake_case, kebab-case, and 7 more formats",
+      "category": "text",
+      "searchVolume": "high",
+      "status": "live",
+      "dateAdded": "2026-03-11"
     }
   ],
   "categories": {
@@ -215,8 +224,8 @@
     "conversion": { "label": "Conversion", "color": "orange" }
   },
   "meta": {
-    "totalTools": 23,
+    "totalTools": 24,
     "lastUpdated": "2026-03-11",
-    "nextPriority": ["text-case-converter", "lorem-ipsum-generator", "json-to-yaml", "cron-expression-parser", "yaml-formatter", "html-entity-encoder", "number-base-converter", "aspect-ratio-calculator", "character-map", "ip-address-lookup"]
+    "nextPriority": ["lorem-ipsum-generator", "json-to-yaml", "cron-expression-parser", "yaml-formatter", "html-entity-encoder", "number-base-converter", "aspect-ratio-calculator", "character-map", "ip-address-lookup"]
   }
 }
