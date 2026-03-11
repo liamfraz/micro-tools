@@ -386,3 +386,13 @@
 - **Total tools**: 42
 - **Notes**: Completes the CSV↔JSON bidirectional pair (JSON→CSV was tool #18). The nested key unflattening feature is a differentiator — it reverses the dot-notation flattening from JSON→CSV. Converter cluster now has 9 tools, making it the largest non-developer cluster. At 4.69 kB JS it's very lightweight.
 - **Next up**: IP Address Lookup
+
+### Hourly Build #39
+- **Tool built**: IP Address Lookup & Subnet Calculator (`/tools/ip-address-lookup`)
+- **Category**: Developer (22nd developer tool — first tool with external API calls)
+- **Features**: Public IP detection via ipinfo.io with ipify.org fallback, IP geolocation lookup (city, region, country, ISP, timezone, coordinates), subnet calculator with CIDR notation, ipToNum/numToIp binary conversion, subnet/wildcard mask calculation, network/broadcast address derivation, first/last usable host, total/usable host count, IP class detection (A-E), private IP range detection, CIDR slider (0-32) with 6 quick presets (/8, /16, /20, /24, /28, /30), quick lookup presets (Google DNS 8.8.8.8, Cloudflare 1.1.1.1, OpenDNS, Quad9, localhost, private ranges), 11-row common subnets reference table, per-field copy buttons via InfoRow component, related tools cross-links (Hash Generator, UUID Generator, JSON Formatter), FAQ section
+- **Search volume**: Very High ("ip address lookup" — 50,000-100,000+ monthly searches; "what is my ip" — millions)
+- **Status**: Deployed
+- **Total tools**: 43
+- **Notes**: First tool to make external network requests (ipinfo.io, ipify.org). All other tools are purely client-side. Includes graceful fallback handling for blocked/failed API requests. The subnet calculator adds unique value beyond simple IP lookup — targets network engineers and DevOps in addition to general users. At 4.93 kB JS it's lightweight despite the API integration.
+- **Next up**: Image Format Converter
