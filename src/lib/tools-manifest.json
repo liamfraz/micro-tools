@@ -323,6 +323,15 @@
       "searchVolume": "high",
       "status": "live",
       "dateAdded": "2026-03-12"
+    },
+    {
+      "slug": "json-path-tester",
+      "name": "JSONPath Tester",
+      "description": "Test and evaluate JSONPath expressions with dot notation, wildcards, array slices, filters, and recursive descent",
+      "category": "developer",
+      "searchVolume": "medium",
+      "status": "live",
+      "dateAdded": "2026-03-12"
     }
   ],
   "categories": {
@@ -332,8 +341,8 @@
     "conversion": { "label": "Conversion", "color": "orange" }
   },
   "meta": {
-    "totalTools": 36,
+    "totalTools": 37,
     "lastUpdated": "2026-03-12",
-    "nextPriority": ["json-path-tester", "placeholder-image-generator", "tailwind-css-converter", "toml-formatter", "emoji-picker", "csv-to-json", "ip-address-lookup", "text-diff-merger", "color-picker-from-image", "slug-generator"]
+    "nextPriority": ["placeholder-image-generator", "tailwind-css-converter", "toml-formatter", "emoji-picker", "csv-to-json", "ip-address-lookup", "text-diff-merger", "color-picker-from-image", "slug-generator"]
   }
 }
