@@ -341,6 +341,15 @@
       "searchVolume": "medium",
       "status": "live",
       "dateAdded": "2026-03-12"
+    },
+    {
+      "slug": "tailwind-css-converter",
+      "name": "Tailwind CSS Converter",
+      "description": "Convert CSS to Tailwind utility classes and Tailwind back to CSS with 80+ property support",
+      "category": "developer",
+      "searchVolume": "medium",
+      "status": "live",
+      "dateAdded": "2026-03-12"
     }
   ],
   "categories": {
@@ -350,8 +359,8 @@
     "conversion": { "label": "Conversion", "color": "orange" }
   },
   "meta": {
-    "totalTools": 38,
+    "totalTools": 39,
     "lastUpdated": "2026-03-12",
-    "nextPriority": ["tailwind-css-converter", "toml-formatter", "emoji-picker", "csv-to-json", "ip-address-lookup", "text-diff-merger", "color-picker-from-image", "slug-generator"]
+    "nextPriority": ["toml-formatter", "emoji-picker", "csv-to-json", "ip-address-lookup", "text-diff-merger", "color-picker-from-image", "slug-generator"]
   }
 }
