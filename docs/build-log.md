@@ -274,3 +274,13 @@
 - **Total tools**: 31
 - **Notes**: Business analyst Report #4's top priority. Highest search volume tool since QR Code Generator. Starts the image tool cluster (Image Resizer + Image Compressor). Design category now has 5 tools. This single tool targets the same niche as tinypng.com (5M+ monthly visits).
 - **Next up**: Aspect Ratio Calculator
+
+### Hourly Build #28
+- **Tool built**: Aspect Ratio Calculator (`/tools/aspect-ratio-calculator`)
+- **Category**: Design (sixth design tool — non-developer audience expansion)
+- **Features**: Aspect ratio calculation with GCD simplification, decimal ratio display, visual preview box, resize calculator with 3 modes (set width→calc height, set height→calc width, manual both), swap dimensions button, 20 presets across 3 categories (Video: HD/4K/720p/Ultrawide/4:3/Cinema, Social: Instagram Post/Story/Reel, YouTube, Twitter, Facebook, TikTok, LinkedIn, Photo: 4x6/5x7/8x10/A4/US Letter/Square), category filter tabs, related tools cross-links (Image Resizer, Image Compressor, CSS Gradient), FAQ section
+- **Search volume**: Medium ("aspect ratio calculator" — 30-50K monthly searches)
+- **Status**: Deployed
+- **Total tools**: 32
+- **Notes**: Non-developer audience tool targeting content creators, videographers, and social media managers. Design category now has 6 tools. Social media presets (Instagram, TikTok, YouTube) attract a broad non-technical audience.
+- **Next up**: SVG to PNG Converter
