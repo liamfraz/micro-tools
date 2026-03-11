@@ -199,6 +199,6 @@
   "meta": {
     "totalTools": 21,
     "lastUpdated": "2026-03-11",
-    "nextPriority": ["color-converter", "image-resizer", "text-case-converter", "lorem-ipsum-generator", "json-to-yaml", "cron-expression-parser", "yaml-formatter", "html-entity-encoder", "number-base-converter"]
+    "nextPriority": ["color-converter", "image-resizer", "text-case-converter", "lorem-ipsum-generator", "json-to-yaml", "cron-expression-parser", "yaml-formatter", "html-entity-encoder", "number-base-converter", "aspect-ratio-calculator", "character-map", "ip-address-lookup"]
   }
 }
