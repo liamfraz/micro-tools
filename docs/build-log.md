@@ -284,3 +284,13 @@
 - **Total tools**: 32
 - **Notes**: Non-developer audience tool targeting content creators, videographers, and social media managers. Design category now has 6 tools. Social media presets (Instagram, TikTok, YouTube) attract a broad non-technical audience.
 - **Next up**: SVG to PNG Converter
+
+### Hourly Build #29
+- **Tool built**: SVG to PNG Converter (`/tools/svg-to-png`)
+- **Category**: Conversion (sixth conversion tool — image conversion cluster)
+- **Features**: File upload or paste SVG code, 1x-4x scale presets plus custom dimensions, PNG/JPEG/WebP output format, transparent or colored background option, quality slider for JPEG/WebP, SVG preview with checkerboard transparency pattern, conversion stats (dimensions, format, file size), download button with descriptive filename, related tools cross-links (Image Resizer, Image Compressor, QR Code Generator), FAQ section
+- **Search volume**: High ("svg to png" — 80-150K monthly searches)
+- **Status**: Deployed
+- **Total tools**: 33
+- **Notes**: Grows the image tool cluster (Image Resizer + Image Compressor + SVG to PNG). Conversion category now has 6 tools. Targets designers and developers who need rasterized SVGs for email, social media, or icon sets.
+- **Next up**: JSON Schema Validator
