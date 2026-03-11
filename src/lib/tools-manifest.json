@@ -296,6 +296,15 @@
       "searchVolume": "high",
       "status": "live",
       "dateAdded": "2026-03-11"
+    },
+    {
+      "slug": "json-schema-validator",
+      "name": "JSON Schema Validator",
+      "description": "Validate JSON data against JSON Schema (Draft-07) with detailed error reporting and path navigation",
+      "category": "developer",
+      "searchVolume": "high",
+      "status": "live",
+      "dateAdded": "2026-03-11"
     }
   ],
   "categories": {
@@ -305,8 +314,8 @@
     "conversion": { "label": "Conversion", "color": "orange" }
   },
   "meta": {
-    "totalTools": 33,
+    "totalTools": 34,
     "lastUpdated": "2026-03-11",
-    "nextPriority": ["json-schema-validator", "character-map", "markdown-to-html", "json-path-tester", "placeholder-image-generator", "tailwind-css-converter", "toml-formatter", "emoji-picker"]
+    "nextPriority": ["character-map", "markdown-to-html", "json-path-tester", "placeholder-image-generator", "tailwind-css-converter", "toml-formatter", "emoji-picker"]
   }
 }
