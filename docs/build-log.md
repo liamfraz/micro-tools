@@ -304,3 +304,13 @@
 - **Total tools**: 34
 - **Notes**: Completes the JSON tool cluster (JSON Formatter + JSON↔CSV + JSON↔YAML + JSON Schema Validator). Developer category now has 18 tools. This is a high-value sticky tool — developers return repeatedly when building APIs.
 - **Next up**: Character Map
+
+### Hourly Build #31
+- **Tool built**: Unicode Character Map (`/tools/character-map`)
+- **Category**: Text (fifth text tool — broadens non-developer audience)
+- **Features**: 21 Unicode block browser (Basic Latin through Emoji), searchable by name/character/U+hex/decimal, 5 quick-access categories (Arrows, Currency, Math, Symbols, Typography), interactive character grid with click-to-collect, detail panel showing character name, Unicode code point, decimal, HTML decimal/hex entities, CSS escape, JavaScript escape, UTF-8 bytes, per-field copy buttons, collected characters bar with copy-all, related tools cross-links (HTML Entity Encoder, Text Case Converter, URL Encoder), FAQ section
+- **Search volume**: Medium ("unicode character map" — 20-40K monthly searches; "unicode symbols" — 30-50K)
+- **Status**: Deployed
+- **Total tools**: 35
+- **Notes**: Text category now has 5 tools. Pairs with HTML Entity Encoder for a text/encoding topical cluster. The character collector feature makes this a sticky tool — users bookmark it for repeated symbol lookup.
+- **Next up**: Markdown to HTML
