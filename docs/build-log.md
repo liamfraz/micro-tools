@@ -234,3 +234,13 @@
 - **Total tools**: 27
 - **Notes**: Sticky tool — users bookmark and return regularly. Targets crontab.guru's niche. Category distribution now: Developer 16/27 (59%), Text 4/27 (15%), Design 4/27 (15%), Conversion 4/27 (11%). Business report target of 59% developer achieved.
 - **Next up**: YAML Formatter
+
+### Hourly Build #24
+- **Tool built**: YAML Formatter & Beautifier (`/tools/yaml-formatter`)
+- **Category**: Developer (pairs with JSON↔YAML for converter cluster + formatter suite extension)
+- **Features**: Custom YAML tokenizer/parser, beautify mode with proper indentation, minify mode (strips comments/blanks), alphabetical top-level key sorting, configurable indent (2-space/4-space/tab), comment preservation in beautify mode, block scalar handling (| and >), two example loaders (app config + Kubernetes deployment manifest), input/output stats with size savings percentage, YAML syntax reference table (12 constructs), related tools cross-links (JSON↔YAML, JSON Formatter, Cron Parser), copy button, FAQ section
+- **Search volume**: Medium ("yaml formatter online" — 30-50K monthly searches)
+- **Status**: Deployed
+- **Total tools**: 28
+- **Notes**: Extends the formatter suite to 6 tools (SQL + HTML + XML + CSS + JS + YAML). Pairs with JSON↔YAML converter for topical authority in YAML/DevOps niche. K8s/Docker/GitHub Actions users are a growing audience segment.
+- **Next up**: HTML Entity Encoder
