@@ -170,13 +170,28 @@ export default function SvgToPngPage() {
   }, [handleFile]);
 
   return (
+    <>
+      <title>SVG to PNG Converter - Free Online Tool | DevTools Hub</title>
+      <meta
+        name="description"
+        content="Convert SVG files to PNG, JPEG, or WebP online for free. Scale up to 4x for retina displays with custom dimensions and background options — all in your browser."
+      />
+
     <main className="min-h-screen bg-slate-900 text-white">
       <div className="max-w-4xl mx-auto px-4 py-12">
+        {/* Breadcrumb */}
+        <nav className="text-sm text-slate-400 mb-6" aria-label="Breadcrumb">
+          <ol className="flex items-center gap-2">
+            <li><a href="/" className="hover:text-white transition-colors">Home</a></li>
+            <li><span className="mx-1">/</span></li>
+            <li><a href="/tools" className="hover:text-white transition-colors">Conversion Tools</a></li>
+            <li><span className="mx-1">/</span></li>
+            <li className="text-slate-200">SVG to PNG Converter</li>
+          </ol>
+        </nav>
+
         {/* Header */}
         <div className="mb-8">
-          <a href="/" className="text-blue-400 hover:text-blue-300 text-sm mb-4 inline-block">
-            ← Back to all tools
-          </a>
           <h1 className="text-3xl font-bold mb-2">SVG to PNG Converter</h1>
           <p className="text-slate-400">
             Convert SVG files to high-resolution PNG, JPEG, or WebP images. Scale up to 4x for crisp retina displays. All processing in your browser.
@@ -498,5 +513,6 @@ export default function SvgToPngPage() {
         </div>
       </div>
     </main>
+    </>
   );
 }

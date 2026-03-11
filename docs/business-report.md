@@ -1,211 +1,198 @@
 # Business Analyst Report
 
-## Report Date: 2026-03-11
-## Report #4
+## Report Date: 2026-03-12
+## Report #5
 
 ---
 
 ### Current Status
-- **Total tools live**: 30
+- **Total tools live**: 36
 - **Deployment status**: Healthy (Vercel Production — auto-deploys on push)
 - **Live URL**: https://micro-tools-lilac.vercel.app
 - **GitHub**: github.com/liamfraz/micro-tools
-- **Build speed**: All 36 static pages (30 tools + home + 404 + sitemap + robots + layout) compile successfully
-- **Avg tool JS size**: ~3.9 kB per page (excellent — lightweight)
+- **Build speed**: All 42 static pages compile successfully
+- **Avg tool JS size**: ~4.2 kB per page (excellent — lightweight)
 - **Code formatter suite**: 6 tools (SQL, HTML, XML, CSS, JS, YAML)
-- **Converter suite**: 5 tools (Timestamp, URL, JSON↔CSV, JSON↔YAML, Number Base)
+- **Converter suite**: 8 tools (Timestamp, URL, JSON↔CSV, JSON↔YAML, Number Base, SVG→PNG, Markdown→HTML)
+- **JSON cluster**: 5 tools (Formatter, CSV, YAML, Schema Validator, Markdown→HTML)
+- **Image cluster**: 4 tools (Resizer, Compressor, SVG→PNG, Aspect Ratio)
 
-### Growth Since Last Report (Report #3)
-| Metric | Report #3 | Report #4 | Change |
+### Growth Since Last Report (Report #4)
+| Metric | Report #4 | Report #5 | Change |
 |--------|-----------|-----------|--------|
-| Total tools | 21 | 30 | +9 tools (+43%) |
-| Developer tools | 15 | 18 | +3 |
-| Text tools | 2 | 4 | +2 |
-| Design tools | 2 | 4 | +2 |
-| Conversion tools | 2 | 5 | +3 (major growth) |
-| Formatter suite | 5/5 | 6/6 | +YAML added |
-| Converter suite | 1 | 5 | NEW cluster formed |
-| Cross-linked tools | 1 | 4 | +3 (still insufficient) |
-| Static pages | 27 | 36 | +9 |
+| Total tools | 30 | 36 | +6 tools (+20%) |
+| Developer tools | 18 | 19 | +1 |
+| Text tools | 4 | 5 | +1 |
+| Design tools | 4 | 6 | +2 |
+| Conversion tools | 5 | 8 | +3 (strongest growth) |
+| Cross-linked tools | 4 | 9 | +5 (125% improvement) |
+| Static pages | 36 | 42 | +6 |
 
 ### Tools Built Since Last Report
 | # | Tool | Category | Search Volume | Date |
 |---|------|----------|---------------|------|
-| 22 | Color Converter | Design | High (40-70K) | 2026-03-11 |
-| 23 | Image Resizer | Design | Very High (150-300K) | 2026-03-11 |
-| 24 | Text Case Converter | Text | High (50-80K) | 2026-03-11 |
-| 25 | Lorem Ipsum Generator | Text | Medium (40-60K) | 2026-03-11 |
-| 26 | JSON to YAML Converter | Conversion | Medium (30-50K) | 2026-03-11 |
-| 27 | Cron Expression Parser | Developer | Medium (20-40K) | 2026-03-11 |
-| 28 | YAML Formatter | Developer | Medium (30-50K) | 2026-03-11 |
-| 29 | HTML Entity Encoder | Developer | Medium (20-40K) | 2026-03-11 |
-| 30 | Number Base Converter | Conversion | Medium (20-35K) | 2026-03-11 |
+| 31 | Image Compressor | Design | Very High (300-500K) | 2026-03-11 |
+| 32 | Aspect Ratio Calculator | Design | Medium (30-50K) | 2026-03-11 |
+| 33 | SVG to PNG Converter | Conversion | High (80-150K) | 2026-03-11 |
+| 34 | JSON Schema Validator | Developer | High (50-100K) | 2026-03-11 |
+| 35 | Unicode Character Map | Text | Medium (20-40K) | 2026-03-11 |
+| 36 | Markdown to HTML | Conversion | High (60-100K) | 2026-03-12 |
 
-**Estimated combined monthly search volume of new tools**: 400K-725K
+**Estimated combined monthly search volume of new tools**: 540K-940K
 
 ### Category Distribution
-| Category | Count | % | Report #3 % | Change |
+| Category | Count | % | Report #4 % | Change |
 |----------|-------|---|-------------|--------|
-| Developer | 18 | 60% | 71% | -11pp (MAJOR improvement) |
-| Text | 4 | 13% | 10% | +3pp |
-| Design | 4 | 13% | 10% | +3pp |
-| Conversion | 5 | 17% | 10% | +7pp |
+| Developer | 19 | 53% | 60% | -7pp |
+| Design | 6 | 17% | 13% | +4pp |
+| Conversion | 8 | 22% | 17% | +5pp |
+| Text | 5 | 14% | 13% | +1pp |
 
-**Assessment**: Category rebalancing mandate from Report #3 was EXECUTED SUCCESSFULLY. Developer percentage dropped from 71% to 60%, hitting the <60% target almost exactly. All three non-developer categories grew. Conversion saw the most improvement (+7pp) thanks to 3 new tools.
+**Assessment**: Category balance continues to improve. Developer dropped below 55% target to 53% — the healthiest distribution we've had. Conversion category is now the strongest non-developer category at 22% with 8 tools. Design grew with 2 image tools (compressor + aspect ratio).
 
 ---
 
 ### Key Milestones Achieved This Period
 
-1. **30-tool milestone reached** — strong content foundation for AdSense application
-2. **Category rebalancing COMPLETE** — Developer dropped from 71% to 60%
-3. **Converter suite formed** — 5 tools (Timestamp + URL + JSON↔CSV + JSON↔YAML + Number Base)
-4. **Formatter suite extended to 6** — YAML Formatter added
-5. **Non-developer audience expansion** — Image Resizer (very high volume), Lorem Ipsum, Text Case Converter all attract designers and general users
-6. **Cron Expression Parser** — targets crontab.guru's sticky 1.5M visits/mo niche
+1. **Image Compressor LIVE** — Our #1 priority from Report #4, targeting tinypng.com's 5M+ visits/mo niche
+2. **Image cluster formed (4 tools)** — Resizer + Compressor + SVG→PNG + Aspect Ratio Calculator
+3. **JSON cluster completed (5 tools)** — Formatter + CSV + YAML + Schema Validator (was 3 at last report)
+4. **Converter suite now 8 tools** — Largest non-developer cluster
+5. **36-tool milestone** — Surpassed transform.tools' tool count
+6. **Cross-linking improved 125%** — From 4 to 9 tools with Related Tools sections
 
 ---
 
-### Issues Found
+### Issues Found & Fixed
 
-1. **CRITICAL: Internal cross-linking still weak** — Only 4 of 30 tools have "Related Tools" sections (JS Minifier, HTML Entity Encoder, YAML Formatter, JSON↔YAML). This means 26 tools are isolated pages with no internal links. This is a significant missed SEO opportunity. **Recommendation: Schedule a batch cross-linking update as the next infrastructure task.**
+1. **FIXED: SVG to PNG missing SEO metadata** — Was missing `<title>` tag, `<meta description>`, and proper breadcrumb navigation. All three added this cycle. This was our newest conversion tool shipping without basic SEO — a quality regression. All future tools must have these elements.
 
-2. **JSON-LD structured data still missing** — At 30 tools, this is now HIGH priority. "SoftwareApplication" or "WebApplication" schema markup would improve CTR in search results by 15-30%. Should be added as a layout-level component that reads from manifest.
+2. **PERSISTENT: Internal cross-linking still insufficient** — 27 of 36 tools (75%) still lack "Related Tools" sections. Improved from 87% missing (Report #4) to 75% missing, but still a major SEO gap.
 
-3. **Homepage hero text is outdated** — Still says "Format JSON, encode Base64, count words, generate palettes" — only mentions 4 of 30 tools. Should be updated to reflect the full breadth: formatters, converters, generators, design tools.
+   **Tools WITH Related Tools (9)**: aspect-ratio-calculator, character-map, html-entity-encoder, image-compressor, json-schema-validator, json-to-yaml, markdown-to-html, svg-to-png, yaml-formatter
 
-4. **No Open Graph / Twitter Card metadata** — Tools shared on social media show generic previews. Each tool page should have og:title, og:description, og:image metadata.
+   **Tools WITHOUT Related Tools (27)**: base64-encoder, color-converter, color-palette-generator, cron-expression-parser, css-gradient-generator, css-minifier, diff-checker, hash-generator, html-beautifier, image-resizer, javascript-minifier, json-formatter, json-to-csv, jwt-decoder, lorem-ipsum-generator, markdown-editor, number-base-converter, password-generator, qr-code-generator, regex-tester, sql-formatter, text-case-converter, timestamp-converter, url-encoder, uuid-generator, word-counter, xml-formatter
 
-5. **Older tools lack metadata exports** — The first ~15 tools built (json-formatter through hash-generator) don't export Next.js `metadata` objects. Newer tools also don't. This is a missed SEO opportunity for page titles and descriptions in search results.
+3. **PERSISTENT: No JSON-LD structured data** — Still missing at 36 tools. Impact grows with each tool added.
+
+4. **PERSISTENT: No Next.js metadata exports** — Tool pages use inline `<title>` and `<meta>` tags rather than Next.js `metadata` exports. Works for SEO but inconsistent with Next.js best practices.
+
+5. **OBSERVATION: Two style patterns co-exist** — Older tools (json-formatter through hash-generator) use `max-w-7xl` layout with full breadcrumb. Newer tools use `max-w-4xl` or `max-w-6xl` with "Back to all tools" link or breadcrumb. Not a functional issue but inconsistent UX.
 
 ---
 
 ### Competitive Analysis Update
 
-| Competitor | Est. Monthly Visits | Tools | Our Gap |
-|-----------|-------------------|-------|---------|
-| codebeautify.org | 2.3M | 100+ | Formatter suite matched (6 tools vs their 5). Gap: JSON validator, TOML formatter |
-| 10015.io | ~108K (3.6K daily) | 80+ | Strong in image tools, AI tools. We match on core dev tools. Gap: image compressor, SVG tools |
-| jsonformatter.org | 2.5M | 40+ | Deep JSON ecosystem. Our JSON tools: formatter + CSV + YAML. Gap: JSON viewer, JSON editor, JSON Schema validator |
-| transform.tools | 200K+ | 30+ | We now MATCH their tool count at 30. Converter suite competitive. Gap: TypeScript↔JSON Schema, GraphQL tools |
-| passwordsgenerator.net | 3M+ | 1 | Password generator built — competing on long-tail |
-| crontab.guru | 1.5M | 1 | Cron parser BUILT — now competing directly |
-| tinypng.com | 5M+ | 3 | Image compressor. We have resizer but NOT compressor. HUGE gap. |
+| Competitor | Est. Monthly Visits | Tools | Our Position |
+|-----------|-------------------|-------|--------------|
+| codebeautify.org | 2.3M | 100+ | We match their formatter suite (6 tools). Gap narrowing but they have 60+ more tools. |
+| jsonformatter.org | 2.5M | 40+ | JSON cluster now 5 tools — competitive with their core offering. |
+| transform.tools | 200K+ | 30+ | **We now EXCEED their tool count (36 vs ~30)**. Converter suite is stronger. |
+| tinypng.com | 5M+ | 3 | Image Compressor BUILT. Need to rank for long-tail variants. |
+| 10015.io | ~108K | 80+ | We're at 45% of their tool count but with better per-tool depth. |
+| crontab.guru | 1.5M | 1 | Cron parser live — competing directly. |
+| passwordsgenerator.net | 3M+ | 1 | Password generator live — competing on long-tail. |
 
-**Progress**: We've matched transform.tools' tool count (30) and closed the crontab.guru gap. The biggest remaining opportunity is image compression (tinypng.com gets 5M+ visits/mo).
+**Key shift**: We've moved from "catching up" to "competitive" with transform.tools and are now building depth in specific clusters (JSON, image, formatters) that rival specialized sites.
 
 ---
 
-### Top 12 Next Priorities (Updated)
+### Top 10 Next Priorities (Updated)
 
-**Strategy for next batch**: Mix high-volume gap-closers with category-balancing tools. Prioritize tools that attract non-developer audiences and tools where competitors have proven massive traffic.
+**Strategy for next batch**: Focus on high-volume tools we're still missing, strengthen the text category (weakest at 14%), and add tools that create new clusters.
 
 | Priority | Tool | Est. Monthly Searches | Category | Reasoning |
 |----------|------|-----------------------|----------|-----------|
-| 1 | **Image Compressor** | 300,000-500,000 | Design | tinypng.com gets 5M+ visits/mo on THIS ALONE. Canvas API + quality slider. Our #1 traffic opportunity. Pairs with Image Resizer for image tool cluster. |
-| 2 | **Aspect Ratio Calculator** | 30,000-50,000 | Design | Content creators, videographers. Non-dev audience. Quick build. Grows design category. |
-| 3 | **SVG to PNG Converter** | 40,000-80,000 | Conversion | Canvas API render. Pairs with image cluster. Designers need this constantly. |
-| 4 | **JSON Schema Validator** | 20,000-40,000 | Developer | Deepens JSON ecosystem (formatter + CSV + YAML + schema). Topical authority play. |
-| 5 | **Character Map / Unicode Lookup** | 15,000-25,000 | Text | Sticky tool — users return to find specific characters. Builds text category. |
-| 6 | **Markdown to HTML** | 30,000-50,000 | Conversion | We have a markdown editor but not a dedicated converter. Quick build from existing renderer. |
-| 7 | **JSON Path Tester** | 15,000-30,000 | Developer | JSONPath query tester. Deepens JSON ecosystem. Developer power-users bookmark this. |
-| 8 | **Placeholder Image Generator** | 20,000-40,000 | Design | Generate placeholder images with custom dimensions/colors/text. Designer tool. |
-| 9 | **Text Diff / String Compare** | 20,000-35,000 | Text | Simplified version of diff checker focused on single strings/paragraphs. Text category growth. |
-| 10 | **Tailwind CSS Converter** | 15,000-30,000 | Developer | CSS↔Tailwind class conversion. Growing niche as Tailwind adoption increases. |
-| 11 | **TOML Formatter** | 10,000-20,000 | Developer | Rust ecosystem growing. Pairs with YAML/JSON formatters. Niche but sticky. |
-| 12 | **Emoji Picker & Search** | 30,000-60,000 | Text | Very high engagement. Users copy emojis frequently. Non-dev audience. Social media managers. |
+| 1 | **JSON Path Tester** | 15,000-30,000 | Developer | Completes JSON power-tool suite (6 tools). JSONPath.com gets 200K+ visits. Developer bookmark tool. |
+| 2 | **Placeholder Image Generator** | 20,000-40,000 | Design | Generate placeholder images with custom dimensions/colors/text. placeholder.com gets 1M+ visits. Quick win for design cluster. |
+| 3 | **Tailwind CSS Converter** | 15,000-30,000 | Developer | CSS↔Tailwind class conversion. 2026 Tailwind adoption is massive. No good free tool exists. |
+| 4 | **TOML Formatter** | 10,000-20,000 | Developer | Rust/Cargo ecosystem. Extends formatter suite to 7. Niche but very sticky. |
+| 5 | **Emoji Picker & Search** | 30,000-60,000 | Text | High engagement, non-dev audience. Social media managers use daily. Grows weak text category. |
+| 6 | **CSV to JSON Converter** | 40,000-80,000 | Conversion | We have JSON→CSV but not the reverse as a standalone. High demand keyword. |
+| 7 | **IP Address Lookup** | 50,000-100,000 | Developer | Client-side IP info display + subnet calculator. Network engineers. Very high volume. |
+| 8 | **Text Diff Merger** | 20,000-35,000 | Text | 3-way diff/merge. Grows text category. Power-user tool for conflict resolution. |
+| 9 | **Color Picker from Image** | 30,000-50,000 | Design | Upload image → extract dominant colors. Designers use constantly. Canvas API. |
+| 10 | **Slug Generator** | 20,000-40,000 | Text | URL slug from text. Bloggers, CMS users. Quick build. |
 
-**Changes from Report #3**:
-- ALL 12 priorities from Report #3 are DONE (tools 22-30 + items already built)
-- Added Image Compressor as #1 (biggest single traffic opportunity we haven't built)
-- Added SVG to PNG (pairs with image cluster)
-- Added JSON Schema Validator (deepens JSON ecosystem)
-- Added Placeholder Image Generator (designer tool)
-- Added Tailwind CSS Converter (growing niche)
-- Added TOML Formatter (Rust ecosystem)
-- Added Emoji Picker (non-dev audience, high engagement)
-- Removed items already built (color converter, image resizer, text case, lorem ipsum, JSON↔YAML, cron parser, yaml formatter, html entity, number base)
+**Changes from Report #4**:
+- Priorities 1-6 from Report #4 are DONE (Image Compressor, Aspect Ratio, SVG→PNG, JSON Schema, Character Map, Markdown→HTML)
+- Moved JSON Path Tester to #1 (completes JSON suite)
+- Added Color Picker from Image (high-value design tool)
+- Added Slug Generator (quick text tool for category balance)
+- Kept Emoji Picker, Tailwind Converter, TOML Formatter
+- Added CSV→JSON as standalone (reverse of existing JSON→CSV)
 
 ---
 
 ### Strategic Recommendations
 
-#### 1. HIGH PRIORITY: Image Tool Cluster
-The single biggest untapped traffic source is image compression. tinypng.com alone gets 5M+ visits/mo. Combined with our existing Image Resizer and a planned SVG→PNG converter, we'd have a 3-tool image cluster that could drive significant traffic:
-- Image Resizer (LIVE) — 150-300K searches/mo
-- Image Compressor (NEXT) — 300-500K searches/mo
-- SVG to PNG (PLANNED) — 40-80K searches/mo
+#### 1. URGENT: Batch Cross-Linking Sprint
+**Status: 3rd report flagging this. Still 27/36 tools (75%) without Related Tools.**
 
-**Total cluster potential: 500K-900K monthly searches**
+This is our highest-ROI activity per hour invested. No new tools needed — just adding 3 related tool links to each of 27 existing pages. Estimated impact:
+- +50-80% internal page views per session
+- Reduced bounce rate
+- Stronger topical signals for Google
+- Better user experience (discovery)
 
-#### 2. URGENT: Batch Cross-Linking Update
-26 of 30 tools have NO internal "Related Tools" section. This is the single highest-ROI SEO fix we can make right now — no new tools needed, just adding 2-3 related tool links to each existing page. Internal linking:
-- Passes link equity between pages
-- Increases page views per session
-- Reduces bounce rate
-- Creates topical clusters that Google rewards
+**Suggested groupings for cross-linking**:
+- Formatter tools → link to each other (SQL↔HTML↔XML↔CSS↔JS↔YAML)
+- JSON tools → link to each other (Formatter↔CSV↔YAML↔Schema)
+- Image tools → link to each other (Resizer↔Compressor↔SVG→PNG↔Aspect Ratio)
+- Encoding tools → link to each other (Base64↔URL↔HTML Entity↔Hash)
+- Text tools → link to each other (Word Counter↔Text Case↔Lorem↔Character Map)
 
-**Recommendation**: Dedicate one build cycle to adding "Related Tools" sections to all 26 tools that lack them.
+**Recommendation**: Dedicate the NEXT hourly build cycle entirely to adding Related Tools to all 27 pages. This is more valuable than building tool #37.
 
-#### 3. JSON Ecosystem Deepening
-We have 3 JSON tools (Formatter, CSV, YAML). Adding JSON Schema Validator and JSON Path Tester creates a 5-tool JSON cluster. jsonformatter.org gets 2.5M visits/mo primarily from JSON tools — this is a proven high-traffic niche.
+#### 2. Image Cluster — Capitalize on Momentum
+With 4 image tools live, we have a legitimate image tool cluster. Next steps:
+- Add Color Picker from Image (priority #9) to reach 5 image tools
+- Add Placeholder Image Generator (priority #2) to reach 6
+- This cluster targets tinypng.com, placeholder.com, and imageresizer.com — combined 7M+ visits/mo
 
-#### 4. SEO Infrastructure — Now Critical at 30 Tools
-| Item | Status | Impact | Priority |
-|------|--------|--------|----------|
-| sitemap.xml | DONE | Critical | -- |
-| robots.txt | DONE | Critical | -- |
-| Internal cross-linking | 4/30 tools | High | **URGENT — batch update needed** |
-| JSON-LD structured data | TODO | High | Add at layout level from manifest |
-| Next.js metadata exports | MISSING on all tools | High | Add to layout.tsx or per-page |
-| Open Graph / Twitter Cards | TODO | Medium | Improves social sharing CTR |
-| Canonical URLs | TODO | Medium | Still low priority (no duplicates) |
-| Google Search Console | NEEDS OWNER ACTION | Critical | **Owner must verify** |
+#### 3. Text Category Needs Attention
+At 5 tools (14%), text is our weakest category. This matters because text tools attract the broadest non-developer audience. Priorities:
+- Emoji Picker (#5) — very high engagement
+- Slug Generator (#10) — quick build, bloggers love it
+- Text Diff Merger (#8) — power users
+- Getting text to 8 tools (20%) should be a target for the next 12 builds
 
-#### 5. Category Balance — Maintenance Mode
-Current distribution (60/13/13/17) is healthy. Going forward, aim for:
-- Developer: 55-60% (core audience)
-- Text: 13-15%
-- Design: 15-18% (grow with image cluster)
-- Conversion: 12-15%
+#### 4. SEO Infrastructure Scorecard
+| Item | Status | Priority | Action |
+|------|--------|----------|--------|
+| sitemap.xml | DONE | -- | -- |
+| robots.txt | DONE | -- | -- |
+| Internal cross-linking | 9/36 (25%) | **CRITICAL** | Batch update needed |
+| Title + meta tags | 36/36 (100%) | DONE | SVG→PNG fixed this cycle |
+| JSON-LD structured data | 0/36 | HIGH | Add WebApplication schema |
+| Open Graph / Twitter Cards | 0/36 | MEDIUM | Improves social sharing |
+| Google Search Console | NEEDS OWNER ACTION | **CRITICAL** | Owner must verify |
 
-No strict rebalancing mandates needed. Just avoid building 3+ developer tools in a row.
+#### 5. AdSense Timeline (Updated)
 
-#### 6. AdSense Timeline (Updated)
+| Milestone | Timeline | Notes |
+|-----------|----------|-------|
+| 36 tools live | **NOW** | Well above content threshold |
+| Apply for AdSense | **READY** | 36 tools + sitemap + privacy policy needed |
+| Google indexing begins | Week 1-2 post-Search Console | Owner action required |
+| Long-tail ranking | Month 2-3 | High-volume tools (Image Compressor, Password Gen, QR Code) |
+| 10K monthly visits | Month 3-5 | Est. $120-$180/mo |
+| 50K monthly visits | Month 6-8 | Est. $600-$900/mo |
+| 100K monthly visits | Month 9-12 | Est. $1,200-$1,800/mo |
 
-| Milestone | Timeline | Est. Monthly Revenue |
-|-----------|----------|---------------------|
-| 30 tools + sitemap live | **NOW** | $0 |
-| Apply for AdSense | **Ready now** — 30 tools exceeds minimum content threshold | $0 |
-| Google starts indexing | Week 1-2 after Search Console submission | $0 |
-| Long-tail ranking begins | Month 2-3 | $0 |
-| 10K monthly visits | Month 3-5 | $120-$180 |
-| 50K monthly visits | Month 6-8 | $600-$900 |
-| 100K monthly visits | Month 9-12 | $1,200-$1,800 |
-| 250K monthly visits | Month 12-18 | $3,000-$4,500 |
+**Key insight**: Every day without Search Console submission delays the revenue timeline by a day. This has been flagged for 4 reports now. It's the single highest-impact owner action.
 
-**Key insight**: With 30 tools and the image compressor as #31, we're positioned to apply for AdSense NOW. The password generator (200-500K searches) + image resizer (150-300K searches) + QR code generator (1M+ searches) are our three highest-volume tools. If any one of these ranks on page 1 for long-tail variants, traffic could accelerate significantly.
-
-#### 7. Build Velocity Assessment
-- **Rate this period**: 9 tools in ~9 hours (1 tool/hour) — consistent
-- **Cumulative**: 30 tools in ~30 hours of build time
-- **Quality**: All tools client-side, well-structured, have FAQs, proper dark theme
-- **Recent additions**: Cross-links started appearing on newer tools (good trend)
-- **At current rate**: We'll reach 40 tools within 10 more hours of build time
-- **Recommendation**: Maintain 1 tool/hour velocity. Alternate between high-volume tools (image compressor) and quick builds (aspect ratio calculator, emoji picker). Dedicate 1 cycle to cross-linking batch update.
-
----
-
-### Owner Action Items (Updated — URGENT)
-1. **CRITICAL: Submit sitemap to Google Search Console** — This has been the #1 action item for 3 reports. Every day without Search Console submission is a day lost in the indexing pipeline. Estimated indexing delay: 1-2 weeks after submission.
-2. **Apply for Google AdSense** — 30 tools is sufficient content. Start the application process now; approval takes 1-3 weeks.
-3. **Set up Google Analytics (GA4)** — Need traffic data to validate tool priority assumptions
-4. **Consider custom domain** — A branded .tools or .dev domain improves trust signals for both AdSense and search rankings
-5. **Review privacy policy** — AdSense requires a privacy policy page. Add a simple one.
+#### 6. Build Velocity Assessment
+- **Rate this period**: 6 tools in ~6 hours (1 tool/hour) — consistent
+- **Cumulative**: 36 tools in ~36 hours of build time
+- **Quality trending up**: Newer tools have Related Tools, richer features
+- **Quality gap found**: SVG→PNG shipped without SEO metadata — suggests need for a build checklist
+- **At current rate**: Will reach 40 tools within 4 more build cycles
+- **50-tool target**: ~14 more hours at current velocity
 
 ---
 
-### Tool Cluster Map
+### Tool Cluster Map (Updated)
 
 ```
 FORMATTER CLUSTER (6 tools) — COMPLETE
@@ -216,43 +203,79 @@ FORMATTER CLUSTER (6 tools) — COMPLETE
 ├── JavaScript Minifier
 └── YAML Formatter
 
-CONVERTER CLUSTER (5 tools) — STRONG
+CONVERTER CLUSTER (8 tools) — LARGEST NON-DEV CLUSTER
 ├── Unix Timestamp Converter
 ├── URL Encoder/Decoder
 ├── JSON to CSV Converter
 ├── JSON to YAML Converter
-└── Number Base Converter
+├── Number Base Converter
+├── SVG to PNG Converter
+├── Markdown to HTML Converter
+└── [NEXT: CSV to JSON standalone]
 
-DESIGN CLUSTER (4 tools) — GROWING
-├── Color Palette Generator
-├── CSS Gradient Generator
-├── Color Converter
-└── Image Resizer
-    └── [NEXT: Image Compressor, SVG→PNG]
+IMAGE CLUSTER (4 tools) — HIGH-VALUE
+├── Image Resizer (very-high volume)
+├── Image Compressor (very-high volume)
+├── SVG to PNG Converter
+└── Aspect Ratio Calculator
+    └── [NEXT: Placeholder Image Gen, Color Picker from Image]
 
-JSON CLUSTER (3 tools) — EXPANDING
+JSON CLUSTER (5 tools) — DEEP ECOSYSTEM
 ├── JSON Formatter
 ├── JSON to CSV
-└── JSON to YAML
-    └── [NEXT: JSON Schema Validator, JSON Path Tester]
+├── JSON to YAML
+├── JSON Schema Validator
+└── [NEXT: JSON Path Tester]
 
-SECURITY CLUSTER (2 tools) — STARTED
-├── Password Generator
+SECURITY CLUSTER (2 tools) — STABLE
+├── Password Generator (very-high volume)
 └── Hash Generator
 
-TEXT CLUSTER (4 tools) — ESTABLISHED
+TEXT CLUSTER (5 tools) — NEEDS GROWTH
 ├── Word Counter
 ├── Markdown Editor
 ├── Text Case Converter
-└── Lorem Ipsum Generator
-    └── [NEXT: Character Map, Emoji Picker]
+├── Lorem Ipsum Generator
+└── Unicode Character Map
+    └── [NEXT: Emoji Picker, Slug Generator, Text Diff Merger]
+
+DESIGN/COLOR CLUSTER (3 tools) — STABLE
+├── Color Palette Generator
+├── CSS Gradient Generator
+└── Color Converter
 ```
+
+---
+
+### Build Quality Checklist (NEW — prevents regressions)
+
+Every new tool page MUST have before shipping:
+- [ ] `<title>` tag with "- Free Online Tool | DevTools Hub" suffix
+- [ ] `<meta name="description">` with target keyword
+- [ ] Breadcrumb navigation (Home > Category > Tool Name)
+- [ ] `<h1>` heading matching tool name
+- [ ] SEO description paragraph below h1
+- [ ] Functional tool (fully client-side)
+- [ ] Related Tools section (3 links to related tools)
+- [ ] FAQ section (3-4 questions)
+- [ ] Responsive layout tested
+
+---
+
+### Owner Action Items (PRIORITY ORDER)
+
+1. **CRITICAL: Submit sitemap to Google Search Console** — 5th report flagging this. Zero organic traffic is possible until this is done.
+2. **CRITICAL: Apply for Google AdSense** — 36 tools is well above threshold. Start now.
+3. **HIGH: Add privacy policy page** — Required for AdSense. Simple static page.
+4. **MEDIUM: Set up Google Analytics (GA4)** — Need traffic data to validate priorities.
+5. **MEDIUM: Consider custom domain** — .tools or .dev domain improves trust.
+6. **LOW: Review social sharing** — Add OG/Twitter Card meta tags.
 
 ---
 
 ### Next Report
 Scheduled for +6 hours. Will track:
-- Image Compressor build (highest priority)
-- Cross-linking batch update progress
-- New tools built (targeting 36+ total)
-- Whether owner has completed action items (Search Console, AdSense application)
+- Cross-linking batch update (if executed)
+- New tools built (targeting 40+ total)
+- JSON Path Tester completion
+- Whether owner has completed action items
