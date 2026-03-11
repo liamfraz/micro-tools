@@ -314,3 +314,15 @@
 - **Total tools**: 35
 - **Notes**: Text category now has 5 tools. Pairs with HTML Entity Encoder for a text/encoding topical cluster. The character collector feature makes this a sticky tool — users bookmark it for repeated symbol lookup.
 - **Next up**: Markdown to HTML
+
+## 2026-03-12
+
+### Hourly Build #32
+- **Tool built**: Markdown to HTML Converter (`/tools/markdown-to-html`)
+- **Category**: Conversion (seventh conversion tool — completes Markdown cluster)
+- **Features**: Full Markdown-to-HTML conversion engine, 3 output modes (Pretty HTML with indentation, Raw HTML compact, live Preview), "Wrap in full HTML document" toggle (adds DOCTYPE/html/head/body), .html file download, table alignment support (left/center/right via colon syntax), code blocks with language-* classes, task lists with checkboxes, blockquotes, inline formatting (bold/italic/strikethrough/code/links/images), example document loader, 14-row syntax reference table, related tools cross-links (Markdown Editor, HTML Beautifier, HTML Entity Encoder), FAQ section
+- **Search volume**: High ("markdown to html" — 60-100K monthly searches)
+- **Status**: Deployed
+- **Total tools**: 36
+- **Notes**: Pairs with Markdown Editor for Markdown topical cluster. Key differentiator vs the editor: this tool outputs the raw HTML code (not just a preview), supports full document wrapping, and file download. Conversion category now has 7 tools. Replenished priority queue to 8 items.
+- **Next up**: JSON Path Tester
