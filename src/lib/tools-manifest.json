@@ -179,6 +179,15 @@
       "searchVolume": "high",
       "status": "live",
       "dateAdded": "2026-03-11"
+    },
+    {
+      "slug": "javascript-minifier",
+      "name": "JavaScript Minifier & Beautifier",
+      "description": "Minify and beautify JavaScript with safe string, template literal, and regex preservation",
+      "category": "developer",
+      "searchVolume": "high",
+      "status": "live",
+      "dateAdded": "2026-03-11"
     }
   ],
   "categories": {
@@ -188,8 +197,8 @@
     "conversion": { "label": "Conversion", "color": "orange" }
   },
   "meta": {
-    "totalTools": 20,
+    "totalTools": 21,
     "lastUpdated": "2026-03-11",
-    "nextPriority": ["javascript-minifier", "color-converter", "image-resizer", "text-case-converter", "lorem-ipsum-generator", "json-to-yaml", "cron-expression-parser"]
+    "nextPriority": ["color-converter", "image-resizer", "text-case-converter", "lorem-ipsum-generator", "json-to-yaml", "cron-expression-parser", "yaml-formatter", "html-entity-encoder", "number-base-converter"]
   }
 }
