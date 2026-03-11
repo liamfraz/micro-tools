@@ -269,6 +269,15 @@
       "searchVolume": "medium",
       "status": "live",
       "dateAdded": "2026-03-11"
+    },
+    {
+      "slug": "image-compressor",
+      "name": "Image Compressor",
+      "description": "Compress images to reduce file size with quality control. JPEG, WebP, and PNG output — all in your browser",
+      "category": "design",
+      "searchVolume": "very-high",
+      "status": "live",
+      "dateAdded": "2026-03-11"
     }
   ],
   "categories": {
@@ -278,8 +287,8 @@
     "conversion": { "label": "Conversion", "color": "orange" }
   },
   "meta": {
-    "totalTools": 30,
+    "totalTools": 31,
     "lastUpdated": "2026-03-11",
-    "nextPriority": ["image-compressor", "aspect-ratio-calculator", "svg-to-png", "json-schema-validator", "character-map", "markdown-to-html", "json-path-tester", "placeholder-image-generator", "tailwind-css-converter", "toml-formatter", "emoji-picker"]
+    "nextPriority": ["aspect-ratio-calculator", "svg-to-png", "json-schema-validator", "character-map", "markdown-to-html", "json-path-tester", "placeholder-image-generator", "tailwind-css-converter", "toml-formatter", "emoji-picker"]
   }
 }
