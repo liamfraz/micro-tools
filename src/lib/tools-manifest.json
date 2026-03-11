@@ -377,6 +377,15 @@
       "searchVolume": "high",
       "status": "live",
       "dateAdded": "2026-03-12"
+    },
+    {
+      "slug": "ip-address-lookup",
+      "name": "IP Address Lookup & Subnet Calculator",
+      "description": "Find your public IP with geolocation, look up any IP address, and calculate subnets with CIDR notation",
+      "category": "developer",
+      "searchVolume": "very-high",
+      "status": "live",
+      "dateAdded": "2026-03-12"
     }
   ],
   "categories": {
@@ -386,8 +395,8 @@
     "conversion": { "label": "Conversion", "color": "orange" }
   },
   "meta": {
-    "totalTools": 42,
+    "totalTools": 43,
     "lastUpdated": "2026-03-12",
-    "nextPriority": ["ip-address-lookup", "image-format-converter", "box-shadow-generator", "color-picker-from-image", "barcode-generator", "border-radius-generator", "slug-generator", "text-diff-merger", "open-graph-preview", "json-tree-viewer"]
+    "nextPriority": ["image-format-converter", "box-shadow-generator", "color-picker-from-image", "barcode-generator", "border-radius-generator", "slug-generator", "text-diff-merger", "open-graph-preview", "json-tree-viewer"]
   }
 }
