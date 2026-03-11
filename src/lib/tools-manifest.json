@@ -197,6 +197,15 @@
       "searchVolume": "high",
       "status": "live",
       "dateAdded": "2026-03-11"
+    },
+    {
+      "slug": "image-resizer",
+      "name": "Image Resizer",
+      "description": "Resize images to any dimension with social media presets, percentage scaling, and PNG/JPEG/WebP export",
+      "category": "design",
+      "searchVolume": "very-high",
+      "status": "live",
+      "dateAdded": "2026-03-11"
     }
   ],
   "categories": {
@@ -206,8 +215,8 @@
     "conversion": { "label": "Conversion", "color": "orange" }
   },
   "meta": {
-    "totalTools": 22,
+    "totalTools": 23,
     "lastUpdated": "2026-03-11",
-    "nextPriority": ["image-resizer", "text-case-converter", "lorem-ipsum-generator", "json-to-yaml", "cron-expression-parser", "yaml-formatter", "html-entity-encoder", "number-base-converter", "aspect-ratio-calculator", "character-map", "ip-address-lookup"]
+    "nextPriority": ["text-case-converter", "lorem-ipsum-generator", "json-to-yaml", "cron-expression-parser", "yaml-formatter", "html-entity-encoder", "number-base-converter", "aspect-ratio-calculator", "character-map", "ip-address-lookup"]
   }
 }
