@@ -36,8 +36,9 @@ export default function HomePage() {
               Free Online Developer Tools
             </h1>
             <p className="mx-auto mt-4 max-w-2xl text-lg text-slate-400">
-              Fast, free, and private. Format JSON, encode Base64, count words,
-              generate palettes &mdash; all in your browser with zero sign-up.
+              Fast, free, and private. {allTools.length} tools for formatting,
+              converting, generating, and designing &mdash; all in your browser
+              with zero sign-up.
             </p>
 
             {/* Search */}

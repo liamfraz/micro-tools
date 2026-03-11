@@ -280,6 +280,6 @@
   "meta": {
     "totalTools": 30,
     "lastUpdated": "2026-03-11",
-    "nextPriority": ["aspect-ratio-calculator", "character-map", "ip-address-lookup", "svg-to-png", "json-path-tester", "markdown-to-html"]
+    "nextPriority": ["image-compressor", "aspect-ratio-calculator", "svg-to-png", "json-schema-validator", "character-map", "markdown-to-html", "json-path-tester", "placeholder-image-generator", "tailwind-css-converter", "toml-formatter", "emoji-picker"]
   }
 }
