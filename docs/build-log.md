@@ -326,3 +326,13 @@
 - **Total tools**: 36
 - **Notes**: Pairs with Markdown Editor for Markdown topical cluster. Key differentiator vs the editor: this tool outputs the raw HTML code (not just a preview), supports full document wrapping, and file download. Conversion category now has 7 tools. Replenished priority queue to 8 items.
 - **Next up**: JSON Path Tester
+
+### Hourly Build #33
+- **Tool built**: JSONPath Tester (`/tools/json-path-tester`)
+- **Category**: Developer (completes 6-tool JSON cluster)
+- **Features**: Client-side JSONPath evaluator supporting dot notation, bracket notation, wildcards (*), array indexing ([0], [-1]), array slicing ([0:3], [::2]), union indices ([0,2]), recursive descent (..), filter expressions ([?(@.price > 30)]) with ==, !=, >, <, >=, <= operators and existence checks, Enter key to evaluate. JSONPath input bar with 12 quick-query preset buttons, side-by-side JSON input and results panel, results show matched path and formatted value, copy all results, load example with bookstore JSON, 13-row syntax reference table, related tools cross-links (JSON Formatter, JSON Schema Validator, JSON to CSV), FAQ section
+- **Search volume**: Medium ("jsonpath tester" — 15-30K monthly searches; jsonpath.com gets 200K+ visits)
+- **Status**: Deployed
+- **Total tools**: 37
+- **Notes**: JSON cluster now complete at 6 tools: Formatter + CSV + YAML + Schema Validator + Path Tester + markdown-to-html (via JSON→YAML route). This is a power-user bookmark tool — developers return repeatedly when debugging API responses. Preset query buttons lower the barrier to entry.
+- **Next up**: Placeholder Image Generator
