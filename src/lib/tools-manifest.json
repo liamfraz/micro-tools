@@ -233,6 +233,15 @@
       "searchVolume": "medium",
       "status": "live",
       "dateAdded": "2026-03-11"
+    },
+    {
+      "slug": "cron-expression-parser",
+      "name": "Cron Expression Parser",
+      "description": "Parse cron expressions into human-readable schedules with next run times and syntax reference",
+      "category": "developer",
+      "searchVolume": "medium",
+      "status": "live",
+      "dateAdded": "2026-03-11"
     }
   ],
   "categories": {
@@ -242,8 +251,8 @@
     "conversion": { "label": "Conversion", "color": "orange" }
   },
   "meta": {
-    "totalTools": 26,
+    "totalTools": 27,
     "lastUpdated": "2026-03-11",
-    "nextPriority": ["cron-expression-parser", "yaml-formatter", "html-entity-encoder", "number-base-converter", "aspect-ratio-calculator", "character-map", "ip-address-lookup"]
+    "nextPriority": ["yaml-formatter", "html-entity-encoder", "number-base-converter", "aspect-ratio-calculator", "character-map", "ip-address-lookup"]
   }
 }
