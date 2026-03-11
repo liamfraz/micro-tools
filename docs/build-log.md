@@ -164,3 +164,13 @@
 - **Total tools**: 20
 - **Notes**: Milestone — 20 tools live! Code formatter suite now has 4 tools. Adding JS Minifier completes the 5-tool cluster.
 - **Next up**: JavaScript Minifier
+
+### Hourly Build #17
+- **Tool built**: JavaScript Minifier & Beautifier (`/tools/javascript-minifier`)
+- **Category**: Developer (fifth and final tool in the code formatter suite)
+- **Features**: Character-by-character JS tokenizer, safe preservation of single/double/template strings and regex literals, single-line (//) and multi-line (/* */) comment removal, intelligent whitespace collapse (preserves needed spaces between identifiers), template literal ${} expression depth tracking, regex context detection after operators/keywords, beautify mode with configurable indent (2/4 spaces), real-time byte savings display with percentage, code formatter suite cross-links (SQL + HTML + XML + CSS + JS), rich example (async fetch + debounce + DOM), "What Gets Processed" reference grid, copy/clear buttons, FAQ section
+- **Search volume**: High ("javascript minifier online" — 80-120K monthly searches)
+- **Status**: Deployed
+- **Total tools**: 21
+- **Notes**: CODE FORMATTER SUITE COMPLETE! 5 tools: SQL Formatter, HTML Beautifier, XML Formatter, CSS Minifier, JS Minifier. This suite is codebeautify.org's primary traffic driver (2.3M visits/mo). Also added yaml-formatter, html-entity-encoder, number-base-converter to priority queue.
+- **Next up**: Color Converter
