@@ -305,6 +305,15 @@
       "searchVolume": "high",
       "status": "live",
       "dateAdded": "2026-03-11"
+    },
+    {
+      "slug": "character-map",
+      "name": "Unicode Character Map",
+      "description": "Browse, search, and copy Unicode characters with code points, HTML entities, and CSS/JS escapes",
+      "category": "text",
+      "searchVolume": "medium",
+      "status": "live",
+      "dateAdded": "2026-03-11"
     }
   ],
   "categories": {
@@ -314,8 +323,8 @@
     "conversion": { "label": "Conversion", "color": "orange" }
   },
   "meta": {
-    "totalTools": 34,
+    "totalTools": 35,
     "lastUpdated": "2026-03-11",
-    "nextPriority": ["character-map", "markdown-to-html", "json-path-tester", "placeholder-image-generator", "tailwind-css-converter", "toml-formatter", "emoji-picker"]
+    "nextPriority": ["markdown-to-html", "json-path-tester", "placeholder-image-generator", "tailwind-css-converter", "toml-formatter", "emoji-picker"]
   }
 }
