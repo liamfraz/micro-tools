@@ -336,3 +336,23 @@
 - **Total tools**: 37
 - **Notes**: JSON cluster now complete at 6 tools: Formatter + CSV + YAML + Schema Validator + Path Tester + markdown-to-html (via JSON→YAML route). This is a power-user bookmark tool — developers return repeatedly when debugging API responses. Preset query buttons lower the barrier to entry.
 - **Next up**: Placeholder Image Generator
+
+### Hourly Build #34
+- **Tool built**: Placeholder Image Generator (`/tools/placeholder-image-generator`)
+- **Category**: Design (seventh design tool — grows image cluster to 5)
+- **Features**: Canvas API image generation, custom width/height (up to 4096), 18 size presets across 3 categories (Social: Instagram Post/Story, Facebook Cover, Twitter Header, YouTube Thumbnail, LinkedIn Banner; Web: Full HD, HD, Thumbnail, Banner, Leaderboard, Hero; Standard: Square, Card, Avatar, Icon, Favicon, A4), category filter tabs, 10 color presets (Gray/Blue/Green/Red/Purple/Orange/Teal/Dark/Light/Pink), color pickers with hex input for background and text, custom text overlay (defaults to dimensions), cross-hatch design pattern, 4 download formats (PNG/JPEG/WebP/SVG), SVG generates vector output, live preview with auto-regeneration, placeholder URL copy button, related tools cross-links (Image Resizer, Image Compressor, Aspect Ratio Calculator), FAQ section
+- **Search volume**: Medium ("placeholder image generator" — 20-40K monthly searches; placeholder.com gets 1M+ visits)
+- **Status**: Deployed
+- **Total tools**: 38
+- **Notes**: Image/design cluster now has 5 tools: Resizer + Compressor + SVG→PNG + Aspect Ratio + Placeholder Generator. Targets designers, front-end developers, and UX teams. The SVG export option is a differentiator — most placeholder services only offer raster formats.
+- **Next up**: Tailwind CSS Converter
+
+### Hourly Build #35
+- **Tool built**: Tailwind CSS Converter (`/tools/tailwind-css-converter`)
+- **Category**: Developer (20th developer tool)
+- **Features**: Bidirectional CSS ↔ Tailwind conversion. CSS→Tailwind mode parses CSS declarations (handles selectors, braces, comments) and maps to utility classes. Tailwind→CSS mode converts class strings back to CSS rule blocks. Supports 80+ CSS properties: display, position, flexbox (direction, wrap, justify, align, grow, shrink), grid (template-columns, gap), spacing (margin/padding all sides including mx/my/px/py), width/height/min/max, typography (font-size scale xs-9xl, font-weight thin-black, font-style, font-family, text-align, text-decoration, text-transform, letter-spacing, line-height, white-space, word-break), colors (50+ named Tailwind colors + hex + rgb arbitrary), background, border (width, style, radius, color), overflow, opacity, cursor, z-index, box-shadow, transitions, positioning (top/right/bottom/left/inset), list-style, user-select, resize, object-fit, pointer-events, visibility, appearance, outline. Arbitrary value syntax for custom values. Mode swap button with output-to-input transfer, unconverted items warning panel, load example, copy output, supported properties reference grid, related tools cross-links (CSS Minifier, CSS Gradient Generator, Color Converter), FAQ section
+- **Search volume**: Medium ("tailwind css converter" — 15-30K monthly searches; no dominant free tool exists)
+- **Status**: Deployed
+- **Total tools**: 39
+- **Notes**: Fills a real gap — developers constantly need to convert between CSS and Tailwind during migration or when copying designs. The full Tailwind spacing scale, color palette, and arbitrary value fallback make it practical for real-world use. At 9.39 kB JS it's our largest tool by client size but justified by the comprehensive mapping tables.
+- **Next up**: TOML Formatter
