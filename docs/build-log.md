@@ -366,3 +366,13 @@
 - **Total tools**: 40
 - **Notes**: Milestone — 40 tools! Formatter suite now has 7 tools: SQL + HTML + XML + CSS + JS + YAML + TOML. The TOML ecosystem is growing fast with Rust (Cargo.toml) and Python (pyproject.toml) both standardizing on TOML. Align-equals feature is a differentiator — most TOML tools don't offer it.
 - **Next up**: Emoji Picker
+
+### Hourly Build #37
+- **Tool built**: Emoji Picker & Search (`/tools/emoji-picker`)
+- **Category**: Text (6th text tool — strongest text category growth yet)
+- **Features**: 500+ curated emojis across 8 categories (Smileys & People, Animals & Nature, Food & Drink, Activities & Sports, Travel & Places, Objects, Symbols, Flags). Instant search by emoji name or keyword (e.g. "fire", "heart", "pizza"). Category filter tabs with counts. Click-to-copy with green flash confirmation. Collect bar for building multi-emoji strings with Copy All and Clear. Recently used tracker (24 slots, persists during session). Selected emoji detail panel showing name, keywords, Unicode code point (U+XXXX), and HTML entity. Responsive grid (8/10/12/16 columns). No-results state with search suggestions. Related tools cross-links (Unicode Character Map, Text Case Converter, HTML Entity Encoder), FAQ section
+- **Search volume**: High ("emoji picker" — 30-60K monthly searches; non-dev audience, high engagement)
+- **Status**: Deployed
+- **Total tools**: 41
+- **Notes**: First high-engagement non-developer tool targeting social media managers, content creators, and general users. At 11.2 kB JS it's our second-largest tool (after Tailwind Converter) due to inline emoji data — but this avoids external API dependencies. Text category now has 6 tools.
+- **Next up**: CSV to JSON Converter
