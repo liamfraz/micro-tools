@@ -287,6 +287,15 @@
       "searchVolume": "medium",
       "status": "live",
       "dateAdded": "2026-03-11"
+    },
+    {
+      "slug": "svg-to-png",
+      "name": "SVG to PNG Converter",
+      "description": "Convert SVG files to PNG, JPEG, or WebP with custom scale, dimensions, and background options",
+      "category": "conversion",
+      "searchVolume": "high",
+      "status": "live",
+      "dateAdded": "2026-03-11"
     }
   ],
   "categories": {
@@ -296,8 +305,8 @@
     "conversion": { "label": "Conversion", "color": "orange" }
   },
   "meta": {
-    "totalTools": 32,
+    "totalTools": 33,
     "lastUpdated": "2026-03-11",
-    "nextPriority": ["svg-to-png", "json-schema-validator", "character-map", "markdown-to-html", "json-path-tester", "placeholder-image-generator", "tailwind-css-converter", "toml-formatter", "emoji-picker"]
+    "nextPriority": ["json-schema-validator", "character-map", "markdown-to-html", "json-path-tester", "placeholder-image-generator", "tailwind-css-converter", "toml-formatter", "emoji-picker"]
   }
 }
