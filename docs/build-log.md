@@ -356,3 +356,13 @@
 - **Total tools**: 39
 - **Notes**: Fills a real gap — developers constantly need to convert between CSS and Tailwind during migration or when copying designs. The full Tailwind spacing scale, color palette, and arbitrary value fallback make it practical for real-world use. At 9.39 kB JS it's our largest tool by client size but justified by the comprehensive mapping tables.
 - **Next up**: TOML Formatter
+
+### Hourly Build #36
+- **Tool built**: TOML Formatter & Validator (`/tools/toml-formatter`)
+- **Category**: Developer (21st developer tool — extends formatter suite to 7)
+- **Features**: TOML parser supporting tables, array tables, dotted keys, inline tables, multiline strings (""" and '''), arrays, comments, and inline comments. Four operations: Beautify (format with consistent indentation, normalize spacing, deduplicate blank lines), Minify (strip comments/blanks, compact key=value), Sort Keys (alphabetical within sections, tables sorted), Validate (duplicate table detection, malformed headers, unterminated strings, invalid bare keys). Align-equals toggle for vertical alignment of = signs. Indent options (2/4/tab). Three preset examples: Cargo.toml (Rust), pyproject.toml (Python), App Config (generic). Side-by-side input/output panels, line/char/savings stats, 14-row syntax reference table, related tools cross-links (YAML Formatter, JSON Formatter, JSON to YAML), FAQ section
+- **Search volume**: Medium ("toml formatter" — 10-20K monthly searches; Rust/Python ecosystem growing rapidly)
+- **Status**: Deployed
+- **Total tools**: 40
+- **Notes**: Milestone — 40 tools! Formatter suite now has 7 tools: SQL + HTML + XML + CSS + JS + YAML + TOML. The TOML ecosystem is growing fast with Rust (Cargo.toml) and Python (pyproject.toml) both standardizing on TOML. Align-equals feature is a differentiator — most TOML tools don't offer it.
+- **Next up**: Emoji Picker
