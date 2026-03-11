@@ -188,6 +188,15 @@
       "searchVolume": "high",
       "status": "live",
       "dateAdded": "2026-03-11"
+    },
+    {
+      "slug": "color-converter",
+      "name": "Color Converter",
+      "description": "Convert colors between HEX, RGB, HSL, HSV, and CMYK formats with visual picker and live preview",
+      "category": "design",
+      "searchVolume": "high",
+      "status": "live",
+      "dateAdded": "2026-03-11"
     }
   ],
   "categories": {
@@ -197,8 +206,8 @@
     "conversion": { "label": "Conversion", "color": "orange" }
   },
   "meta": {
-    "totalTools": 21,
+    "totalTools": 22,
     "lastUpdated": "2026-03-11",
-    "nextPriority": ["color-converter", "image-resizer", "text-case-converter", "lorem-ipsum-generator", "json-to-yaml", "cron-expression-parser", "yaml-formatter", "html-entity-encoder", "number-base-converter", "aspect-ratio-calculator", "character-map", "ip-address-lookup"]
+    "nextPriority": ["image-resizer", "text-case-converter", "lorem-ipsum-generator", "json-to-yaml", "cron-expression-parser", "yaml-formatter", "html-entity-encoder", "number-base-converter", "aspect-ratio-calculator", "character-map", "ip-address-lookup"]
   }
 }
