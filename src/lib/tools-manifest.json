@@ -332,6 +332,15 @@
       "searchVolume": "medium",
       "status": "live",
       "dateAdded": "2026-03-12"
+    },
+    {
+      "slug": "placeholder-image-generator",
+      "name": "Placeholder Image Generator",
+      "description": "Generate placeholder images with custom dimensions, colors, and text. Download as PNG, JPEG, WebP, or SVG",
+      "category": "design",
+      "searchVolume": "medium",
+      "status": "live",
+      "dateAdded": "2026-03-12"
     }
   ],
   "categories": {
@@ -341,8 +350,8 @@
     "conversion": { "label": "Conversion", "color": "orange" }
   },
   "meta": {
-    "totalTools": 37,
+    "totalTools": 38,
     "lastUpdated": "2026-03-12",
-    "nextPriority": ["placeholder-image-generator", "tailwind-css-converter", "toml-formatter", "emoji-picker", "csv-to-json", "ip-address-lookup", "text-diff-merger", "color-picker-from-image", "slug-generator"]
+    "nextPriority": ["tailwind-css-converter", "toml-formatter", "emoji-picker", "csv-to-json", "ip-address-lookup", "text-diff-merger", "color-picker-from-image", "slug-generator"]
   }
 }
