@@ -170,6 +170,15 @@
       "searchVolume": "high",
       "status": "live",
       "dateAdded": "2026-03-11"
+    },
+    {
+      "slug": "css-minifier",
+      "name": "CSS Minifier & Beautifier",
+      "description": "Minify CSS to reduce file size or beautify for readability with hex shortening and zero-unit removal",
+      "category": "developer",
+      "searchVolume": "high",
+      "status": "live",
+      "dateAdded": "2026-03-11"
     }
   ],
   "categories": {
@@ -179,8 +188,8 @@
     "conversion": { "label": "Conversion", "color": "orange" }
   },
   "meta": {
-    "totalTools": 19,
+    "totalTools": 20,
     "lastUpdated": "2026-03-11",
-    "nextPriority": ["css-minifier", "javascript-minifier", "color-converter", "image-resizer", "text-case-converter", "lorem-ipsum-generator", "json-to-yaml", "cron-expression-parser"]
+    "nextPriority": ["javascript-minifier", "color-converter", "image-resizer", "text-case-converter", "lorem-ipsum-generator", "json-to-yaml", "cron-expression-parser"]
   }
 }
