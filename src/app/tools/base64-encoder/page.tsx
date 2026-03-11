@@ -287,6 +287,27 @@ export default function Base64EncoderPage() {
             </div>
           </div>
 
+          {/* Related Tools */}
+          <div className="bg-slate-800 rounded-lg p-6 mt-8 mb-6">
+            <h2 className="text-xl font-semibold mb-4">Related Tools</h2>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              {[
+                { name: "URL Encoder & Decoder", slug: "url-encoder", desc: "Encode and decode URLs" },
+                { name: "Hash Generator", slug: "hash-generator", desc: "Generate MD5, SHA-256, and other hashes" },
+                { name: "HTML Entity Encoder", slug: "html-entity-encoder", desc: "Encode special characters to HTML entities" },
+              ].map((tool) => (
+                <a
+                  key={tool.slug}
+                  href={`/tools/${tool.slug}`}
+                  className="bg-slate-700/50 hover:bg-slate-700 rounded p-3 transition-colors block"
+                >
+                  <div className="font-medium text-blue-400 text-sm">{tool.name}</div>
+                  <div className="text-xs text-slate-400 mt-1">{tool.desc}</div>
+                </a>
+              ))}
+            </div>
+          </div>
+
           {/* FAQ Section */}
           <section className="mt-16 border-t border-slate-700 pt-10">
             <h2 className="text-2xl font-bold text-white mb-6">

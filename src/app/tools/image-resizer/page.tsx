@@ -407,6 +407,27 @@ export default function ImageResizerPage() {
           {/* Hidden canvas for processing */}
           <canvas ref={canvasRef} className="hidden" />
 
+          {/* Related Tools */}
+          <div className="bg-slate-800 rounded-lg p-6 mt-8 mb-6">
+            <h2 className="text-xl font-semibold mb-4">Related Tools</h2>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              {[
+                { name: "Image Compressor", slug: "image-compressor", desc: "Compress images to reduce file size" },
+                { name: "SVG to PNG Converter", slug: "svg-to-png", desc: "Convert SVG files to PNG, JPEG, or WebP" },
+                { name: "Aspect Ratio Calculator", slug: "aspect-ratio-calculator", desc: "Calculate aspect ratios for images and video" },
+              ].map((tool) => (
+                <a
+                  key={tool.slug}
+                  href={`/tools/${tool.slug}`}
+                  className="bg-slate-700/50 hover:bg-slate-700 rounded p-3 transition-colors block"
+                >
+                  <div className="font-medium text-blue-400 text-sm">{tool.name}</div>
+                  <div className="text-xs text-slate-400 mt-1">{tool.desc}</div>
+                </a>
+              ))}
+            </div>
+          </div>
+
           {/* FAQ Section */}
           <section className="mt-16 border-t border-slate-700 pt-10">
             <h2 className="text-2xl font-bold text-white mb-6">

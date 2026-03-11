@@ -388,6 +388,6 @@
   "meta": {
     "totalTools": 42,
     "lastUpdated": "2026-03-12",
-    "nextPriority": ["ip-address-lookup", "text-diff-merger", "color-picker-from-image", "slug-generator", "htaccess-generator", "open-graph-preview"]
+    "nextPriority": ["ip-address-lookup", "image-format-converter", "box-shadow-generator", "color-picker-from-image", "barcode-generator", "border-radius-generator", "slug-generator", "text-diff-merger", "open-graph-preview", "json-tree-viewer"]
   }
 }
