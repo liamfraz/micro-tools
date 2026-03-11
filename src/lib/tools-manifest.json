@@ -314,6 +314,15 @@
       "searchVolume": "medium",
       "status": "live",
       "dateAdded": "2026-03-11"
+    },
+    {
+      "slug": "markdown-to-html",
+      "name": "Markdown to HTML Converter",
+      "description": "Convert Markdown to clean, semantic HTML with pretty formatting, preview mode, and full document export",
+      "category": "conversion",
+      "searchVolume": "high",
+      "status": "live",
+      "dateAdded": "2026-03-12"
     }
   ],
   "categories": {
@@ -323,8 +332,8 @@
     "conversion": { "label": "Conversion", "color": "orange" }
   },
   "meta": {
-    "totalTools": 35,
-    "lastUpdated": "2026-03-11",
-    "nextPriority": ["markdown-to-html", "json-path-tester", "placeholder-image-generator", "tailwind-css-converter", "toml-formatter", "emoji-picker"]
+    "totalTools": 36,
+    "lastUpdated": "2026-03-12",
+    "nextPriority": ["json-path-tester", "placeholder-image-generator", "tailwind-css-converter", "toml-formatter", "emoji-picker", "csv-to-json", "ip-address-lookup", "text-diff-merger"]
   }
 }
