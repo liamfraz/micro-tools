@@ -224,6 +224,15 @@
       "searchVolume": "medium",
       "status": "live",
       "dateAdded": "2026-03-11"
+    },
+    {
+      "slug": "json-to-yaml",
+      "name": "JSON to YAML Converter",
+      "description": "Convert between JSON and YAML formats instantly with bidirectional support",
+      "category": "conversion",
+      "searchVolume": "medium",
+      "status": "live",
+      "dateAdded": "2026-03-11"
     }
   ],
   "categories": {
@@ -233,8 +242,8 @@
     "conversion": { "label": "Conversion", "color": "orange" }
   },
   "meta": {
-    "totalTools": 25,
+    "totalTools": 26,
     "lastUpdated": "2026-03-11",
-    "nextPriority": ["json-to-yaml", "cron-expression-parser", "yaml-formatter", "html-entity-encoder", "number-base-converter", "aspect-ratio-calculator", "character-map", "ip-address-lookup"]
+    "nextPriority": ["cron-expression-parser", "yaml-formatter", "html-entity-encoder", "number-base-converter", "aspect-ratio-calculator", "character-map", "ip-address-lookup"]
   }
 }
