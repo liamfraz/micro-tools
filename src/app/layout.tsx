@@ -88,10 +88,18 @@ export default function RootLayout({
                   </div>
                   <span>DevTools Hub</span>
                 </div>
-                <p className="text-xs text-slate-500">
-                  &copy; {new Date().getFullYear()} DevTools Hub. All rights
-                  reserved. Free tools for developers.
-                </p>
+                <div className="flex items-center gap-4">
+                  <a
+                    href="/privacy"
+                    className="text-xs text-slate-500 hover:text-slate-300 transition-colors"
+                  >
+                    Privacy Policy
+                  </a>
+                  <p className="text-xs text-slate-500">
+                    &copy; {new Date().getFullYear()} DevTools Hub. All rights
+                    reserved.
+                  </p>
+                </div>
               </div>
             </div>
           </footer>
