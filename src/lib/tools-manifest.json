@@ -386,6 +386,15 @@
       "searchVolume": "very-high",
       "status": "live",
       "dateAdded": "2026-03-12"
+    },
+    {
+      "slug": "image-format-converter",
+      "name": "Image Format Converter",
+      "description": "Convert images between PNG, JPG, WebP, BMP, and GIF formats instantly in your browser",
+      "category": "conversion",
+      "searchVolume": "very-high",
+      "status": "live",
+      "dateAdded": "2026-03-12"
     }
   ],
   "categories": {
@@ -395,8 +404,8 @@
     "conversion": { "label": "Conversion", "color": "orange" }
   },
   "meta": {
-    "totalTools": 43,
+    "totalTools": 44,
     "lastUpdated": "2026-03-12",
-    "nextPriority": ["image-format-converter", "box-shadow-generator", "color-picker-from-image", "barcode-generator", "border-radius-generator", "slug-generator", "text-diff-merger", "open-graph-preview", "json-tree-viewer"]
+    "nextPriority": ["box-shadow-generator", "color-picker-from-image", "barcode-generator", "border-radius-generator", "slug-generator", "text-diff-merger", "open-graph-preview", "json-tree-viewer"]
   }
 }
