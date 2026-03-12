@@ -426,3 +426,13 @@
 - **Total tools**: 46
 - **Notes**: Fills a high-demand design tool gap. The dominant color extraction algorithm samples ~10K pixels and groups by color distance to produce a clean palette. CSS variables export is a differentiator — most competitors only offer copy-one-at-a-time. At 4 kB JS it's lightweight. Design category now has 9 tools. Also added privacy policy page this session for AdSense compliance.
 - **Next up**: Barcode Generator
+
+### Hourly Build #43
+- **Tool built**: Barcode Generator (`/tools/barcode-generator`)
+- **Category**: Developer (24th developer tool — complements QR Code Generator)
+- **Features**: Three barcode formats: Code 128 (full ASCII alphanumeric), EAN-13 (13-digit international retail), UPC-A (12-digit US retail). Canvas API rendering with proper bar width encoding. Automatic check digit calculation for EAN-13 and UPC-A. Input validation with format-specific error messages. Customizable width (200-600px) and height (80-300px) sliders. Bar color and background color pickers with hex input. Show/hide text below barcode toggle. Quick sample buttons for each format. PNG download and copy to clipboard. Format info cards explaining each standard. Guard bar extensions for EAN/UPC. Related tools cross-links (QR Code Generator, UUID Generator, Hash Generator), FAQ section (4 questions covering format differences, check digits, scanner compatibility, privacy)
+- **Search volume**: High ("barcode generator" — 60,000-90,000 monthly searches)
+- **Status**: Deployed
+- **Total tools**: 47
+- **Notes**: Complements the QR Code Generator (2D) with 1D barcode support. Code 128 targets logistics/shipping, EAN-13/UPC-A target retail. Non-developer appeal (retail, logistics, inventory). Custom domain devtools.page now live.
+- **Next up**: Border Radius Generator

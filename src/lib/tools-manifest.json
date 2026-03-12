@@ -413,6 +413,15 @@
       "searchVolume": "high",
       "status": "live",
       "dateAdded": "2026-03-12"
+    },
+    {
+      "slug": "barcode-generator",
+      "name": "Barcode Generator",
+      "description": "Generate Code 128, EAN-13, and UPC-A barcodes with custom size, colors, and PNG download",
+      "category": "developer",
+      "searchVolume": "high",
+      "status": "live",
+      "dateAdded": "2026-03-12"
     }
   ],
   "categories": {
@@ -422,8 +431,8 @@
     "conversion": { "label": "Conversion", "color": "orange" }
   },
   "meta": {
-    "totalTools": 46,
+    "totalTools": 47,
     "lastUpdated": "2026-03-12",
-    "nextPriority": ["barcode-generator", "border-radius-generator", "json-tree-viewer", "code-to-image", "slug-generator", "css-glassmorphism-generator", "image-cropper", "text-to-handwriting", "open-graph-preview", "svg-blob-generator"]
+    "nextPriority": ["border-radius-generator", "json-tree-viewer", "code-to-image", "slug-generator", "css-glassmorphism-generator", "image-cropper", "text-to-handwriting", "open-graph-preview", "svg-blob-generator"]
   }
 }
