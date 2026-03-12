@@ -424,6 +424,6 @@
   "meta": {
     "totalTools": 46,
     "lastUpdated": "2026-03-12",
-    "nextPriority": ["barcode-generator", "border-radius-generator", "slug-generator", "text-diff-merger", "open-graph-preview", "json-tree-viewer", "htpasswd-generator", "chmod-calculator"]
+    "nextPriority": ["barcode-generator", "border-radius-generator", "json-tree-viewer", "code-to-image", "slug-generator", "css-glassmorphism-generator", "image-cropper", "text-to-handwriting", "open-graph-preview", "svg-blob-generator"]
   }
 }
