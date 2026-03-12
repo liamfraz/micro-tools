@@ -406,3 +406,13 @@
 - **Total tools**: 44
 - **Notes**: MILESTONE — 50 static pages! Fills the single largest search volume gap identified in business Report #6. "png to jpg" alone has 50K+ monthly searches. The transparency background fill is a key differentiator — most converters just use white with no option. Conversion cluster now has 10 tools, making it the largest non-developer cluster. At 4.63 kB JS it's lightweight. Image cluster now has 6 tools (Resizer + Compressor + SVG→PNG + Aspect Ratio + Placeholder + Format Converter).
 - **Next up**: Box Shadow Generator
+
+### Hourly Build #41
+- **Tool built**: CSS Box Shadow Generator (`/tools/box-shadow-generator`)
+- **Category**: Design (8th design tool — starts CSS generator cluster)
+- **Features**: Visual box-shadow editor with live preview. Up to 6 shadow layers with per-layer controls: X offset (-50 to 50), Y offset (-50 to 50), blur radius (0-100), spread radius (-50 to 50), color picker with hex display, opacity slider (0-100%), inset toggle. Customizable preview box color, background color, and border radius. 12 curated presets: Subtle, Medium, Large, XL, 2XL, Layered (3-layer), Sharp, Glow, Neon Blue, Neon Purple, Inner Light, Embossed (2-layer inset). Miniature preset previews showing actual shadow effect. CSS code output with multi-line formatting and copy button. hexToRgba color conversion for opacity support. 6-row properties reference table. Related tools cross-links (CSS Gradient Generator, CSS Minifier, Tailwind CSS Converter), FAQ section (4 questions covering syntax, blur vs spread, multiple shadows, inset)
+- **Search volume**: High ("css box shadow generator" — 80,000-120,000 monthly searches; cssgradient.io gets 500K+ visits with this tool)
+- **Status**: Deployed
+- **Total tools**: 45
+- **Notes**: Starts the CSS visual generator cluster (CSS Gradient + CSS Minifier + Tailwind Converter + Box Shadow). With Border Radius Generator next, this becomes a 5-tool CSS design cluster competing with cssgradient.io and 10015.io. The 12 presets with miniature previews are a strong differentiator — most competitors offer fewer and no preview. At 3.83 kB JS it's very lightweight for a visual editor.
+- **Next up**: Color Picker from Image
