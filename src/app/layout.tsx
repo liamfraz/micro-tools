@@ -43,6 +43,11 @@ export default function RootLayout({
     <html lang="en" className="dark">
       <head>
         <meta name="google-site-verification" content="6IQzjMi4CJbMgDMuMo3dJHxD_WBwxNCM6mA-n7eMQKY" />
+        <script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5516095417661827"
+          crossOrigin="anonymous"
+        />
       </head>
       <body
         className={`${inter.className} min-h-screen bg-slate-900 text-white antialiased`}
