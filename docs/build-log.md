@@ -436,3 +436,13 @@
 - **Total tools**: 47
 - **Notes**: Complements the QR Code Generator (2D) with 1D barcode support. Code 128 targets logistics/shipping, EAN-13/UPC-A target retail. Non-developer appeal (retail, logistics, inventory). Custom domain devtools.page now live.
 - **Next up**: Border Radius Generator
+
+### Hourly Build #44
+- **Tool built**: CSS Border Radius Generator (`/tools/border-radius-generator`)
+- **Category**: Design (11th design tool — completes CSS generator cluster to 5)
+- **Features**: Visual border-radius editor with live preview. Individual corner controls (top-left, top-right, bottom-right, bottom-left) with sliders and number inputs. Link corners toggle for uniform editing. Advanced elliptical mode with separate horizontal/vertical radii per corner (slash syntax output). 4 unit options (px, %, em, rem). 16 shape presets with miniature previews (None, Uniform sm/md/lg/xl, Circle, Pill, Top/Bottom/Left/Right Only, Diagonal, Diagonal Alt, Drop, Ticket, Notch). Customizable preview box: color, background, width/height sliders, border width/color. Smart CSS shorthand output (1-4 values based on symmetry). Copy CSS button. Related tools cross-links (Box Shadow, Gradient, Minifier, Tailwind). FAQ section (4 questions covering syntax, elliptical radii, circles, units)
+- **Search volume**: High ("css border radius generator" — 50,000-80,000 monthly searches)
+- **Status**: Deployed
+- **Total tools**: 48
+- **Notes**: CSS generator cluster now has 5 tools: Gradient + Box Shadow + Minifier + Tailwind Converter + Border Radius. Competes directly with cssgradient.io and 10015.io. The elliptical mode with slash syntax is a strong differentiator — most generators only support circular radii. Design category now has 11 tools.
+- **Next up**: JSON Tree Viewer

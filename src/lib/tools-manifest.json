@@ -422,6 +422,15 @@
       "searchVolume": "high",
       "status": "live",
       "dateAdded": "2026-03-12"
+    },
+    {
+      "slug": "border-radius-generator",
+      "name": "CSS Border Radius Generator",
+      "description": "Generate CSS border-radius visually with individual corner controls, elliptical mode, presets, and live preview",
+      "category": "design",
+      "searchVolume": "high",
+      "status": "live",
+      "dateAdded": "2026-03-12"
     }
   ],
   "categories": {
@@ -431,8 +440,8 @@
     "conversion": { "label": "Conversion", "color": "orange" }
   },
   "meta": {
-    "totalTools": 47,
+    "totalTools": 48,
     "lastUpdated": "2026-03-12",
-    "nextPriority": ["border-radius-generator", "json-tree-viewer", "code-to-image", "slug-generator", "css-glassmorphism-generator", "image-cropper", "text-to-handwriting", "open-graph-preview", "svg-blob-generator"]
+    "nextPriority": ["json-tree-viewer", "code-to-image", "slug-generator", "css-glassmorphism-generator", "image-cropper", "text-to-handwriting", "open-graph-preview", "svg-blob-generator"]
   }
 }
