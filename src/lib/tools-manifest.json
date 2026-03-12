@@ -395,6 +395,15 @@
       "searchVolume": "very-high",
       "status": "live",
       "dateAdded": "2026-03-12"
+    },
+    {
+      "slug": "box-shadow-generator",
+      "name": "CSS Box Shadow Generator",
+      "description": "Create CSS box-shadow effects visually with multiple layers, blur, spread, color, and inset options",
+      "category": "design",
+      "searchVolume": "high",
+      "status": "live",
+      "dateAdded": "2026-03-12"
     }
   ],
   "categories": {
@@ -404,8 +413,8 @@
     "conversion": { "label": "Conversion", "color": "orange" }
   },
   "meta": {
-    "totalTools": 44,
+    "totalTools": 45,
     "lastUpdated": "2026-03-12",
-    "nextPriority": ["box-shadow-generator", "color-picker-from-image", "barcode-generator", "border-radius-generator", "slug-generator", "text-diff-merger", "open-graph-preview", "json-tree-viewer"]
+    "nextPriority": ["color-picker-from-image", "barcode-generator", "border-radius-generator", "slug-generator", "text-diff-merger", "open-graph-preview", "json-tree-viewer"]
   }
 }
