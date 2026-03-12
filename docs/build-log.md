@@ -416,3 +416,13 @@
 - **Total tools**: 45
 - **Notes**: Starts the CSS visual generator cluster (CSS Gradient + CSS Minifier + Tailwind Converter + Box Shadow). With Border Radius Generator next, this becomes a 5-tool CSS design cluster competing with cssgradient.io and 10015.io. The 12 presets with miniature previews are a strong differentiator — most competitors offer fewer and no preview. At 3.83 kB JS it's very lightweight for a visual editor.
 - **Next up**: Color Picker from Image
+
+### Hourly Build #42
+- **Tool built**: Color Picker from Image (`/tools/color-picker-from-image`)
+- **Category**: Design (9th design tool — image analysis cluster)
+- **Features**: Drag-and-drop or click image upload (PNG, JPG, WebP, GIF, BMP, SVG). Canvas API pixel color extraction on click. Hover tooltip showing live HEX and RGB under cursor. Automatic dominant color extraction (8 colors) using pixel sampling with color distance filtering to avoid duplicates. Dominant color gradient bar. Picked colors panel (up to 20) with HEX, RGB, and HSL values — click any format to copy. Individual color removal. Export all colors as CSS custom properties. Change image and clear buttons. Crosshair cursor on canvas. Auto-scaling for large images. Related tools cross-links (Color Converter, Color Palette Generator, Image Compressor), FAQ section (4 questions)
+- **Search volume**: High ("color picker from image" + "image color picker" — 40-80K monthly searches; imagecolorpicker.com gets 1M+ visits)
+- **Status**: Deployed
+- **Total tools**: 46
+- **Notes**: Fills a high-demand design tool gap. The dominant color extraction algorithm samples ~10K pixels and groups by color distance to produce a clean palette. CSS variables export is a differentiator — most competitors only offer copy-one-at-a-time. At 4 kB JS it's lightweight. Design category now has 9 tools. Also added privacy policy page this session for AdSense compliance.
+- **Next up**: Barcode Generator
