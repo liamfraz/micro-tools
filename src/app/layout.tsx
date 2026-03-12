@@ -42,7 +42,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark">
       <head>
-        {/* Google Analytics — add tracking script here */}
+        <meta name="google-site-verification" content="6IQzjMi4CJbMgDMuMo3dJHxD_WBwxNCM6mA-n7eMQKY" />
       </head>
       <body
         className={`${inter.className} min-h-screen bg-slate-900 text-white antialiased`}
