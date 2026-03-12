@@ -8,6 +8,6 @@ export default function robots(): MetadataRoute.Robots {
         allow: "/",
       },
     ],
-    sitemap: "https://micro-tools-lilac.vercel.app/sitemap.xml",
+    sitemap: "https://devtools.page/sitemap.xml",
   };
 }

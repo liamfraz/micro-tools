@@ -1,7 +1,7 @@
 import { MetadataRoute } from "next";
 import manifest from "@/lib/tools-manifest.json";
 
-const BASE_URL = "https://micro-tools-lilac.vercel.app";
+const BASE_URL = "https://devtools.page";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const toolPages = manifest.tools

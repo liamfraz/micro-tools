@@ -20,7 +20,7 @@ export default function PrivacyPolicyPage() {
           <h2 className="mb-3 text-xl font-semibold text-white">Overview</h2>
           <p>
             DevTools Hub (&ldquo;we&rdquo;, &ldquo;our&rdquo;, &ldquo;us&rdquo;)
-            operates the website at micro-tools-lilac.vercel.app. This Privacy
+            operates the website at devtools.page. This Privacy
             Policy explains how we collect, use, and protect information when you
             use our free online developer tools.
           </p>
