@@ -48,6 +48,12 @@ export default function RootLayout({
           src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5516095417661827"
           crossOrigin="anonymous"
         />
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZLF2PP7RR1" />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-ZLF2PP7RR1');`,
+          }}
+        />
       </head>
       <body
         className={`${inter.className} min-h-screen bg-slate-900 text-white antialiased`}
