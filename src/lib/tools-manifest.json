@@ -404,6 +404,15 @@
       "searchVolume": "high",
       "status": "live",
       "dateAdded": "2026-03-12"
+    },
+    {
+      "slug": "color-picker-from-image",
+      "name": "Color Picker from Image",
+      "description": "Upload any image and pick colors with a click. Extract dominant color palettes with HEX, RGB, and HSL values",
+      "category": "design",
+      "searchVolume": "high",
+      "status": "live",
+      "dateAdded": "2026-03-12"
     }
   ],
   "categories": {
@@ -413,8 +422,8 @@
     "conversion": { "label": "Conversion", "color": "orange" }
   },
   "meta": {
-    "totalTools": 45,
+    "totalTools": 46,
     "lastUpdated": "2026-03-12",
-    "nextPriority": ["color-picker-from-image", "barcode-generator", "border-radius-generator", "slug-generator", "text-diff-merger", "open-graph-preview", "json-tree-viewer"]
+    "nextPriority": ["barcode-generator", "border-radius-generator", "slug-generator", "text-diff-merger", "open-graph-preview", "json-tree-viewer", "htpasswd-generator", "chmod-calculator"]
   }
 }
