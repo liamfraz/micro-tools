@@ -396,3 +396,13 @@
 - **Total tools**: 43
 - **Notes**: First tool to make external network requests (ipinfo.io, ipify.org). All other tools are purely client-side. Includes graceful fallback handling for blocked/failed API requests. The subnet calculator adds unique value beyond simple IP lookup — targets network engineers and DevOps in addition to general users. At 4.93 kB JS it's lightweight despite the API integration.
 - **Next up**: Image Format Converter
+
+### Hourly Build #40
+- **Tool built**: Image Format Converter (`/tools/image-format-converter`)
+- **Category**: Conversion (10th conversion tool — fills highest-volume image gap)
+- **Features**: Convert between PNG, JPEG, WebP, BMP, and GIF formats. Canvas API conversion in browser. 8 quick conversion presets (PNG→JPG, JPG→PNG, WebP→PNG, WebP→JPG, PNG→WebP, JPG→WebP, BMP→PNG, GIF→PNG). 5-format grid selector with descriptions. Quality slider for lossy formats (JPEG/WebP, 5-100%). Background color fill for formats without transparency (JPEG/BMP/GIF) with color picker and toggle. Checkerboard transparency preview. Size comparison stats (original vs converted with percentage change). Drag-and-drop or click upload. Download with correct file extension. 5-row format comparison table (compression, transparency, best-for, browser support). Related tools cross-links (Image Compressor, Image Resizer, SVG to PNG), FAQ section (5 questions including PNG→JPG, transparency handling, WebP vs JPEG)
+- **Search volume**: Very High ("png to jpg" + "jpg to png" + "webp to png" + "image converter" — 100,000-150,000+ combined monthly searches)
+- **Status**: Deployed
+- **Total tools**: 44
+- **Notes**: MILESTONE — 50 static pages! Fills the single largest search volume gap identified in business Report #6. "png to jpg" alone has 50K+ monthly searches. The transparency background fill is a key differentiator — most converters just use white with no option. Conversion cluster now has 10 tools, making it the largest non-developer cluster. At 4.63 kB JS it's lightweight. Image cluster now has 6 tools (Resizer + Compressor + SVG→PNG + Aspect Ratio + Placeholder + Format Converter).
+- **Next up**: Box Shadow Generator
