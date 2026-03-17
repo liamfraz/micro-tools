@@ -1,6 +1,13 @@
 "use client";
 
 import { useState, useCallback, useRef } from "react";
+import JsonLd from "@/components/JsonLd";
+import RelatedTools from "@/components/RelatedTools";
+import {
+  generateFAQSchema,
+  generateWebAppSchema,
+  generateBreadcrumbSchema,
+} from "@/lib/jsonld";
 
 interface ImageInfo {
   width: number;
@@ -153,6 +160,28 @@ export default function ImageResizerPage() {
       <meta
         name="description"
         content="Resize images online for free. Set custom dimensions, use social media presets, or scale by percentage. Supports PNG, JPEG, and WebP output. All processing in your browser."
+      />
+      <JsonLd
+        data={[
+          generateWebAppSchema({
+            slug: "image-resizer",
+            name: "Image Resizer",
+            description: "Resize images by pixels or percentage while maintaining aspect ratio",
+            category: "design",
+          }),
+          generateBreadcrumbSchema({
+            slug: "image-resizer",
+            name: "Image Resizer",
+            description: "Resize images by pixels or percentage while maintaining aspect ratio",
+            category: "design",
+          }),
+          generateFAQSchema([
+            { question: "Is my image uploaded to a server?", answer: "No. All image processing happens entirely in your browser using the HTML5 Canvas API. Your image never leaves your device. You can verify this by using the tool with your internet disconnected." },
+            { question: "Which output format should I choose?", answer: "PNG is best for images with transparency, screenshots, and graphics with sharp edges. JPEG is ideal for photographs and produces smaller files at the cost of some quality. WebP offers the best compression with good quality and is supported by all modern browsers." },
+            { question: "What is the maximum image size?", answer: "There is no hard limit, but very large images (over 50MP) may cause your browser to slow down or run out of memory since all processing happens client-side. For best performance, the output dimensions should be under 10,000 x 10,000 pixels." },
+            { question: "What do the social media presets include?", answer: "The presets include optimal dimensions for Instagram posts (1080x1080) and stories (1080x1920), Twitter/X headers (1500x500), Facebook covers (820x312), YouTube thumbnails (1280x720), and common web sizes like HD and Full HD. Presets unlock the aspect ratio so the image matches the target dimensions exactly." },
+          ]),
+        ]}
       />
 
       <div className="min-h-screen bg-slate-900 text-slate-200">
@@ -407,26 +436,7 @@ export default function ImageResizerPage() {
           {/* Hidden canvas for processing */}
           <canvas ref={canvasRef} className="hidden" />
 
-          {/* Related Tools */}
-          <div className="bg-slate-800 rounded-lg p-6 mt-8 mb-6">
-            <h2 className="text-xl font-semibold mb-4">Related Tools</h2>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-              {[
-                { name: "Image Compressor", slug: "image-compressor", desc: "Compress images to reduce file size" },
-                { name: "SVG to PNG Converter", slug: "svg-to-png", desc: "Convert SVG files to PNG, JPEG, or WebP" },
-                { name: "Aspect Ratio Calculator", slug: "aspect-ratio-calculator", desc: "Calculate aspect ratios for images and video" },
-              ].map((tool) => (
-                <a
-                  key={tool.slug}
-                  href={`/tools/${tool.slug}`}
-                  className="bg-slate-700/50 hover:bg-slate-700 rounded p-3 transition-colors block"
-                >
-                  <div className="font-medium text-blue-400 text-sm">{tool.name}</div>
-                  <div className="text-xs text-slate-400 mt-1">{tool.desc}</div>
-                </a>
-              ))}
-            </div>
-          </div>
+          <RelatedTools currentSlug="image-resizer" />
 
           {/* FAQ Section */}
           <section className="mt-16 border-t border-slate-700 pt-10">

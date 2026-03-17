@@ -1,6 +1,13 @@
 "use client";
 
 import { useState, useRef, useCallback, useEffect } from "react";
+import JsonLd from "@/components/JsonLd";
+import RelatedTools from "@/components/RelatedTools";
+import {
+  generateFAQSchema,
+  generateWebAppSchema,
+  generateBreadcrumbSchema,
+} from "@/lib/jsonld";
 
 interface PickedColor {
   hex: string;
@@ -185,6 +192,28 @@ export default function ColorPickerFromImagePage() {
       <meta
         name="description"
         content="Upload an image and pick colors with a click. Extract dominant color palettes, copy HEX/RGB/HSL values. Free browser-based color picker tool."
+      />
+      <JsonLd
+        data={[
+          generateWebAppSchema({
+            slug: "color-picker-from-image",
+            name: "Color Picker from Image",
+            description: "Extract colors from any image — click to pick hex, RGB, and HSL values instantly",
+            category: "design",
+          }),
+          generateBreadcrumbSchema({
+            slug: "color-picker-from-image",
+            name: "Color Picker from Image",
+            description: "Extract colors from any image — click to pick hex, RGB, and HSL values instantly",
+            category: "design",
+          }),
+          generateFAQSchema([
+            { question: "How does the color picker work?", answer: "When you upload an image, it's drawn onto an HTML canvas element in your browser. Clicking anywhere on the image reads the pixel data at that position to extract the exact color. Dominant colors are extracted by sampling pixels across the image and grouping similar colors together. No data leaves your browser." },
+            { question: "What image formats are supported?", answer: "Any image format your browser supports -- PNG, JPEG, WebP, GIF, BMP, and SVG. Large images are automatically scaled down to fit the viewport while preserving color accuracy." },
+            { question: "Can I export the color palette?", answer: "Yes. Click \"Export as CSS Variables\" to copy all picked and dominant colors as CSS custom properties. You can also click individual colors to copy their HEX, RGB, or HSL values." },
+            { question: "Is my image uploaded to a server?", answer: "No. The entire color picking process happens in your browser using the Canvas API. Your image never leaves your device and is not stored anywhere." },
+          ]),
+        ]}
       />
 
       <div className="min-h-screen bg-slate-900 text-slate-200">
@@ -407,6 +436,8 @@ export default function ColorPickerFromImagePage() {
               </div>
             </>
           )}
+
+          <RelatedTools currentSlug="color-picker-from-image" />
 
           {/* FAQ Section */}
           <section className="mt-16 border-t border-slate-700 pt-10">

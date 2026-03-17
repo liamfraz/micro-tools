@@ -1,6 +1,13 @@
 "use client";
 
 import { useState, useMemo, useCallback } from "react";
+import JsonLd from "@/components/JsonLd";
+import RelatedTools from "@/components/RelatedTools";
+import {
+  generateFAQSchema,
+  generateWebAppSchema,
+  generateBreadcrumbSchema,
+} from "@/lib/jsonld";
 
 interface MatchResult {
   match: string;
@@ -123,6 +130,28 @@ export default function RegexTesterPage() {
       <meta
         name="description"
         content="Test and debug regular expressions online for free. Real-time matching with highlighting, flag toggles, match groups, replacement preview, and instant validation."
+      />
+      <JsonLd
+        data={[
+          generateWebAppSchema({
+            slug: "regex-tester",
+            name: "Regex Tester",
+            description: "Test and debug regular expressions with real-time matching, highlighting, and replacement preview",
+            category: "developer",
+          }),
+          generateBreadcrumbSchema({
+            slug: "regex-tester",
+            name: "Regex Tester",
+            description: "Test and debug regular expressions with real-time matching, highlighting, and replacement preview",
+            category: "developer",
+          }),
+          generateFAQSchema([
+            { question: "What is a regular expression?", answer: "A regular expression (regex) is a sequence of characters that defines a search pattern. It is used for pattern matching within strings -- finding, validating, extracting, and replacing text. Regex is supported in virtually all programming languages including JavaScript, Python, Java, and Go." },
+            { question: "What do the flags mean?", answer: "g (global) finds all matches instead of stopping at the first. i makes the match case-insensitive. m (multiline) lets ^ and $ match line boundaries instead of the full string. s (dotall) lets the dot (.) match newlines. u enables full Unicode matching." },
+            { question: "How do capture groups work?", answer: "Parentheses (...) create capture groups that extract parts of a match. You can reference them in replacements as $1, $2, etc. Named groups use the syntax (?<name>...) and can be referenced as $<name>. Non-capturing groups (?:...) group without capturing." },
+            { question: "Is my data processed on a server?", answer: "No. All regex testing runs entirely in your browser using JavaScript's built-in RegExp engine. Your data never leaves your device." },
+          ]),
+        ]}
       />
 
       <div className="min-h-screen bg-slate-900 text-slate-200">
@@ -394,6 +423,8 @@ export default function RegexTesterPage() {
               ))}
             </div>
           </section>
+
+          <RelatedTools currentSlug="regex-tester" />
 
           {/* FAQ Section */}
           <section className="border-t border-slate-700 pt-10">

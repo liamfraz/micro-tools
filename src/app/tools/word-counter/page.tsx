@@ -1,6 +1,13 @@
 "use client";
 
 import { useState, useMemo } from "react";
+import JsonLd from "@/components/JsonLd";
+import RelatedTools from "@/components/RelatedTools";
+import {
+  generateFAQSchema,
+  generateWebAppSchema,
+  generateBreadcrumbSchema,
+} from "@/lib/jsonld";
 
 export default function WordCounterPage() {
   const [text, setText] = useState("");
@@ -65,6 +72,28 @@ export default function WordCounterPage() {
       <meta
         name="description"
         content="Count words, characters, sentences, and paragraphs instantly. See reading time, top keywords, and keyword density analysis. Free online word counter tool."
+      />
+      <JsonLd
+        data={[
+          generateWebAppSchema({
+            slug: "word-counter",
+            name: "Word & Character Counter",
+            description: "Count words, characters, sentences, and paragraphs in your text",
+            category: "text",
+          }),
+          generateBreadcrumbSchema({
+            slug: "word-counter",
+            name: "Word & Character Counter",
+            description: "Count words, characters, sentences, and paragraphs in your text",
+            category: "text",
+          }),
+          generateFAQSchema([
+            { question: "How are words counted?", answer: "Words are counted by splitting the text on whitespace characters (spaces, tabs, newlines). Hyphenated words like \"well-known\" are counted as a single word. Empty lines and extra spaces between words do not affect the count." },
+            { question: "How is reading time calculated?", answer: "Reading time is estimated using an average reading speed of 225 words per minute, which is a widely accepted average for adult readers. The actual time may vary depending on text complexity and the reader's familiarity with the subject." },
+            { question: "What is keyword density?", answer: "Keyword density is the percentage of times a specific word appears relative to the total word count. It is commonly used in SEO to ensure content does not over-use or under-use target keywords. A density of 1-3% per keyword is generally recommended." },
+            { question: "Is there a character limit?", answer: "No. This tool processes text entirely in your browser, so there is no server-imposed limit. However, extremely large documents (over 1 million characters) may cause some lag in the real-time analysis." },
+          ]),
+        ]}
       />
 
       <div className="min-h-screen bg-slate-900 text-slate-200">
@@ -167,6 +196,8 @@ export default function WordCounterPage() {
               )}
             </div>
           </div>
+
+          <RelatedTools currentSlug="word-counter" />
 
           {/* FAQ Section */}
           <section className="mt-16 border-t border-slate-700 pt-10">

@@ -1,6 +1,13 @@
 "use client";
 
 import { useState, useCallback } from "react";
+import JsonLd from "@/components/JsonLd";
+import RelatedTools from "@/components/RelatedTools";
+import {
+  generateFAQSchema,
+  generateWebAppSchema,
+  generateBreadcrumbSchema,
+} from "@/lib/jsonld";
 
 type KeywordCase = "upper" | "lower" | "preserve";
 
@@ -190,6 +197,28 @@ export default function SqlFormatterPage() {
         name="description"
         content="Format and beautify SQL queries online for free. Pretty-print SQL with keyword casing, custom indentation, and minification. Supports SELECT, INSERT, UPDATE, DELETE, and more."
       />
+      <JsonLd
+        data={[
+          generateWebAppSchema({
+            slug: "sql-formatter",
+            name: "SQL Formatter",
+            description: "Format and beautify SQL queries with proper indentation and keyword highlighting",
+            category: "developer",
+          }),
+          generateBreadcrumbSchema({
+            slug: "sql-formatter",
+            name: "SQL Formatter",
+            description: "Format and beautify SQL queries with proper indentation and keyword highlighting",
+            category: "developer",
+          }),
+          generateFAQSchema([
+            { question: "What SQL dialects does this formatter support?", answer: "This formatter works with standard SQL (ANSI SQL) and is compatible with most dialects including MySQL, PostgreSQL, SQLite, SQL Server, and Oracle. It formats based on keyword recognition rather than dialect-specific parsing, so it handles common statements across all major databases." },
+            { question: "Does formatting change the meaning of my SQL?", answer: "No. Formatting only changes whitespace and optionally the case of SQL keywords. The logical structure and execution plan of your query remain identical. Minification similarly only removes unnecessary whitespace and comments." },
+            { question: "Why should I format my SQL queries?", answer: "Formatted SQL is easier to read, review, and debug. Consistent formatting helps teams maintain code quality, makes complex queries with multiple JOINs and subqueries more understandable, and is considered a best practice in professional development." },
+            { question: "Is my SQL data safe?", answer: "Yes. All formatting happens entirely in your browser using JavaScript. No SQL queries are sent to any server. Your data never leaves your machine." },
+          ]),
+        ]}
+      />
 
       <div className="min-h-screen bg-slate-900 text-slate-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -328,6 +357,8 @@ export default function SqlFormatterPage() {
               />
             </div>
           </div>
+
+          <RelatedTools currentSlug="sql-formatter" />
 
           {/* FAQ Section */}
           <section className="mt-16 border-t border-slate-700 pt-10">

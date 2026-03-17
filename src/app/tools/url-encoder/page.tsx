@@ -1,6 +1,13 @@
 "use client";
 
 import { useState, useCallback } from "react";
+import JsonLd from "@/components/JsonLd";
+import RelatedTools from "@/components/RelatedTools";
+import {
+  generateFAQSchema,
+  generateWebAppSchema,
+  generateBreadcrumbSchema,
+} from "@/lib/jsonld";
 
 type EncodeMode = "component" | "full" | "query";
 
@@ -137,6 +144,28 @@ export default function UrlEncoderPage() {
       <meta
         name="description"
         content="Encode and decode URLs online for free. Supports encodeURIComponent, encodeURI, and query string encoding. Parse URLs into components. All processing in your browser."
+      />
+      <JsonLd
+        data={[
+          generateWebAppSchema({
+            slug: "url-encoder",
+            name: "URL Encoder & Decoder",
+            description: "Encode and decode URLs and URI components instantly",
+            category: "developer",
+          }),
+          generateBreadcrumbSchema({
+            slug: "url-encoder",
+            name: "URL Encoder & Decoder",
+            description: "Encode and decode URLs and URI components instantly",
+            category: "developer",
+          }),
+          generateFAQSchema([
+            { question: "What is URL encoding?", answer: "URL encoding (also called percent-encoding) converts characters that are not allowed in URLs into a format that can be transmitted. Special characters are replaced with a percent sign (%) followed by two hexadecimal digits representing the character's ASCII code. For example, a space becomes %20." },
+            { question: "What is the difference between encodeURI and encodeURIComponent?", answer: "encodeURI is designed for encoding full URLs -- it preserves characters that have special meaning in URLs like ://?#@. encodeURIComponent encodes everything except letters, digits, and - _ . ~ making it suitable for encoding individual query parameter values. Use encodeURIComponent for values, encodeURI for complete URLs." },
+            { question: "Why are spaces sometimes encoded as + instead of %20?", answer: "The + encoding for spaces comes from the application/x-www-form-urlencoded format used by HTML form submissions. This is a different standard from RFC 3986 which specifies %20. Both are valid but used in different contexts. The \"Query String (+)\" mode in this tool uses the form encoding convention." },
+            { question: "Is my data safe?", answer: "Yes. All encoding and decoding happens entirely in your browser using JavaScript's built-in encodeURI, encodeURIComponent, decodeURI, and decodeURIComponent functions. No data is sent to any server." },
+          ]),
+        ]}
       />
 
       <div className="min-h-screen bg-slate-900 text-slate-200">
@@ -375,6 +404,8 @@ export default function UrlEncoderPage() {
               ))}
             </div>
           </div>
+
+          <RelatedTools currentSlug="url-encoder" />
 
           {/* FAQ Section */}
           <section className="mt-16 border-t border-slate-700 pt-10">

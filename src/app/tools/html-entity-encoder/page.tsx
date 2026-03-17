@@ -1,6 +1,13 @@
 "use client";
 
 import { useState, useCallback } from "react";
+import JsonLd from "@/components/JsonLd";
+import RelatedTools from "@/components/RelatedTools";
+import {
+  generateFAQSchema,
+  generateWebAppSchema,
+  generateBreadcrumbSchema,
+} from "@/lib/jsonld";
 
 type EncodeMode = "named" | "decimal" | "hex" | "all";
 
@@ -185,6 +192,35 @@ export default function HtmlEntityEncoderPage() {
   const EXAMPLE_DECODE = `&lt;div class=&quot;alert&quot;&gt;Price: $5 &amp; up &mdash; &ldquo;Best value&rdquo; &copy; 2026&lt;/div&gt;`;
 
   return (
+    <>
+      <title>HTML Entity Encoder & Decoder - Free Online Tool | DevTools Hub</title>
+      <meta
+        name="description"
+        content="Encode special characters to HTML entities or decode them back to text. Supports named, decimal, and hexadecimal entity formats."
+      />
+      <JsonLd
+        data={[
+          generateWebAppSchema({
+            slug: "html-entity-encoder",
+            name: "HTML Entity Encoder/Decoder",
+            description: "Encode special characters to HTML entities or decode them back to text",
+            category: "developer",
+          }),
+          generateBreadcrumbSchema({
+            slug: "html-entity-encoder",
+            name: "HTML Entity Encoder/Decoder",
+            description: "Encode special characters to HTML entities or decode them back to text",
+            category: "developer",
+          }),
+          generateFAQSchema([
+            { question: "Why do I need to encode HTML entities?", answer: "HTML entities prevent special characters from being interpreted as HTML markup. For example, < and > in text content would be parsed as tags without encoding. Encoding also prevents XSS (cross-site scripting) attacks by neutralizing injected HTML." },
+            { question: "What's the difference between named, decimal, and hex entities?", answer: "Named entities use readable names (like &amp; for &). Decimal entities use the Unicode code point in base 10 (&#38;). Hex entities use base 16 (&#x26;). All three render identically in browsers. Named entities are most readable; numeric entities work for any Unicode character." },
+            { question: "Which characters must be encoded in HTML?", answer: "The 5 mandatory characters are: & (ampersand), < (less than), > (greater than), \" (double quote in attributes), and ' (single quote in attributes). All other characters can optionally be encoded for safety or to handle encoding issues." },
+            { question: "What does 'All Chars' encoding mode do?", answer: "All Chars mode encodes every character that has a named entity (like &copy; for \u00A9) plus all non-ASCII characters using hex notation. This is useful when you need to ensure your HTML is pure ASCII-safe, for example in email templates or legacy systems." },
+          ]),
+        ]}
+      />
+
     <main className="min-h-screen bg-slate-900 text-white">
       <div className="max-w-4xl mx-auto px-4 py-12">
         {/* Header */}
@@ -335,26 +371,7 @@ export default function HtmlEntityEncoderPage() {
           </div>
         </div>
 
-        {/* Related Tools */}
-        <div className="bg-slate-800 rounded-lg p-6 mb-6">
-          <h2 className="text-xl font-semibold mb-4">Related Tools</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-            {[
-              { name: "HTML Beautifier", slug: "html-beautifier", desc: "Format and beautify HTML code" },
-              { name: "URL Encoder", slug: "url-encoder", desc: "Encode and decode URLs" },
-              { name: "Base64 Encoder", slug: "base64-encoder", desc: "Encode and decode Base64" },
-            ].map((tool) => (
-              <a
-                key={tool.slug}
-                href={`/tools/${tool.slug}`}
-                className="bg-slate-700/50 hover:bg-slate-700 rounded p-3 transition-colors block"
-              >
-                <div className="font-medium text-blue-400 text-sm">{tool.name}</div>
-                <div className="text-xs text-slate-400 mt-1">{tool.desc}</div>
-              </a>
-            ))}
-          </div>
-        </div>
+        <RelatedTools currentSlug="html-entity-encoder" />
 
         {/* FAQ */}
         <div className="bg-slate-800 rounded-lg p-6">
@@ -387,5 +404,6 @@ export default function HtmlEntityEncoderPage() {
         </div>
       </div>
     </main>
+    </>
   );
 }

@@ -1,6 +1,13 @@
 "use client";
 
 import { useState, useCallback } from "react";
+import JsonLd from "@/components/JsonLd";
+import RelatedTools from "@/components/RelatedTools";
+import {
+  generateFAQSchema,
+  generateWebAppSchema,
+  generateBreadcrumbSchema,
+} from "@/lib/jsonld";
 
 type UUIDVersion = "v4" | "v1" | "nil";
 
@@ -192,6 +199,29 @@ export default function UUIDGeneratorPage() {
       <meta
         name="description"
         content="Generate UUIDs (v1, v4) online for free. Bulk generation, copy to clipboard, format options, and UUID validation. All processing in your browser."
+      />
+      <JsonLd
+        data={[
+          generateWebAppSchema({
+            slug: "uuid-generator",
+            name: "UUID Generator",
+            description: "Generate random UUIDs (v4) and decode existing UUIDs with version and variant info",
+            category: "developer",
+          }),
+          generateBreadcrumbSchema({
+            slug: "uuid-generator",
+            name: "UUID Generator",
+            description: "Generate random UUIDs (v4) and decode existing UUIDs with version and variant info",
+            category: "developer",
+          }),
+          generateFAQSchema([
+            { question: "What is a UUID?", answer: "A UUID (Universally Unique Identifier) is a 128-bit identifier standardized by RFC 4122. UUIDs are designed to be unique across space and time without requiring a central authority, making them ideal for distributed systems, database primary keys, and session identifiers." },
+            { question: "What is the difference between UUID v1 and v4?", answer: "UUID v1 is based on timestamp and node (typically MAC address), making it partially sequential and sortable. UUID v4 is entirely random, offering better uniqueness guarantees and no information leakage. For most applications, v4 is recommended." },
+            { question: "How unique are UUIDs?", answer: "UUID v4 uses 122 random bits, giving approximately 5.3 x 10^36 possible values. The probability of generating a duplicate is astronomically low -- you would need to generate about 2.71 x 10^18 UUIDs to have a 50% chance of a single collision." },
+            { question: "Is my data safe?", answer: "Yes. All UUIDs are generated entirely in your browser using the Web Crypto API (crypto.getRandomValues). No data is sent to any server. The source code runs client-side only." },
+            { question: "What about UUID v6, v7, and v8?", answer: "UUID v6, v7, and v8 are newer versions defined in RFC 9562 (2024). v7 is particularly notable as it uses Unix timestamps for better database indexing. Our validator can detect these versions if you paste one in. Generation support for v7 is planned." },
+          ]),
+        ]}
       />
 
       <div className="min-h-screen bg-slate-900 text-slate-200">
@@ -394,6 +424,8 @@ export default function UUIDGeneratorPage() {
               </div>
             )}
           </div>
+
+          <RelatedTools currentSlug="uuid-generator" />
 
           {/* FAQ Section */}
           <section className="mt-16 border-t border-slate-700 pt-10">

@@ -1,6 +1,13 @@
 "use client";
 
 import { useState, useCallback, useRef } from "react";
+import JsonLd from "@/components/JsonLd";
+import RelatedTools from "@/components/RelatedTools";
+import {
+  generateFAQSchema,
+  generateWebAppSchema,
+  generateBreadcrumbSchema,
+} from "@/lib/jsonld";
 
 type OutputFormat = "png" | "jpeg" | "webp" | "bmp" | "gif";
 
@@ -162,6 +169,29 @@ export default function ImageFormatConverterPage() {
     <main className="min-h-screen bg-slate-900 text-white">
       <title>Image Format Converter — PNG to JPG, WebP to PNG & More | Micro Tools</title>
       <meta name="description" content="Convert images between PNG, JPG, WebP, BMP, and GIF formats instantly in your browser. Free, private, no upload required." />
+      <JsonLd
+        data={[
+          generateWebAppSchema({
+            slug: "image-format-converter",
+            name: "Image Format Converter",
+            description: "Convert images between JPEG, PNG, WebP, and GIF formats instantly in your browser",
+            category: "conversion",
+          }),
+          generateBreadcrumbSchema({
+            slug: "image-format-converter",
+            name: "Image Format Converter",
+            description: "Convert images between JPEG, PNG, WebP, and GIF formats instantly in your browser",
+            category: "conversion",
+          }),
+          generateFAQSchema([
+            { question: "How do I convert PNG to JPG?", answer: "Upload your PNG image by dragging it onto the upload area or clicking to browse. Select \"JPEG\" as the output format, adjust the quality slider if desired, then click Convert. The tool handles the conversion entirely in your browser \u2014 no files are uploaded to any server." },
+            { question: "What happens to transparency when converting to JPEG?", answer: "JPEG does not support transparency. When converting from PNG or WebP with transparent areas, those areas are filled with a background color (white by default). You can change the background color or disable the fill using the options below the format selector." },
+            { question: "Is WebP better than JPEG and PNG?", answer: "WebP offers 25-35% better compression than JPEG for photos at equivalent visual quality, and supports both lossy and lossless compression plus transparency. The main trade-off is that some older software doesn't support WebP, though all modern browsers do. For web use, WebP is generally the best choice." },
+            { question: "Are my images uploaded to a server?", answer: "No. All image conversion happens entirely in your browser using the HTML5 Canvas API. Your images never leave your device, making this tool completely private. It even works offline once the page is loaded." },
+            { question: "Will converting formats reduce image quality?", answer: "Converting to a lossless format (PNG) preserves full quality. Converting to lossy formats (JPEG, WebP) applies compression controlled by the quality slider \u2014 higher values preserve more detail. Converting between lossy formats (e.g., JPEG to WebP) may introduce slight additional quality loss, so it's best to start from the highest-quality source available." },
+          ]),
+        ]}
+      />
 
       <div className="max-w-4xl mx-auto px-4 py-12">
         {/* Header */}
@@ -380,26 +410,7 @@ export default function ImageFormatConverterPage() {
         {/* Hidden canvas */}
         <canvas ref={canvasRef} className="hidden" />
 
-        {/* Related Tools */}
-        <div className="bg-slate-800 rounded-lg p-6 mb-6">
-          <h2 className="text-xl font-semibold mb-4">Related Tools</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-            {[
-              { name: "Image Compressor", slug: "image-compressor", desc: "Compress images to reduce file size" },
-              { name: "Image Resizer", slug: "image-resizer", desc: "Resize images with social media presets" },
-              { name: "SVG to PNG Converter", slug: "svg-to-png", desc: "Convert SVG files to raster formats" },
-            ].map((tool) => (
-              <a
-                key={tool.slug}
-                href={`/tools/${tool.slug}`}
-                className="bg-slate-700/50 hover:bg-slate-700 rounded p-3 transition-colors block"
-              >
-                <div className="font-medium text-blue-400 text-sm">{tool.name}</div>
-                <div className="text-xs text-slate-400 mt-1">{tool.desc}</div>
-              </a>
-            ))}
-          </div>
-        </div>
+        <RelatedTools currentSlug="image-format-converter" />
 
         {/* Format Comparison Table */}
         <div className="bg-slate-800 rounded-lg p-6 mb-6">

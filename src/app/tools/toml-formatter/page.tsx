@@ -1,6 +1,13 @@
 "use client";
 
 import { useState, useCallback } from "react";
+import JsonLd from "@/components/JsonLd";
+import RelatedTools from "@/components/RelatedTools";
+import {
+  generateFAQSchema,
+  generateWebAppSchema,
+  generateBreadcrumbSchema,
+} from "@/lib/jsonld";
 
 // ── TOML parser + formatter (subset: tables, key-value, arrays, inline tables, strings, numbers, booleans, dates) ──
 
@@ -656,6 +663,28 @@ export default function TomlFormatterPage() {
         name="description"
         content="Format, beautify, minify, sort, and validate TOML files online for free. Perfect for Cargo.toml, pyproject.toml, and config files — all in your browser."
       />
+      <JsonLd
+        data={[
+          generateWebAppSchema({
+            slug: "toml-formatter",
+            name: "TOML Formatter & Validator",
+            description: "Format, validate, and convert TOML to JSON with syntax highlighting",
+            category: "developer",
+          }),
+          generateBreadcrumbSchema({
+            slug: "toml-formatter",
+            name: "TOML Formatter & Validator",
+            description: "Format, validate, and convert TOML to JSON with syntax highlighting",
+            category: "developer",
+          }),
+          generateFAQSchema([
+            { question: "What is TOML?", answer: "TOML (Tom's Obvious Minimal Language) is a configuration file format designed to be easy to read and write. It's used by Rust's Cargo (Cargo.toml), Python's pyproject.toml, Hugo, and many other tools. It maps clearly to a hash table structure." },
+            { question: "What's the difference between TOML and YAML?", answer: "TOML uses explicit section headers ([table]) and = for assignment, while YAML uses indentation. TOML doesn't have the 'Norway problem' (no implicit type coercion \u2014 booleans must be true/false). TOML is simpler but less flexible for deeply nested data. YAML supports anchors and aliases; TOML does not." },
+            { question: "What does 'Align = signs' do?", answer: "When enabled, all key-value pairs within the same section are padded so their = signs line up vertically. This improves readability for tables with many keys of different lengths (common in Cargo.toml dependencies)." },
+            { question: "Is my data safe?", answer: "Yes. All formatting, sorting, and validation happens entirely in your browser using JavaScript. No data is sent to any server. Your TOML files never leave your machine." },
+          ]),
+        ]}
+      />
 
       <main className="min-h-screen bg-slate-900 text-white">
         <div className="max-w-6xl mx-auto px-4 py-12">
@@ -867,26 +896,7 @@ export default function TomlFormatterPage() {
             </div>
           </div>
 
-          {/* Related Tools */}
-          <div className="bg-slate-800 rounded-lg p-6 mb-6">
-            <h2 className="text-xl font-semibold mb-4">Related Tools</h2>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-              {[
-                { name: "YAML Formatter", slug: "yaml-formatter", desc: "Format and beautify YAML files" },
-                { name: "JSON Formatter", slug: "json-formatter", desc: "Format and validate JSON data" },
-                { name: "JSON to YAML", slug: "json-to-yaml", desc: "Convert between JSON and YAML" },
-              ].map((tool) => (
-                <a
-                  key={tool.slug}
-                  href={`/tools/${tool.slug}`}
-                  className="bg-slate-700/50 hover:bg-slate-700 rounded p-3 transition-colors block"
-                >
-                  <div className="font-medium text-blue-400 text-sm">{tool.name}</div>
-                  <div className="text-xs text-slate-400 mt-1">{tool.desc}</div>
-                </a>
-              ))}
-            </div>
-          </div>
+          <RelatedTools currentSlug="toml-formatter" />
 
           {/* FAQ */}
           <div className="bg-slate-800 rounded-lg p-6">

@@ -1,6 +1,13 @@
 "use client";
 
 import { useState, useCallback, useMemo } from "react";
+import JsonLd from "@/components/JsonLd";
+import RelatedTools from "@/components/RelatedTools";
+import {
+  generateFAQSchema,
+  generateWebAppSchema,
+  generateBreadcrumbSchema,
+} from "@/lib/jsonld";
 
 interface CornerRadius {
   topLeft: number;
@@ -146,6 +153,28 @@ export default function BorderRadiusGeneratorPage() {
       <meta
         name="description"
         content="Generate CSS border-radius visually with individual corner controls, presets, and advanced elliptical radius support. Copy CSS code instantly."
+      />
+      <JsonLd
+        data={[
+          generateWebAppSchema({
+            slug: "border-radius-generator",
+            name: "CSS Border Radius Generator",
+            description: "Create and customize CSS border-radius values with a visual editor — adjust each corner independently",
+            category: "design",
+          }),
+          generateBreadcrumbSchema({
+            slug: "border-radius-generator",
+            name: "CSS Border Radius Generator",
+            description: "Create and customize CSS border-radius values with a visual editor — adjust each corner independently",
+            category: "design",
+          }),
+          generateFAQSchema([
+            { question: "What is CSS border-radius?", answer: "The CSS border-radius property rounds the corners of an element. You can set all four corners to the same value for uniform rounding, or control each corner independently. The shorthand accepts 1 to 4 values: one value applies to all corners, two values apply to top-left/bottom-right and top-right/bottom-left, three values apply to top-left, top-right/bottom-left, and bottom-right, and four values apply to each corner clockwise from top-left." },
+            { question: "What are elliptical border radii?", answer: "Elliptical radii use the slash syntax (e.g. border-radius: 50px 20px / 30px 10px) to set different horizontal and vertical radii for each corner. This creates oval or egg-shaped corners instead of perfect circular arcs. Values before the slash control horizontal curvature, values after control vertical curvature." },
+            { question: "How do I make a perfect circle with border-radius?", answer: "Set border-radius to 50% on an element with equal width and height. For example: width: 100px; height: 100px; border-radius: 50%. If the element is rectangular, 50% creates an ellipse. For a pill shape on a rectangular element, use a very large pixel value like 9999px." },
+            { question: "What units can I use for border-radius?", answer: "You can use any CSS length unit: px (pixels) for absolute values, % (percentage) relative to the element's dimensions, em relative to the font size, or rem relative to the root font size. Percentages are most useful for responsive designs since they scale with the element. 50% always creates a circle on a square element regardless of size." },
+          ]),
+        ]}
       />
 
       <div className="min-h-screen bg-slate-900 text-slate-200">
@@ -468,19 +497,7 @@ export default function BorderRadiusGeneratorPage() {
             </div>
           </div>
 
-          {/* Related Tools */}
-          <div className="mt-8 p-4 bg-slate-800/50 border border-slate-700 rounded-lg">
-            <h3 className="text-sm font-semibold text-white mb-2">Related Tools</h3>
-            <div className="flex flex-wrap gap-3">
-              <a href="/tools/box-shadow-generator" className="text-sm text-blue-400 hover:text-blue-300 transition-colors">Box Shadow Generator</a>
-              <span className="text-slate-600">|</span>
-              <a href="/tools/css-gradient-generator" className="text-sm text-blue-400 hover:text-blue-300 transition-colors">CSS Gradient Generator</a>
-              <span className="text-slate-600">|</span>
-              <a href="/tools/css-minifier" className="text-sm text-blue-400 hover:text-blue-300 transition-colors">CSS Minifier</a>
-              <span className="text-slate-600">|</span>
-              <a href="/tools/tailwind-css-converter" className="text-sm text-blue-400 hover:text-blue-300 transition-colors">Tailwind CSS Converter</a>
-            </div>
-          </div>
+          <RelatedTools currentSlug="border-radius-generator" />
 
           {/* FAQ Section */}
           <section className="mt-16 border-t border-slate-700 pt-10">

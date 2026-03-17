@@ -1,6 +1,13 @@
 "use client";
 
 import { useState, useCallback } from "react";
+import JsonLd from "@/components/JsonLd";
+import RelatedTools from "@/components/RelatedTools";
+import {
+  generateFAQSchema,
+  generateWebAppSchema,
+  generateBreadcrumbSchema,
+} from "@/lib/jsonld";
 
 // ── JSONPath evaluator (subset: dot notation, bracket notation, wildcards, array slices, filters) ──
 
@@ -381,6 +388,28 @@ export default function JsonPathTesterPage() {
         name="description"
         content="Test and evaluate JSONPath expressions online for free. Query JSON data with dot notation, wildcards, array slices, filters, and recursive descent — all in your browser."
       />
+      <JsonLd
+        data={[
+          generateWebAppSchema({
+            slug: "json-path-tester",
+            name: "JSON Path Tester",
+            description: "Test JSONPath expressions against JSON data with real-time results",
+            category: "developer",
+          }),
+          generateBreadcrumbSchema({
+            slug: "json-path-tester",
+            name: "JSON Path Tester",
+            description: "Test JSONPath expressions against JSON data with real-time results",
+            category: "developer",
+          }),
+          generateFAQSchema([
+            { question: "What is JSONPath?", answer: "JSONPath is a query language for JSON, similar to XPath for XML. It lets you extract specific values from complex JSON structures using path expressions. Originally proposed by Stefan Goessner in 2007, it's widely used in API testing, data processing, and configuration management." },
+            { question: "What JSONPath features does this tool support?", answer: "This tool supports: dot notation ($.key), bracket notation ($['key']), array indexing ([0], [-1]), slicing ([0:3], [::2]), wildcards (*), recursive descent (..), union ([0,2]), and filter expressions ([?(@.price > 10)]). Filters support ==, !=, >, <, >=, <= operators and existence checks." },
+            { question: "What is recursive descent (..)?", answer: "The .. operator searches through all levels of the JSON structure. For example, $..price finds every 'price' field regardless of depth. It's useful when you know the key name but not its exact location in the hierarchy." },
+            { question: "Is my data safe?", answer: "Yes. All JSONPath evaluation happens entirely in your browser using JavaScript. No data is sent to any server. Your JSON data never leaves your machine." },
+          ]),
+        ]}
+      />
 
       <main className="min-h-screen bg-slate-900 text-white">
         <div className="max-w-6xl mx-auto px-4 py-12">
@@ -563,26 +592,7 @@ export default function JsonPathTesterPage() {
             </div>
           </div>
 
-          {/* Related Tools */}
-          <div className="bg-slate-800 rounded-lg p-6 mb-6">
-            <h2 className="text-xl font-semibold mb-4">Related Tools</h2>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-              {[
-                { name: "JSON Formatter", slug: "json-formatter", desc: "Format and validate JSON data" },
-                { name: "JSON Schema Validator", slug: "json-schema-validator", desc: "Validate JSON against a schema" },
-                { name: "JSON to CSV", slug: "json-to-csv", desc: "Convert JSON arrays to CSV" },
-              ].map((tool) => (
-                <a
-                  key={tool.slug}
-                  href={`/tools/${tool.slug}`}
-                  className="bg-slate-700/50 hover:bg-slate-700 rounded p-3 transition-colors block"
-                >
-                  <div className="font-medium text-blue-400 text-sm">{tool.name}</div>
-                  <div className="text-xs text-slate-400 mt-1">{tool.desc}</div>
-                </a>
-              ))}
-            </div>
-          </div>
+          <RelatedTools currentSlug="json-path-tester" />
 
           {/* FAQ */}
           <div className="bg-slate-800 rounded-lg p-6">

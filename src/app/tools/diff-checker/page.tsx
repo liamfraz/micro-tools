@@ -1,6 +1,13 @@
 "use client";
 
 import { useState, useMemo, useCallback } from "react";
+import JsonLd from "@/components/JsonLd";
+import RelatedTools from "@/components/RelatedTools";
+import {
+  generateFAQSchema,
+  generateWebAppSchema,
+  generateBreadcrumbSchema,
+} from "@/lib/jsonld";
 
 // ---- Diff Algorithm (Myers-like LCS approach) ----
 
@@ -249,6 +256,28 @@ export default function DiffCheckerPage() {
       <meta
         name="description"
         content="Compare two texts and find differences online for free. Side-by-side and unified diff views, ignore whitespace and case options. Perfect for comparing code, configs, and documents."
+      />
+      <JsonLd
+        data={[
+          generateWebAppSchema({
+            slug: "diff-checker",
+            name: "Diff Checker",
+            description: "Compare two blocks of text and highlight differences line by line",
+            category: "developer",
+          }),
+          generateBreadcrumbSchema({
+            slug: "diff-checker",
+            name: "Diff Checker",
+            description: "Compare two blocks of text and highlight differences line by line",
+            category: "developer",
+          }),
+          generateFAQSchema([
+            { question: "What is a diff checker?", answer: "A diff checker compares two blocks of text and highlights the differences between them. It shows which lines were added, removed, or remain unchanged. This is essential for comparing code versions, configuration files, documents, and any text where you need to track changes." },
+            { question: "What is the difference between unified and side-by-side view?", answer: "Unified view shows all changes in a single column with + and - prefixes, similar to git diff output. Side-by-side view shows the original and modified text in two columns, making it easier to visually compare corresponding lines. Choose the view that works best for your use case." },
+            { question: "What does \"ignore whitespace\" do?", answer: "When enabled, the diff checker trims leading and trailing whitespace from each line and collapses multiple spaces into one before comparing. This is useful when you only care about content changes and want to ignore formatting differences like indentation changes." },
+            { question: "Is my data processed on a server?", answer: "No. The diff algorithm runs entirely in your browser using JavaScript. Your text never leaves your device. The comparison uses a Longest Common Subsequence (LCS) algorithm to produce an optimal diff." },
+          ]),
+        ]}
       />
 
       <div className="min-h-screen bg-slate-900 text-slate-200">
@@ -509,6 +538,8 @@ export default function DiffCheckerPage() {
               </div>
             </div>
           )}
+
+          <RelatedTools currentSlug="diff-checker" />
 
           {/* FAQ Section */}
           <section className="mt-16 border-t border-slate-700 pt-10">

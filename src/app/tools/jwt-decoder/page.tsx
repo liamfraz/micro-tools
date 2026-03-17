@@ -1,6 +1,13 @@
 "use client";
 
 import { useState, useMemo, useCallback } from "react";
+import JsonLd from "@/components/JsonLd";
+import RelatedTools from "@/components/RelatedTools";
+import {
+  generateFAQSchema,
+  generateWebAppSchema,
+  generateBreadcrumbSchema,
+} from "@/lib/jsonld";
 
 interface DecodedJWT {
   header: Record<string, unknown>;
@@ -201,6 +208,28 @@ export default function JwtDecoderPage() {
       <meta
         name="description"
         content="Decode and inspect JSON Web Tokens (JWT) online for free. View header, payload claims, expiration status, and timestamps. No data sent to any server."
+      />
+      <JsonLd
+        data={[
+          generateWebAppSchema({
+            slug: "jwt-decoder",
+            name: "JWT Decoder",
+            description: "Decode and inspect JSON Web Tokens — view header, payload claims, expiration status, and signature",
+            category: "developer",
+          }),
+          generateBreadcrumbSchema({
+            slug: "jwt-decoder",
+            name: "JWT Decoder",
+            description: "Decode and inspect JSON Web Tokens — view header, payload claims, expiration status, and signature",
+            category: "developer",
+          }),
+          generateFAQSchema([
+            { question: "What is a JSON Web Token (JWT)?", answer: "A JWT is a compact, URL-safe token format used for securely transmitting information between parties as a JSON object. It consists of three parts: a header (algorithm and type), a payload (claims/data), and a signature. JWTs are commonly used for authentication and authorization in web applications." },
+            { question: "Can this tool verify JWT signatures?", answer: "No. This tool decodes and inspects the contents of a JWT but does not verify its signature. Signature verification requires the signing secret or public key, which should only be handled server-side. Never paste production tokens with sensitive data into online tools." },
+            { question: "What do the standard claims mean?", answer: "iss (issuer) identifies who created the token. sub (subject) identifies the user. exp (expiration) is when the token expires. iat (issued at) is when it was created. aud (audience) specifies the intended recipient. These are registered claims defined in RFC 7519." },
+            { question: "Is my token data safe?", answer: "Yes. All decoding happens entirely in your browser using JavaScript. No data is sent to any server. However, as a best practice, avoid pasting production tokens containing sensitive information into any online tool." },
+          ]),
+        ]}
       />
 
       <div className="min-h-screen bg-slate-900 text-slate-200">
@@ -431,6 +460,8 @@ export default function JwtDecoderPage() {
               </div>
             </div>
           )}
+
+          <RelatedTools currentSlug="jwt-decoder" />
 
           {/* FAQ Section */}
           <section className="mt-16 border-t border-slate-700 pt-10">

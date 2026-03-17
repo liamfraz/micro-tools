@@ -1,6 +1,13 @@
 "use client";
 
 import { useState, useCallback, useEffect } from "react";
+import JsonLd from "@/components/JsonLd";
+import RelatedTools from "@/components/RelatedTools";
+import {
+  generateFAQSchema,
+  generateWebAppSchema,
+  generateBreadcrumbSchema,
+} from "@/lib/jsonld";
 
 // ── IP info types ──
 
@@ -214,6 +221,28 @@ export default function IpAddressLookupPage() {
       <meta
         name="description"
         content="Look up IP address details including location, ISP, and timezone. Calculate subnets with CIDR notation, network/broadcast addresses, and host ranges — all free."
+      />
+      <JsonLd
+        data={[
+          generateWebAppSchema({
+            slug: "ip-address-lookup",
+            name: "IP Address Lookup & Subnet Calculator",
+            description: "Look up your public IP address and calculate subnet details from CIDR notation",
+            category: "developer",
+          }),
+          generateBreadcrumbSchema({
+            slug: "ip-address-lookup",
+            name: "IP Address Lookup & Subnet Calculator",
+            description: "Look up your public IP address and calculate subnet details from CIDR notation",
+            category: "developer",
+          }),
+          generateFAQSchema([
+            { question: "What is my IP address?", answer: "Your IP (Internet Protocol) address is a unique number assigned to your device by your Internet Service Provider (ISP). It identifies your device on the internet and is used for routing traffic. Your public IP is shown at the top of this page -- it's the address that websites and services see when you connect to them." },
+            { question: "What is CIDR notation?", answer: "CIDR (Classless Inter-Domain Routing) notation expresses an IP address and its subnet mask as a single value, like 192.168.1.0/24. The number after the slash indicates how many bits of the address are the network prefix. A /24 means 24 bits for the network (256 total addresses, 254 usable hosts), while a /16 means 16 bits (65,536 addresses)." },
+            { question: "What's the difference between public and private IP addresses?", answer: "Private IP addresses (10.x.x.x, 172.16-31.x.x, 192.168.x.x) are used within local networks and can't be reached directly from the internet. Public IP addresses are globally unique and routable on the internet. Your router has a public IP; devices behind it use private IPs. NAT (Network Address Translation) bridges the two." },
+            { question: "Is this lookup data accurate?", answer: "IP geolocation data is sourced from ipinfo.io and is generally accurate to the city level for most ISPs. However, VPN, proxy, or corporate network users may see the location of their exit node rather than their physical location. The subnet calculator uses pure math and is always exact." },
+          ]),
+        ]}
       />
 
       <main className="min-h-screen bg-slate-900 text-white">
@@ -451,26 +480,7 @@ export default function IpAddressLookupPage() {
             </div>
           </div>
 
-          {/* Related Tools */}
-          <div className="bg-slate-800 rounded-lg p-6 mb-6">
-            <h2 className="text-xl font-semibold mb-4">Related Tools</h2>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-              {[
-                { name: "Number Base Converter", slug: "number-base-converter", desc: "Convert between binary, octal, decimal, and hex" },
-                { name: "Hash Generator", slug: "hash-generator", desc: "Generate MD5, SHA-256, and other hashes" },
-                { name: "Password Generator", slug: "password-generator", desc: "Generate secure random passwords" },
-              ].map((tool) => (
-                <a
-                  key={tool.slug}
-                  href={`/tools/${tool.slug}`}
-                  className="bg-slate-700/50 hover:bg-slate-700 rounded p-3 transition-colors block"
-                >
-                  <div className="font-medium text-blue-400 text-sm">{tool.name}</div>
-                  <div className="text-xs text-slate-400 mt-1">{tool.desc}</div>
-                </a>
-              ))}
-            </div>
-          </div>
+          <RelatedTools currentSlug="ip-address-lookup" />
 
           {/* FAQ */}
           <div className="bg-slate-800 rounded-lg p-6">

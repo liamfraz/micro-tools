@@ -1,6 +1,13 @@
 "use client";
 
 import { useState, useCallback } from "react";
+import JsonLd from "@/components/JsonLd";
+import RelatedTools from "@/components/RelatedTools";
+import {
+  generateFAQSchema,
+  generateWebAppSchema,
+  generateBreadcrumbSchema,
+} from "@/lib/jsonld";
 
 type Base = 2 | 8 | 10 | 16;
 
@@ -193,6 +200,33 @@ export default function NumberBaseConverterPage() {
 
   return (
     <main className="min-h-screen bg-slate-900 text-white">
+      <title>Number Base Converter - Free Online Tool | DevTools Hub</title>
+      <meta
+        name="description"
+        content="Convert numbers between binary, octal, decimal, and hexadecimal bases. Supports large numbers with BigInt precision. Free online converter."
+      />
+      <JsonLd
+        data={[
+          generateWebAppSchema({
+            slug: "number-base-converter",
+            name: "Number Base Converter",
+            description: "Convert numbers between binary, octal, decimal, and hexadecimal bases",
+            category: "conversion",
+          }),
+          generateBreadcrumbSchema({
+            slug: "number-base-converter",
+            name: "Number Base Converter",
+            description: "Convert numbers between binary, octal, decimal, and hexadecimal bases",
+            category: "conversion",
+          }),
+          generateFAQSchema([
+            { question: "What number bases are supported?", answer: "This converter supports the 4 most common bases in programming: binary (base 2, used in low-level computing), octal (base 8, used in Unix file permissions), decimal (base 10, standard human notation), and hexadecimal (base 16, used in memory addresses, colors, and byte representation)." },
+            { question: "Can this handle very large numbers?", answer: "Yes! The converter uses JavaScript BigInt for arbitrary precision arithmetic. You can convert numbers of any size \u2014 there's no practical upper limit. This is important for cryptography, hash values, and large binary data." },
+            { question: "What are the 0b, 0o, and 0x prefixes?", answer: "These are standard programming notation prefixes: 0b for binary (0b1010 = 10), 0o for octal (0o12 = 10), and 0x for hexadecimal (0xA = 10). Most programming languages (JavaScript, Python, C, Java) use these prefixes. You can paste numbers with or without prefixes." },
+            { question: "Why is hexadecimal so common in programming?", answer: "Each hex digit represents exactly 4 binary bits, making it a compact way to represent binary data. One byte (8 bits) is exactly 2 hex digits. This is why hex is used for memory addresses, color codes (#FF0000), MAC addresses, and byte sequences." },
+          ]),
+        ]}
+      />
       <div className="max-w-4xl mx-auto px-4 py-12">
         {/* Header */}
         <div className="mb-8">
@@ -342,6 +376,8 @@ export default function NumberBaseConverterPage() {
             ))}
           </div>
         </div>
+
+        <RelatedTools currentSlug="number-base-converter" />
 
         {/* FAQ */}
         <div className="bg-slate-800 rounded-lg p-6">

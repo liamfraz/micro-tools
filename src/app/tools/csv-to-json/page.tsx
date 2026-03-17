@@ -1,6 +1,13 @@
 "use client";
 
 import { useState, useCallback } from "react";
+import JsonLd from "@/components/JsonLd";
+import RelatedTools from "@/components/RelatedTools";
+import {
+  generateFAQSchema,
+  generateWebAppSchema,
+  generateBreadcrumbSchema,
+} from "@/lib/jsonld";
 
 type Delimiter = "," | "\t" | ";" | "|";
 type OutputFormat = "array" | "object" | "nested";
@@ -328,6 +335,28 @@ export default function CsvToJsonPage() {
         name="description"
         content="Convert CSV data to JSON online for free. Supports custom delimiters, quoted fields, auto type detection, nested key unflattening, and RFC 4180 parsing — all in your browser."
       />
+      <JsonLd
+        data={[
+          generateWebAppSchema({
+            slug: "csv-to-json",
+            name: "CSV to JSON Converter",
+            description: "Convert CSV data to JSON format with automatic header detection",
+            category: "conversion",
+          }),
+          generateBreadcrumbSchema({
+            slug: "csv-to-json",
+            name: "CSV to JSON Converter",
+            description: "Convert CSV data to JSON format with automatic header detection",
+            category: "conversion",
+          }),
+          generateFAQSchema([
+            { question: "How does CSV to JSON conversion work?", answer: "The first row of your CSV is treated as column headers, and each subsequent row becomes a JSON object with those headers as keys. The result is an array of objects. For example, a CSV with headers 'name,age' and row 'Alice,30' becomes [{\"name\": \"Alice\", \"age\": 30}]." },
+            { question: "What is type inference?", answer: "When 'Detect types' is enabled, the converter automatically identifies numbers (30 \u2192 30), booleans ('true' \u2192 true, 'false' \u2192 false), and null values ('null' \u2192 null) instead of treating everything as strings. Disable this if you want all values to remain as strings." },
+            { question: "What does 'Nested (unflatten dots)' do?", answer: "If your CSV headers contain dots (e.g., 'address.city', 'address.state'), the Nested format creates nested JSON objects: {\"address\": {\"city\": \"NY\", \"state\": \"NY\"}}. This is the reverse of the JSON-to-CSV flattening feature." },
+            { question: "Is my data safe?", answer: "Yes. All CSV parsing and JSON conversion happens entirely in your browser using JavaScript. No data is sent to any server. Your CSV data never leaves your machine." },
+          ]),
+        ]}
+      />
 
       <main className="min-h-screen bg-slate-900 text-white">
         <div className="max-w-6xl mx-auto px-4 py-12">
@@ -551,26 +580,7 @@ export default function CsvToJsonPage() {
             </div>
           </div>
 
-          {/* Related Tools */}
-          <div className="bg-slate-800 rounded-lg p-6 mb-6">
-            <h2 className="text-xl font-semibold mb-4">Related Tools</h2>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-              {[
-                { name: "JSON to CSV Converter", slug: "json-to-csv", desc: "Convert JSON arrays to CSV format" },
-                { name: "JSON Formatter", slug: "json-formatter", desc: "Format and validate JSON data" },
-                { name: "JSON to YAML Converter", slug: "json-to-yaml", desc: "Convert between JSON and YAML" },
-              ].map((tool) => (
-                <a
-                  key={tool.slug}
-                  href={`/tools/${tool.slug}`}
-                  className="bg-slate-700/50 hover:bg-slate-700 rounded p-3 transition-colors block"
-                >
-                  <div className="font-medium text-blue-400 text-sm">{tool.name}</div>
-                  <div className="text-xs text-slate-400 mt-1">{tool.desc}</div>
-                </a>
-              ))}
-            </div>
-          </div>
+          <RelatedTools currentSlug="csv-to-json" />
 
           {/* FAQ */}
           <div className="bg-slate-800 rounded-lg p-6">

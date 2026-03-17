@@ -1,6 +1,13 @@
 "use client";
 
 import { useState, useCallback, useMemo } from "react";
+import JsonLd from "@/components/JsonLd";
+import RelatedTools from "@/components/RelatedTools";
+import {
+  generateFAQSchema,
+  generateWebAppSchema,
+  generateBreadcrumbSchema,
+} from "@/lib/jsonld";
 
 // ── Emoji data: [emoji, name, keywords] ──
 
@@ -612,6 +619,28 @@ export default function EmojiPickerPage() {
         name="description"
         content="Search and copy emojis instantly. Browse 500+ emojis by category — smileys, animals, food, travel, objects, symbols, and flags. Click to copy, collect multiple, search by name or keyword."
       />
+      <JsonLd
+        data={[
+          generateWebAppSchema({
+            slug: "emoji-picker",
+            name: "Emoji Picker & Search",
+            description: "Search and copy emojis by name or category with one click",
+            category: "text",
+          }),
+          generateBreadcrumbSchema({
+            slug: "emoji-picker",
+            name: "Emoji Picker & Search",
+            description: "Search and copy emojis by name or category with one click",
+            category: "text",
+          }),
+          generateFAQSchema([
+            { question: "How do I copy an emoji?", answer: "Simply click any emoji to instantly copy it to your clipboard. You'll see a brief green highlight confirming the copy. You can also collect multiple emojis in the bar above the grid and copy them all at once with the 'Copy All' button." },
+            { question: "How many emojis are available?", answer: "This tool includes 500+ carefully curated emojis across 8 categories: Smileys & People, Animals & Nature, Food & Drink, Activities & Sports, Travel & Places, Objects, Symbols, and Flags. Each emoji is searchable by name and related keywords." },
+            { question: "Can I search for emojis?", answer: "Yes! Use the search bar to find emojis by name or keyword. For example, search 'fire' to find the fire emoji, 'heart' to find all heart emojis, or 'food' to browse food-related emojis. The search checks emoji names, categories, and related keywords." },
+            { question: "Do these emojis work everywhere?", answer: "These are standard Unicode emojis that work on all modern platforms \u2014 iOS, Android, Windows, macOS, and the web. Their appearance may vary slightly between platforms as each uses its own emoji font, but the meaning is the same everywhere." },
+          ]),
+        ]}
+      />
 
       <main className="min-h-screen bg-slate-900 text-white">
         <div className="max-w-6xl mx-auto px-4 py-12">
@@ -783,26 +812,7 @@ export default function EmojiPickerPage() {
             )}
           </div>
 
-          {/* Related Tools */}
-          <div className="bg-slate-800 rounded-lg p-6 mb-6">
-            <h2 className="text-xl font-semibold mb-4">Related Tools</h2>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-              {[
-                { name: "Unicode Character Map", slug: "character-map", desc: "Browse and copy Unicode characters" },
-                { name: "Text Case Converter", slug: "text-case-converter", desc: "Convert text between different cases" },
-                { name: "HTML Entity Encoder", slug: "html-entity-encoder", desc: "Encode special characters to HTML entities" },
-              ].map((tool) => (
-                <a
-                  key={tool.slug}
-                  href={`/tools/${tool.slug}`}
-                  className="bg-slate-700/50 hover:bg-slate-700 rounded p-3 transition-colors block"
-                >
-                  <div className="font-medium text-blue-400 text-sm">{tool.name}</div>
-                  <div className="text-xs text-slate-400 mt-1">{tool.desc}</div>
-                </a>
-              ))}
-            </div>
-          </div>
+          <RelatedTools currentSlug="emoji-picker" />
 
           {/* FAQ */}
           <div className="bg-slate-800 rounded-lg p-6">

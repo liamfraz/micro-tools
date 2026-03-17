@@ -1,6 +1,13 @@
 "use client";
 
 import { useState, useCallback, useRef, useEffect } from "react";
+import JsonLd from "@/components/JsonLd";
+import RelatedTools from "@/components/RelatedTools";
+import {
+  generateFAQSchema,
+  generateWebAppSchema,
+  generateBreadcrumbSchema,
+} from "@/lib/jsonld";
 
 const PRESETS: { label: string; w: number; h: number; category: string }[] = [
   // Social Media
@@ -178,6 +185,28 @@ ${customText ? `  <text x="${width / 2}" y="${height / 2 + Math.max(12, Math.min
       <meta
         name="description"
         content="Generate placeholder images with custom dimensions, colors, and text. Download as PNG, JPEG, WebP, or SVG — perfect for mockups, wireframes, and prototypes."
+      />
+      <JsonLd
+        data={[
+          generateWebAppSchema({
+            slug: "placeholder-image-generator",
+            name: "Placeholder Image Generator",
+            description: "Generate placeholder images with custom size, color, text, and format for wireframes and mockups",
+            category: "design",
+          }),
+          generateBreadcrumbSchema({
+            slug: "placeholder-image-generator",
+            name: "Placeholder Image Generator",
+            description: "Generate placeholder images with custom size, color, text, and format for wireframes and mockups",
+            category: "design",
+          }),
+          generateFAQSchema([
+            { question: "What is a placeholder image?", answer: "A placeholder image is a temporary image used in web design, mockups, and prototypes to represent where a real image will go. They typically display the image dimensions and a solid background color, making it easy to see the layout before final content is ready." },
+            { question: "What formats are available?", answer: "You can download placeholder images in four formats: PNG (lossless, best for graphics), JPEG (compressed, smaller files), WebP (modern format, best compression), and SVG (vector, scales to any size without quality loss). SVG is ideal for responsive designs." },
+            { question: "What is the maximum image size?", answer: "You can generate images up to 4096x4096 pixels. For larger dimensions, the Canvas API may have limits depending on your browser. Most browsers support up to 4096px without issues." },
+            { question: "Is this tool free and private?", answer: "Yes. All image generation happens in your browser using the HTML5 Canvas API. No images are uploaded to any server. The tool is completely free with no sign-up required." },
+          ]),
+        ]}
       />
 
       <main className="min-h-screen bg-slate-900 text-white">
@@ -403,26 +432,7 @@ ${customText ? `  <text x="${width / 2}" y="${height / 2 + Math.max(12, Math.min
           {/* Hidden canvas */}
           <canvas ref={canvasRef} className="hidden" />
 
-          {/* Related Tools */}
-          <div className="bg-slate-800 rounded-lg p-6 mb-6">
-            <h2 className="text-xl font-semibold mb-4">Related Tools</h2>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-              {[
-                { name: "Image Resizer", slug: "image-resizer", desc: "Resize images to any dimension" },
-                { name: "Image Compressor", slug: "image-compressor", desc: "Compress images to reduce file size" },
-                { name: "Aspect Ratio Calculator", slug: "aspect-ratio-calculator", desc: "Calculate aspect ratios for any size" },
-              ].map((tool) => (
-                <a
-                  key={tool.slug}
-                  href={`/tools/${tool.slug}`}
-                  className="bg-slate-700/50 hover:bg-slate-700 rounded p-3 transition-colors block"
-                >
-                  <div className="font-medium text-blue-400 text-sm">{tool.name}</div>
-                  <div className="text-xs text-slate-400 mt-1">{tool.desc}</div>
-                </a>
-              ))}
-            </div>
-          </div>
+          <RelatedTools currentSlug="placeholder-image-generator" />
 
           {/* FAQ */}
           <div className="bg-slate-800 rounded-lg p-6">

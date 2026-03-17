@@ -1,6 +1,13 @@
 "use client";
 
 import { useState, useCallback } from "react";
+import JsonLd from "@/components/JsonLd";
+import RelatedTools from "@/components/RelatedTools";
+import {
+  generateFAQSchema,
+  generateWebAppSchema,
+  generateBreadcrumbSchema,
+} from "@/lib/jsonld";
 
 type IndentStyle = "2" | "4" | "tab";
 
@@ -449,6 +456,29 @@ export default function YamlFormatterPage() {
 
   return (
     <main className="min-h-screen bg-slate-900 text-white">
+      <JsonLd
+        data={[
+          generateWebAppSchema({
+            slug: "yaml-formatter",
+            name: "YAML Formatter & Validator",
+            description: "Format, validate, and convert YAML to JSON with syntax highlighting",
+            category: "developer",
+          }),
+          generateBreadcrumbSchema({
+            slug: "yaml-formatter",
+            name: "YAML Formatter & Validator",
+            description: "Format, validate, and convert YAML to JSON with syntax highlighting",
+            category: "developer",
+          }),
+          generateFAQSchema([
+            { question: "What is YAML used for?", answer: "YAML is a human-readable data serialization format widely used for configuration files. Common uses include Kubernetes manifests, Docker Compose files, GitHub Actions workflows, Ansible playbooks, and application config files." },
+            { question: "Does 'Sort Keys' sort nested keys too?", answer: "Currently, Sort Keys sorts top-level keys alphabetically while preserving nested structure. This is useful for standardizing configuration file order (e.g., alphabetical sections in a docker-compose.yml)." },
+            { question: "What does 'Minify' remove?", answer: "Minify removes blank lines, comments, and trailing whitespace while preserving the essential YAML structure. It reduces file size while keeping the document valid and parseable." },
+            { question: "Should I use 2 spaces or 4 spaces for YAML?", answer: "2 spaces is the most common convention, especially in Kubernetes, Docker Compose, and GitHub Actions. 4 spaces provides more visual separation for deeply nested structures. Tabs are valid but rarely used in YAML." },
+            { question: "Is this tool safe for production YAML files?", answer: "Yes -- all processing happens in your browser. No data is sent to any server. However, always review formatted output before replacing production configs, especially for files with anchors, aliases, or complex multiline strings." },
+          ]),
+        ]}
+      />
       <div className="max-w-4xl mx-auto px-4 py-12">
         {/* Header */}
         <div className="mb-8">
@@ -570,26 +600,7 @@ export default function YamlFormatterPage() {
           </div>
         )}
 
-        {/* Related Tools */}
-        <div className="bg-slate-800 rounded-lg p-6 mb-6">
-          <h2 className="text-xl font-semibold mb-4">Related Tools</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-            {[
-              { name: "JSON to YAML", slug: "json-to-yaml", desc: "Convert between JSON and YAML" },
-              { name: "JSON Formatter", slug: "json-formatter", desc: "Format and validate JSON data" },
-              { name: "Cron Expression Parser", slug: "cron-expression-parser", desc: "Parse cron schedules" },
-            ].map((tool) => (
-              <a
-                key={tool.slug}
-                href={`/tools/${tool.slug}`}
-                className="bg-slate-700/50 hover:bg-slate-700 rounded p-3 transition-colors block"
-              >
-                <div className="font-medium text-blue-400 text-sm">{tool.name}</div>
-                <div className="text-xs text-slate-400 mt-1">{tool.desc}</div>
-              </a>
-            ))}
-          </div>
-        </div>
+        <RelatedTools currentSlug="yaml-formatter" />
 
         {/* YAML Cheat Sheet */}
         <div className="bg-slate-800 rounded-lg p-6 mb-6">

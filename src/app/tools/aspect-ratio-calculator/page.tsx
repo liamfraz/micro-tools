@@ -1,6 +1,13 @@
 "use client";
 
 import { useState, useCallback } from "react";
+import JsonLd from "@/components/JsonLd";
+import RelatedTools from "@/components/RelatedTools";
+import {
+  generateFAQSchema,
+  generateWebAppSchema,
+  generateBreadcrumbSchema,
+} from "@/lib/jsonld";
 
 const gcd = (a: number, b: number): number => {
   a = Math.abs(Math.round(a));
@@ -126,6 +133,28 @@ export default function AspectRatioCalculatorPage() {
 
   return (
     <main className="min-h-screen bg-slate-900 text-white">
+      <JsonLd
+        data={[
+          generateWebAppSchema({
+            slug: "aspect-ratio-calculator",
+            name: "Aspect Ratio Calculator",
+            description: "Calculate and convert aspect ratios for images, video, and responsive design",
+            category: "design",
+          }),
+          generateBreadcrumbSchema({
+            slug: "aspect-ratio-calculator",
+            name: "Aspect Ratio Calculator",
+            description: "Calculate and convert aspect ratios for images, video, and responsive design",
+            category: "design",
+          }),
+          generateFAQSchema([
+            { question: "What is an aspect ratio?", answer: "An aspect ratio describes the proportional relationship between an image's width and height. For example, 16:9 means for every 16 units of width, there are 9 units of height. It's commonly used in video, photography, and display design to ensure content looks correct across different sizes." },
+            { question: "What aspect ratio is best for YouTube videos?", answer: "YouTube recommends 16:9 (1920x1080 for Full HD, 3840x2160 for 4K). YouTube Shorts use 9:16 (1080x1920). Using the correct aspect ratio prevents black bars and ensures your video fills the player." },
+            { question: "How do I resize an image without distortion?", answer: "Maintain the same aspect ratio when resizing. Enter your original dimensions above, then use the resize section to calculate the matching height or width. As long as the ratio stays the same (e.g., 16:9), the image won't stretch or squish." },
+            { question: "What's the difference between 16:9 and 4:3?", answer: "16:9 is the modern widescreen standard used by HDTVs, monitors, and most video platforms. 4:3 is the older standard (classic TV shape). 16:9 is wider and more cinematic, while 4:3 is more square-shaped. Most content today uses 16:9." },
+          ]),
+        ]}
+      />
       <div className="max-w-4xl mx-auto px-4 py-12">
         {/* Header */}
         <div className="mb-8">
@@ -340,26 +369,7 @@ export default function AspectRatioCalculatorPage() {
           </div>
         </div>
 
-        {/* Related Tools */}
-        <div className="bg-slate-800 rounded-lg p-6 mb-6">
-          <h2 className="text-xl font-semibold mb-4">Related Tools</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-            {[
-              { name: "Image Resizer", slug: "image-resizer", desc: "Resize images with presets" },
-              { name: "Image Compressor", slug: "image-compressor", desc: "Compress images to reduce size" },
-              { name: "CSS Gradient Generator", slug: "css-gradient-generator", desc: "Create CSS gradients visually" },
-            ].map((tool) => (
-              <a
-                key={tool.slug}
-                href={`/tools/${tool.slug}`}
-                className="bg-slate-700/50 hover:bg-slate-700 rounded p-3 transition-colors block"
-              >
-                <div className="font-medium text-blue-400 text-sm">{tool.name}</div>
-                <div className="text-xs text-slate-400 mt-1">{tool.desc}</div>
-              </a>
-            ))}
-          </div>
-        </div>
+        <RelatedTools currentSlug="aspect-ratio-calculator" />
 
         {/* FAQ */}
         <div className="bg-slate-800 rounded-lg p-6">

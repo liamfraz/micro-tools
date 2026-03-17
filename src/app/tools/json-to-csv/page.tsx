@@ -1,6 +1,13 @@
 "use client";
 
 import { useState, useCallback } from "react";
+import JsonLd from "@/components/JsonLd";
+import RelatedTools from "@/components/RelatedTools";
+import {
+  generateFAQSchema,
+  generateWebAppSchema,
+  generateBreadcrumbSchema,
+} from "@/lib/jsonld";
 
 type Delimiter = "," | "\t" | ";" | "|";
 
@@ -279,6 +286,28 @@ export default function JsonToCsvPage() {
         name="description"
         content="Convert JSON to CSV and CSV to JSON online for free. Supports nested objects, custom delimiters, and bulk data. Download results as .csv or .json files."
       />
+      <JsonLd
+        data={[
+          generateWebAppSchema({
+            slug: "json-to-csv",
+            name: "JSON to CSV Converter",
+            description: "Convert JSON arrays to CSV format with customizable delimiters",
+            category: "conversion",
+          }),
+          generateBreadcrumbSchema({
+            slug: "json-to-csv",
+            name: "JSON to CSV Converter",
+            description: "Convert JSON arrays to CSV format with customizable delimiters",
+            category: "conversion",
+          }),
+          generateFAQSchema([
+            { question: "What JSON formats are supported?", answer: "The converter accepts JSON arrays of objects (the most common format for tabular data), single JSON objects (converted to a one-row CSV), and arrays of primitives (converted to a single-column CSV). Nested objects are automatically flattened using dot notation when the \"Flatten nested objects\" option is enabled." },
+            { question: "How are nested objects handled?", answer: "When flattening is enabled, nested objects are expanded into dot-notation columns. For example, {\"address\": {\"city\": \"London\"}} becomes a column called address.city with the value \"London\". Arrays within values are preserved as JSON strings." },
+            { question: "Can I convert CSV back to JSON?", answer: "Yes. Use the \"CSV \u2192 JSON\" mode to convert CSV data back to a JSON array of objects. The first row is used as headers (object keys), and each subsequent row becomes an object in the output array. Quoted fields with commas and escaped quotes are handled correctly." },
+            { question: "Is there a size limit?", answer: "There is no hard limit, but very large files (10MB+) may cause your browser to slow down since all processing happens client-side. For best performance, keep input under 5MB. No data is sent to any server \u2014 everything runs entirely in your browser." },
+          ]),
+        ]}
+      />
 
       <div className="min-h-screen bg-slate-900 text-slate-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -498,6 +527,8 @@ export default function JsonToCsvPage() {
               ))}
             </div>
           </div>
+
+          <RelatedTools currentSlug="json-to-csv" />
 
           {/* FAQ Section */}
           <section className="mt-16 border-t border-slate-700 pt-10">

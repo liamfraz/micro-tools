@@ -1,6 +1,13 @@
 "use client";
 
 import { useState, useCallback, useRef } from "react";
+import JsonLd from "@/components/JsonLd";
+import RelatedTools from "@/components/RelatedTools";
+import {
+  generateFAQSchema,
+  generateWebAppSchema,
+  generateBreadcrumbSchema,
+} from "@/lib/jsonld";
 
 interface ImageInfo {
   width: number;
@@ -151,6 +158,34 @@ export default function ImageCompressorPage() {
 
   return (
     <main className="min-h-screen bg-slate-900 text-white">
+      <title>Image Compressor - Free Online Tool | DevTools Hub</title>
+      <meta
+        name="description"
+        content="Compress JPEG, PNG, and WebP images in your browser with adjustable quality. Free, private, no upload required."
+      />
+      <JsonLd
+        data={[
+          generateWebAppSchema({
+            slug: "image-compressor",
+            name: "Image Compressor",
+            description: "Compress JPEG, PNG, and WebP images in your browser with adjustable quality",
+            category: "design",
+          }),
+          generateBreadcrumbSchema({
+            slug: "image-compressor",
+            name: "Image Compressor",
+            description: "Compress JPEG, PNG, and WebP images in your browser with adjustable quality",
+            category: "design",
+          }),
+          generateFAQSchema([
+            { question: "Is my image uploaded to a server?", answer: "No. All compression happens entirely in your browser using the HTML5 Canvas API. Your images never leave your device \u2014 no data is sent to any server. This makes it completely private and works offline too." },
+            { question: "What quality setting should I use?", answer: "For photos and social media, 75-85% offers the best balance of quality and file size \u2014 typically 60-80% size reduction with minimal visible quality loss. For print or professional use, stay above 90%. For thumbnails or email, 50-70% is usually fine." },
+            { question: "Which format should I choose?", answer: "JPEG is best for photographs and complex images (no transparency). WebP offers 25-35% better compression than JPEG with transparency support \u2014 ideal for web use if your target browsers support it (all modern browsers do). PNG is best when you need lossless quality or transparency in graphics/logos." },
+            { question: "Why is my PNG file getting larger after 'compression'?", answer: "PNG is a lossless format \u2014 the browser's Canvas API re-encodes it without guaranteed size reduction. For photos, switch to JPEG or WebP for significant compression. PNG works best for graphics with flat colors, text, and screenshots." },
+            { question: "Can I compress multiple images at once?", answer: "Currently this tool handles one image at a time for the best quality control. Upload a new image after downloading the compressed version. For bulk compression, consider using the same tool repeatedly \u2014 each compression takes just seconds." },
+          ]),
+        ]}
+      />
       <div className="max-w-4xl mx-auto px-4 py-12">
         {/* Header */}
         <div className="mb-8">
@@ -364,26 +399,7 @@ export default function ImageCompressorPage() {
         {/* Hidden canvas */}
         <canvas ref={canvasRef} className="hidden" />
 
-        {/* Related Tools */}
-        <div className="bg-slate-800 rounded-lg p-6 mb-6">
-          <h2 className="text-xl font-semibold mb-4">Related Tools</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-            {[
-              { name: "Image Resizer", slug: "image-resizer", desc: "Resize images with social media presets" },
-              { name: "QR Code Generator", slug: "qr-code-generator", desc: "Generate QR codes as PNG or SVG" },
-              { name: "Color Converter", slug: "color-converter", desc: "Convert between HEX, RGB, HSL formats" },
-            ].map((tool) => (
-              <a
-                key={tool.slug}
-                href={`/tools/${tool.slug}`}
-                className="bg-slate-700/50 hover:bg-slate-700 rounded p-3 transition-colors block"
-              >
-                <div className="font-medium text-blue-400 text-sm">{tool.name}</div>
-                <div className="text-xs text-slate-400 mt-1">{tool.desc}</div>
-              </a>
-            ))}
-          </div>
-        </div>
+        <RelatedTools currentSlug="image-compressor" />
 
         {/* Compression Guide */}
         <div className="bg-slate-800 rounded-lg p-6 mb-6">

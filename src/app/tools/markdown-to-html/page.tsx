@@ -1,6 +1,13 @@
 "use client";
 
 import { useState, useCallback } from "react";
+import JsonLd from "@/components/JsonLd";
+import RelatedTools from "@/components/RelatedTools";
+import {
+  generateFAQSchema,
+  generateWebAppSchema,
+  generateBreadcrumbSchema,
+} from "@/lib/jsonld";
 
 // ── Markdown-to-HTML converter ──
 
@@ -309,6 +316,28 @@ export default function MarkdownToHtmlPage() {
         name="description"
         content="Convert Markdown to clean HTML code online for free. Supports headings, lists, tables, code blocks, links, images, and task lists. Copy or download the output."
       />
+      <JsonLd
+        data={[
+          generateWebAppSchema({
+            slug: "markdown-to-html",
+            name: "Markdown to HTML Converter",
+            description: "Convert Markdown text to clean HTML with live preview",
+            category: "conversion",
+          }),
+          generateBreadcrumbSchema({
+            slug: "markdown-to-html",
+            name: "Markdown to HTML Converter",
+            description: "Convert Markdown text to clean HTML with live preview",
+            category: "conversion",
+          }),
+          generateFAQSchema([
+            { question: "What Markdown features are supported?", answer: "This converter supports headings (h1-h6), bold, italic, strikethrough, links, images, inline code, fenced code blocks with language classes, blockquotes, ordered and unordered lists, task lists with checkboxes, tables with column alignment, and horizontal rules." },
+            { question: "What is the difference between Pretty HTML and Raw HTML?", answer: "Pretty HTML adds indentation and formatting to make the output easier to read and edit. Raw HTML produces compact output without extra whitespace -- ideal for embedding directly into pages or templates." },
+            { question: "What does 'Wrap in full HTML document' do?", answer: "When enabled, the output includes a complete HTML5 document structure with <!DOCTYPE html>, <html>, <head> (with charset and viewport meta tags), and <body> tags. This makes the output a standalone .html file you can open directly in a browser." },
+            { question: "Is my data safe?", answer: "Yes. All conversion happens entirely in your browser using JavaScript. No data is sent to any server. Your Markdown content never leaves your machine." },
+          ]),
+        ]}
+      />
 
       <main className="min-h-screen bg-slate-900 text-white">
         <div className="max-w-6xl mx-auto px-4 py-12">
@@ -478,26 +507,7 @@ export default function MarkdownToHtmlPage() {
             </div>
           </div>
 
-          {/* Related Tools */}
-          <div className="bg-slate-800 rounded-lg p-6 mb-6">
-            <h2 className="text-xl font-semibold mb-4">Related Tools</h2>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-              {[
-                { name: "Markdown Editor", slug: "markdown-editor", desc: "Write Markdown with live preview" },
-                { name: "HTML Beautifier", slug: "html-beautifier", desc: "Format and beautify HTML code" },
-                { name: "HTML Entity Encoder", slug: "html-entity-encoder", desc: "Encode/decode HTML entities" },
-              ].map((tool) => (
-                <a
-                  key={tool.slug}
-                  href={`/tools/${tool.slug}`}
-                  className="bg-slate-700/50 hover:bg-slate-700 rounded p-3 transition-colors block"
-                >
-                  <div className="font-medium text-blue-400 text-sm">{tool.name}</div>
-                  <div className="text-xs text-slate-400 mt-1">{tool.desc}</div>
-                </a>
-              ))}
-            </div>
-          </div>
+          <RelatedTools currentSlug="markdown-to-html" />
 
           {/* FAQ */}
           <div className="bg-slate-800 rounded-lg p-6">

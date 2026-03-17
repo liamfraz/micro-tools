@@ -1,6 +1,13 @@
 "use client";
 
 import { useState, useCallback } from "react";
+import JsonLd from "@/components/JsonLd";
+import RelatedTools from "@/components/RelatedTools";
+import {
+  generateFAQSchema,
+  generateWebAppSchema,
+  generateBreadcrumbSchema,
+} from "@/lib/jsonld";
 
 const VOID_ELEMENTS = new Set([
   "area", "base", "br", "col", "embed", "hr", "img", "input",
@@ -147,6 +154,28 @@ export default function HtmlBeautifierPage() {
         name="description"
         content="Beautify, format, and minify HTML online for free. Pretty-print HTML with proper indentation, supports all HTML5 elements, void elements, and inline content."
       />
+      <JsonLd
+        data={[
+          generateWebAppSchema({
+            slug: "html-beautifier",
+            name: "HTML Beautifier",
+            description: "Format and indent HTML code for better readability",
+            category: "developer",
+          }),
+          generateBreadcrumbSchema({
+            slug: "html-beautifier",
+            name: "HTML Beautifier",
+            description: "Format and indent HTML code for better readability",
+            category: "developer",
+          }),
+          generateFAQSchema([
+            { question: "What does an HTML beautifier do?", answer: "An HTML beautifier (also called an HTML formatter or pretty-printer) takes messy, minified, or poorly indented HTML and reformats it with consistent indentation and line breaks. This makes the code easier to read, edit, and debug without changing its meaning or rendered output." },
+            { question: "Does beautifying HTML change how the page looks?", answer: "In most cases, no. HTML treats consecutive whitespace as a single space, so adding indentation and line breaks between tags does not change the visual rendering. The only exception is content inside <pre> tags, which this tool preserves as-is." },
+            { question: "What are void elements?", answer: "Void elements are HTML elements that cannot have child content and do not need a closing tag. Examples include <br>, <img>, <input>, <hr>, <meta>, and <link>. This beautifier recognizes all HTML5 void elements and does not expect closing tags for them." },
+            { question: "Is my HTML data safe?", answer: "Yes. All formatting and minification happens entirely in your browser using JavaScript. No HTML is sent to any server. Your code never leaves your machine." },
+          ]),
+        ]}
+      />
 
       <div className="min-h-screen bg-slate-900 text-slate-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -286,6 +315,8 @@ export default function HtmlBeautifierPage() {
               />
             </div>
           </div>
+
+          <RelatedTools currentSlug="html-beautifier" />
 
           {/* FAQ Section */}
           <section className="mt-16 border-t border-slate-700 pt-10">

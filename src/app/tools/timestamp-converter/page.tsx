@@ -1,6 +1,13 @@
 "use client";
 
 import { useState, useCallback, useEffect } from "react";
+import JsonLd from "@/components/JsonLd";
+import RelatedTools from "@/components/RelatedTools";
+import {
+  generateFAQSchema,
+  generateWebAppSchema,
+  generateBreadcrumbSchema,
+} from "@/lib/jsonld";
 
 type InputMode = "unix" | "human";
 
@@ -178,6 +185,28 @@ export default function TimestampConverterPage() {
       <meta
         name="description"
         content="Convert Unix timestamps to human-readable dates and vice versa. Supports seconds and milliseconds, ISO 8601, relative time, and more."
+      />
+      <JsonLd
+        data={[
+          generateWebAppSchema({
+            slug: "timestamp-converter",
+            name: "Timestamp Converter",
+            description: "Convert between Unix timestamps and human-readable dates with timezone support",
+            category: "conversion",
+          }),
+          generateBreadcrumbSchema({
+            slug: "timestamp-converter",
+            name: "Timestamp Converter",
+            description: "Convert between Unix timestamps and human-readable dates with timezone support",
+            category: "conversion",
+          }),
+          generateFAQSchema([
+            { question: "What is a Unix timestamp?", answer: "A Unix timestamp (also called Epoch time or POSIX time) is the number of seconds that have elapsed since January 1, 1970 00:00:00 UTC. It provides a universal, timezone-independent way to represent a point in time and is used extensively in programming, databases, and APIs." },
+            { question: "What is the Year 2038 problem?", answer: "Many systems store Unix timestamps as 32-bit signed integers, which can represent dates up to January 19, 2038 at 03:14:07 UTC (timestamp 2,147,483,647). After this point, the value overflows to a negative number, causing dates to wrap back to 1901. Most modern systems now use 64-bit integers to avoid this issue." },
+            { question: "Seconds vs milliseconds -- how do I know which one I have?", answer: "Unix timestamps in seconds are typically 10 digits long (e.g., 1700000000), while millisecond timestamps are 13 digits (e.g., 1700000000000). This tool auto-detects the format: if the number is greater than 1 trillion, it treats it as milliseconds and divides by 1000." },
+            { question: "What date formats can I enter?", answer: "You can enter dates in most common formats: ISO 8601 (2024-01-15T10:30:00Z), US format (Jan 15 2024), simple date (2024-01-15), or date with time (2024-01-15 10:30). The tool uses your browser's date parser, so most natural date formats will work." },
+          ]),
+        ]}
       />
 
       <div className="min-h-screen bg-slate-900 text-slate-200">
@@ -387,6 +416,8 @@ export default function TimestampConverterPage() {
               ))}
             </div>
           </div>
+
+          <RelatedTools currentSlug="timestamp-converter" />
 
           {/* FAQ */}
           <section className="mt-16 border-t border-slate-700 pt-10">

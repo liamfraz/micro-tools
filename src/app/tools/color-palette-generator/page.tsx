@@ -1,6 +1,13 @@
 "use client";
 
 import { useState, useCallback, useEffect } from "react";
+import JsonLd from "@/components/JsonLd";
+import RelatedTools from "@/components/RelatedTools";
+import {
+  generateFAQSchema,
+  generateWebAppSchema,
+  generateBreadcrumbSchema,
+} from "@/lib/jsonld";
 
 interface ColorEntry {
   h: number;
@@ -150,6 +157,28 @@ export default function ColorPaletteGeneratorPage() {
       <meta
         name="description"
         content="Generate beautiful color palettes with complementary, analogous, and triadic harmony modes. Lock colors, view hex/RGB/HSL values, and copy with one click."
+      />
+      <JsonLd
+        data={[
+          generateWebAppSchema({
+            slug: "color-palette-generator",
+            name: "Color Palette Generator",
+            description: "Generate beautiful color palettes with hex, RGB, and HSL values",
+            category: "design",
+          }),
+          generateBreadcrumbSchema({
+            slug: "color-palette-generator",
+            name: "Color Palette Generator",
+            description: "Generate beautiful color palettes with hex, RGB, and HSL values",
+            category: "design",
+          }),
+          generateFAQSchema([
+            { question: "What are color harmony modes?", answer: "Color harmony refers to aesthetically pleasing combinations based on their positions on the color wheel. Complementary colors sit opposite each other (high contrast). Analogous colors are neighbors (smooth, cohesive). Triadic colors are evenly spaced at 120 degrees (vibrant, balanced)." },
+            { question: "How do I lock a color?", answer: "Click the lock icon on any color swatch to keep it when you regenerate the palette. Locked colors stay in place while the remaining colors are replaced. This is useful when you have found a color you like and want to build around it." },
+            { question: "What color formats are supported?", answer: "Each color is displayed in three formats: Hex (e.g., #3B82F6), RGB (e.g., rgb(59, 130, 246)), and HSL (e.g., hsl(217, 91%, 60%)). Click any value to copy it to your clipboard." },
+            { question: "Can I use these palettes in my projects?", answer: "Yes, absolutely. All generated palettes are free to use in personal and commercial projects. Click \"Copy Palette\" to get all five hex values at once, ready to paste into your CSS, design tool, or style guide." },
+          ]),
+        ]}
       />
 
       <div className="min-h-screen bg-slate-900 text-slate-200">
@@ -321,6 +350,8 @@ export default function ColorPaletteGeneratorPage() {
 
           {/* Keyboard listener for spacebar */}
           <SpacebarListener onSpace={regenerate} />
+
+          <RelatedTools currentSlug="color-palette-generator" />
 
           {/* FAQ Section */}
           <section className="mt-16 border-t border-slate-700 pt-10">

@@ -1,6 +1,13 @@
 "use client";
 
 import { useState, useCallback, useEffect } from "react";
+import JsonLd from "@/components/JsonLd";
+import RelatedTools from "@/components/RelatedTools";
+import {
+  generateFAQSchema,
+  generateWebAppSchema,
+  generateBreadcrumbSchema,
+} from "@/lib/jsonld";
 
 interface PasswordOptions {
   length: number;
@@ -177,6 +184,28 @@ export default function PasswordGeneratorPage() {
       <meta
         name="description"
         content="Generate cryptographically secure random passwords with customizable length, character sets, and strength analysis. All passwords generated in your browser using the Web Crypto API."
+      />
+      <JsonLd
+        data={[
+          generateWebAppSchema({
+            slug: "password-generator",
+            name: "Password Generator",
+            description: "Generate strong, random passwords with customizable length and character sets",
+            category: "developer",
+          }),
+          generateBreadcrumbSchema({
+            slug: "password-generator",
+            name: "Password Generator",
+            description: "Generate strong, random passwords with customizable length and character sets",
+            category: "developer",
+          }),
+          generateFAQSchema([
+            { question: "How are these passwords generated?", answer: "Passwords are generated using the Web Crypto API (crypto.getRandomValues()), which provides cryptographically secure random numbers. This is the same randomness source used by TLS, SSH, and other security protocols. No pseudo-random fallback is used." },
+            { question: "Are my generated passwords stored or sent anywhere?", answer: "No. All password generation happens entirely in your browser. No passwords are transmitted over the network, stored in cookies, or logged anywhere. You can verify this by using the tool offline or inspecting network traffic in your browser's developer tools." },
+            { question: "How long should my password be?", answer: "For most accounts, 16 characters with mixed character types provides excellent security (80+ bits of entropy). For high-security applications like master passwords or encryption keys, use 20-32 characters. A 12-character password with all character types is the minimum for reasonable security today." },
+            { question: "What does \"entropy\" mean?", answer: "Entropy measures the randomness or unpredictability of a password in bits. Each bit of entropy doubles the number of possible passwords an attacker must try. A password with 80 bits of entropy has 2^80 (about 1.2 septillion) possible combinations. Higher entropy means a stronger password." },
+          ]),
+        ]}
       />
 
       <div className="min-h-screen bg-slate-900 text-slate-200">
@@ -453,26 +482,7 @@ export default function PasswordGeneratorPage() {
             </div>
           </div>
 
-          {/* Related Tools */}
-          <div className="bg-slate-800 rounded-lg p-6 mt-8 mb-6">
-            <h2 className="text-xl font-semibold mb-4">Related Tools</h2>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-              {[
-                { name: "Hash Generator", slug: "hash-generator", desc: "Generate MD5, SHA-256, and other hashes" },
-                { name: "UUID Generator", slug: "uuid-generator", desc: "Generate UUIDs (v1, v4) with bulk generation" },
-                { name: "Base64 Encoder", slug: "base64-encoder", desc: "Encode and decode Base64 strings" },
-              ].map((tool) => (
-                <a
-                  key={tool.slug}
-                  href={`/tools/${tool.slug}`}
-                  className="bg-slate-700/50 hover:bg-slate-700 rounded p-3 transition-colors block"
-                >
-                  <div className="font-medium text-blue-400 text-sm">{tool.name}</div>
-                  <div className="text-xs text-slate-400 mt-1">{tool.desc}</div>
-                </a>
-              ))}
-            </div>
-          </div>
+          <RelatedTools currentSlug="password-generator" />
 
           {/* FAQ Section */}
           <section className="mt-16 border-t border-slate-700 pt-10">

@@ -1,6 +1,13 @@
 "use client";
 
 import { useState, useCallback, useMemo } from "react";
+import JsonLd from "@/components/JsonLd";
+import RelatedTools from "@/components/RelatedTools";
+import {
+  generateFAQSchema,
+  generateWebAppSchema,
+  generateBreadcrumbSchema,
+} from "@/lib/jsonld";
 
 interface ColorStop {
   id: number;
@@ -130,6 +137,28 @@ export default function CSSGradientGeneratorPage() {
       <meta
         name="description"
         content="Generate beautiful CSS gradients with a visual editor. Linear, radial, and conic gradients with multiple color stops, presets, and copy-ready CSS code."
+      />
+      <JsonLd
+        data={[
+          generateWebAppSchema({
+            slug: "css-gradient-generator",
+            name: "CSS Gradient Generator",
+            description: "Create beautiful CSS gradients with a visual editor and copy the code",
+            category: "design",
+          }),
+          generateBreadcrumbSchema({
+            slug: "css-gradient-generator",
+            name: "CSS Gradient Generator",
+            description: "Create beautiful CSS gradients with a visual editor and copy the code",
+            category: "design",
+          }),
+          generateFAQSchema([
+            { question: "What types of CSS gradients are there?", answer: "CSS supports three gradient types: linear (straight line transition), radial (emanating from a center point), and conic (rotating around a center). Each can have multiple color stops for complex effects." },
+            { question: "How many color stops can I use?", answer: "CSS gradients support unlimited color stops. This tool allows up to 10 stops, which is more than enough for most designs. More stops create smoother transitions and more complex patterns." },
+            { question: "Are CSS gradients supported in all browsers?", answer: "Linear and radial gradients are supported in all modern browsers (Chrome, Firefox, Safari, Edge). Conic gradients have broad support but may require fallbacks for older browsers. No vendor prefixes are needed for current browser versions." },
+            { question: "Can I use gradients with Tailwind CSS?", answer: "Yes. For simple two-color linear gradients at standard angles, this tool generates Tailwind utility classes (e.g., bg-gradient-to-r from-blue-500 to-purple-500). For more complex gradients, use the CSS output with Tailwind's arbitrary value syntax or custom CSS." },
+          ]),
+        ]}
       />
 
       <div className="min-h-screen bg-slate-900 text-slate-200">
@@ -386,6 +415,8 @@ export default function CSSGradientGeneratorPage() {
               })}
             </div>
           </div>
+
+          <RelatedTools currentSlug="css-gradient-generator" />
 
           {/* FAQ */}
           <section className="mt-16 border-t border-slate-700 pt-10">

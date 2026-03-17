@@ -1,6 +1,13 @@
 "use client";
 
 import { useState, useCallback } from "react";
+import JsonLd from "@/components/JsonLd";
+import RelatedTools from "@/components/RelatedTools";
+import {
+  generateFAQSchema,
+  generateWebAppSchema,
+  generateBreadcrumbSchema,
+} from "@/lib/jsonld";
 
 type CaseType =
   | "upper"
@@ -148,6 +155,28 @@ export default function TextCaseConverterPage() {
       <meta
         name="description"
         content="Convert text between UPPERCASE, lowercase, Title Case, camelCase, snake_case, kebab-case, and more. 13 case formats available. Free, instant, runs in your browser."
+      />
+      <JsonLd
+        data={[
+          generateWebAppSchema({
+            slug: "text-case-converter",
+            name: "Text Case Converter",
+            description: "Convert text between uppercase, lowercase, title case, sentence case, and more",
+            category: "text",
+          }),
+          generateBreadcrumbSchema({
+            slug: "text-case-converter",
+            name: "Text Case Converter",
+            description: "Convert text between uppercase, lowercase, title case, sentence case, and more",
+            category: "text",
+          }),
+          generateFAQSchema([
+            { question: "What is camelCase vs PascalCase?", answer: "In camelCase, the first word starts with a lowercase letter and each subsequent word starts with an uppercase letter (e.g., \"myVariableName\"). PascalCase is the same pattern but the first word also starts uppercase (e.g., \"MyComponentName\"). camelCase is the standard in JavaScript for variables and functions, while PascalCase is used for classes and React components." },
+            { question: "What is the difference between snake_case and kebab-case?", answer: "snake_case uses underscores between words (e.g., \"my_variable_name\") and is standard in Python, Ruby, and SQL. kebab-case uses hyphens (e.g., \"my-css-class\") and is standard in CSS class names, URLs, and HTML data attributes. Both are lowercase." },
+            { question: "Can I convert between programming naming conventions?", answer: "Yes. This tool intelligently splits input text on camelCase boundaries, underscores, hyphens, dots, slashes, and spaces. This means you can paste \"myVariableName\" and convert it directly to \"my_variable_name\" or \"my-variable-name\" without manually reformatting." },
+            { question: "Is my text data safe?", answer: "Yes. All text conversion happens entirely in your browser using JavaScript string operations. No text is sent to any server. You can safely convert confidential text, code, and other sensitive content." },
+          ]),
+        ]}
       />
 
       <div className="min-h-screen bg-slate-900 text-slate-200">
@@ -324,6 +353,8 @@ export default function TextCaseConverterPage() {
               ))}
             </div>
           </div>
+
+          <RelatedTools currentSlug="text-case-converter" />
 
           {/* FAQ Section */}
           <section className="mt-16 border-t border-slate-700 pt-10">

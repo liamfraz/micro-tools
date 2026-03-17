@@ -1,6 +1,13 @@
 "use client";
 
 import { useState, useCallback, useMemo } from "react";
+import JsonLd from "@/components/JsonLd";
+import RelatedTools from "@/components/RelatedTools";
+import {
+  generateFAQSchema,
+  generateWebAppSchema,
+  generateBreadcrumbSchema,
+} from "@/lib/jsonld";
 
 interface Shadow {
   id: number;
@@ -141,6 +148,28 @@ export default function BoxShadowGeneratorPage() {
     <main className="min-h-screen bg-slate-900 text-white">
       <title>CSS Box Shadow Generator — Visual Editor | Micro Tools</title>
       <meta name="description" content="Create CSS box-shadow effects visually with multiple layers, color picker, blur, spread, and inset options. Copy the CSS code instantly." />
+      <JsonLd
+        data={[
+          generateWebAppSchema({
+            slug: "box-shadow-generator",
+            name: "CSS Box Shadow Generator",
+            description: "Create and customize CSS box shadows with a visual editor — adjust offsets, blur, spread, color, and inset",
+            category: "design",
+          }),
+          generateBreadcrumbSchema({
+            slug: "box-shadow-generator",
+            name: "CSS Box Shadow Generator",
+            description: "Create and customize CSS box shadows with a visual editor — adjust offsets, blur, spread, color, and inset",
+            category: "design",
+          }),
+          generateFAQSchema([
+            { question: "How does the CSS box-shadow property work?", answer: "The box-shadow property adds shadow effects around an element. The syntax is: box-shadow: [inset] x-offset y-offset blur spread color. You can add multiple shadows separated by commas, and they stack in the order listed (first shadow on top)." },
+            { question: "What is the difference between blur and spread?", answer: "Blur radius controls how soft or sharp the shadow edge is -- 0 gives a hard edge, higher values create a softer, more diffused shadow. Spread radius changes the size of the shadow -- positive values make it larger than the element, negative values make it smaller. A common technique uses negative spread with positive blur for a more natural shadow." },
+            { question: "Can I use multiple box shadows?", answer: "Yes. CSS allows multiple comma-separated shadows on a single element. This is great for creating layered, realistic shadow effects -- for example, a soft ambient shadow combined with a tighter directional shadow. This tool supports up to 6 shadow layers." },
+            { question: "What is an inset shadow?", answer: "An inset shadow appears inside the element instead of outside. It creates an inner shadow or pressed-in effect. Use it for input fields, cards with depth, or embossed UI elements. Combine inset and normal shadows for realistic effects." },
+          ]),
+        ]}
+      />
 
       <div className="max-w-6xl mx-auto px-4 py-12">
         {/* Header */}
@@ -390,26 +419,7 @@ export default function BoxShadowGeneratorPage() {
           </div>
         </div>
 
-        {/* Related Tools */}
-        <div className="bg-slate-800 rounded-lg p-6 mb-6">
-          <h2 className="text-xl font-semibold mb-4">Related Tools</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-            {[
-              { name: "CSS Gradient Generator", slug: "css-gradient-generator", desc: "Create linear, radial, and conic gradients" },
-              { name: "CSS Minifier", slug: "css-minifier", desc: "Minify and beautify CSS code" },
-              { name: "Tailwind CSS Converter", slug: "tailwind-css-converter", desc: "Convert CSS to Tailwind utility classes" },
-            ].map((tool) => (
-              <a
-                key={tool.slug}
-                href={`/tools/${tool.slug}`}
-                className="bg-slate-700/50 hover:bg-slate-700 rounded p-3 transition-colors block"
-              >
-                <div className="font-medium text-blue-400 text-sm">{tool.name}</div>
-                <div className="text-xs text-slate-400 mt-1">{tool.desc}</div>
-              </a>
-            ))}
-          </div>
-        </div>
+        <RelatedTools currentSlug="box-shadow-generator" />
 
         {/* FAQ */}
         <div className="bg-slate-800 rounded-lg p-6">

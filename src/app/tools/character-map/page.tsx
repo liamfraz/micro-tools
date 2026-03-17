@@ -1,6 +1,13 @@
 "use client";
 
 import { useState, useCallback, useMemo } from "react";
+import JsonLd from "@/components/JsonLd";
+import RelatedTools from "@/components/RelatedTools";
+import {
+  generateFAQSchema,
+  generateWebAppSchema,
+  generateBreadcrumbSchema,
+} from "@/lib/jsonld";
 
 // Unicode block ranges with labels
 const BLOCKS: { label: string; start: number; end: number }[] = [
@@ -195,6 +202,28 @@ export default function CharacterMapPage() {
         name="description"
         content="Browse and search Unicode characters by block, name, or code point. Copy characters, view hex/decimal/HTML codes, and build character strings — all in your browser."
       />
+      <JsonLd
+        data={[
+          generateWebAppSchema({
+            slug: "character-map",
+            name: "Character Map & Unicode Lookup",
+            description: "Browse Unicode characters, search by name, and copy special symbols",
+            category: "text",
+          }),
+          generateBreadcrumbSchema({
+            slug: "character-map",
+            name: "Character Map & Unicode Lookup",
+            description: "Browse Unicode characters, search by name, and copy special symbols",
+            category: "text",
+          }),
+          generateFAQSchema([
+            { question: "What is Unicode?", answer: "Unicode is the universal character encoding standard that assigns a unique number (code point) to every character across all writing systems. It covers over 150,000 characters including Latin, Greek, Cyrillic, Chinese, Japanese, Korean, emoji, math symbols, and more." },
+            { question: "How do I use a Unicode character in HTML?", answer: "You can paste the character directly, use an HTML decimal entity (&#8364; for \u20AC), an HTML hex entity (&#x20AC; for \u20AC), or a CSS escape (\\20AC). All methods render the same character in browsers." },
+            { question: "What do the character codes mean?", answer: "U+XXXX is the Unicode code point in hexadecimal. The decimal value is the same number in base 10. HTML entities wrap these in &#...; syntax for web use. The JavaScript escape (\\uXXXX) is used in JS strings. UTF-8 shows the byte encoding." },
+            { question: "Is my data safe?", answer: "Yes. This tool runs entirely in your browser. No data is sent to any server. The character database is built into the page \u2014 no network requests are made." },
+          ]),
+        ]}
+      />
 
       <main className="min-h-screen bg-slate-900 text-white">
         <div className="max-w-6xl mx-auto px-4 py-12">
@@ -371,26 +400,7 @@ export default function CharacterMapPage() {
             </div>
           </div>
 
-          {/* Related Tools */}
-          <div className="bg-slate-800 rounded-lg p-6 mb-6">
-            <h2 className="text-xl font-semibold mb-4">Related Tools</h2>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-              {[
-                { name: "HTML Entity Encoder", slug: "html-entity-encoder", desc: "Encode and decode HTML entities" },
-                { name: "Text Case Converter", slug: "text-case-converter", desc: "Convert between text case formats" },
-                { name: "URL Encoder", slug: "url-encoder", desc: "Encode and decode URLs" },
-              ].map((tool) => (
-                <a
-                  key={tool.slug}
-                  href={`/tools/${tool.slug}`}
-                  className="bg-slate-700/50 hover:bg-slate-700 rounded p-3 transition-colors block"
-                >
-                  <div className="font-medium text-blue-400 text-sm">{tool.name}</div>
-                  <div className="text-xs text-slate-400 mt-1">{tool.desc}</div>
-                </a>
-              ))}
-            </div>
-          </div>
+          <RelatedTools currentSlug="character-map" />
 
           {/* FAQ */}
           <div className="bg-slate-800 rounded-lg p-6">

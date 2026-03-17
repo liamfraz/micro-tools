@@ -1,6 +1,13 @@
 "use client";
 
 import { useState, useCallback, useRef } from "react";
+import JsonLd from "@/components/JsonLd";
+import RelatedTools from "@/components/RelatedTools";
+import {
+  generateFAQSchema,
+  generateWebAppSchema,
+  generateBreadcrumbSchema,
+} from "@/lib/jsonld";
 
 export default function Base64EncoderPage() {
   const [plainText, setPlainText] = useState("");
@@ -130,6 +137,28 @@ export default function Base64EncoderPage() {
       <meta
         name="description"
         content="Encode and decode Base64 online for free. Supports UTF-8 text and file uploads. Convert text to Base64 or decode Base64 strings instantly in your browser."
+      />
+      <JsonLd
+        data={[
+          generateWebAppSchema({
+            slug: "base64-encoder",
+            name: "Base64 Encoder/Decoder",
+            description: "Encode and decode Base64 strings instantly",
+            category: "developer",
+          }),
+          generateBreadcrumbSchema({
+            slug: "base64-encoder",
+            name: "Base64 Encoder/Decoder",
+            description: "Encode and decode Base64 strings instantly",
+            category: "developer",
+          }),
+          generateFAQSchema([
+            { question: "What is Base64 encoding?", answer: "Base64 is a binary-to-text encoding scheme that represents binary data as an ASCII string. It uses 64 printable characters (A-Z, a-z, 0-9, +, /) to encode data, making it safe to transmit over text-based protocols like email or embed in JSON and XML." },
+            { question: "Why is my Base64 output larger than the input?", answer: "Base64 encoding increases data size by approximately 33%. Every 3 bytes of input become 4 Base64 characters. This overhead is the trade-off for being able to safely represent binary data as text." },
+            { question: "Does this tool support file encoding?", answer: "Yes. Click the \"Upload File\" button to select any file from your computer. The file will be read and converted to its Base64 representation entirely in your browser. No data is uploaded to any server." },
+            { question: "How does this tool handle UTF-8 characters?", answer: "This tool properly encodes and decodes multi-byte UTF-8 characters (including emojis, accented letters, and CJK characters) by using the TextEncoder and TextDecoder APIs rather than the legacy btoa/atob approach alone." },
+          ]),
+        ]}
       />
 
       <div className="min-h-screen bg-slate-900 text-slate-200">
@@ -287,26 +316,7 @@ export default function Base64EncoderPage() {
             </div>
           </div>
 
-          {/* Related Tools */}
-          <div className="bg-slate-800 rounded-lg p-6 mt-8 mb-6">
-            <h2 className="text-xl font-semibold mb-4">Related Tools</h2>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-              {[
-                { name: "URL Encoder & Decoder", slug: "url-encoder", desc: "Encode and decode URLs" },
-                { name: "Hash Generator", slug: "hash-generator", desc: "Generate MD5, SHA-256, and other hashes" },
-                { name: "HTML Entity Encoder", slug: "html-entity-encoder", desc: "Encode special characters to HTML entities" },
-              ].map((tool) => (
-                <a
-                  key={tool.slug}
-                  href={`/tools/${tool.slug}`}
-                  className="bg-slate-700/50 hover:bg-slate-700 rounded p-3 transition-colors block"
-                >
-                  <div className="font-medium text-blue-400 text-sm">{tool.name}</div>
-                  <div className="text-xs text-slate-400 mt-1">{tool.desc}</div>
-                </a>
-              ))}
-            </div>
-          </div>
+          <RelatedTools currentSlug="base64-encoder" />
 
           {/* FAQ Section */}
           <section className="mt-16 border-t border-slate-700 pt-10">

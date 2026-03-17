@@ -1,6 +1,13 @@
 "use client";
 
 import { useState, useCallback } from "react";
+import JsonLd from "@/components/JsonLd";
+import RelatedTools from "@/components/RelatedTools";
+import {
+  generateFAQSchema,
+  generateWebAppSchema,
+  generateBreadcrumbSchema,
+} from "@/lib/jsonld";
 
 function minifyCSS(css: string): { output: string; error: string | null } {
   try {
@@ -261,6 +268,28 @@ export default function CssMinifierPage() {
         name="description"
         content="Minify and beautify CSS online for free. Remove comments, whitespace, and optimize selectors. Shorten hex colors, remove unnecessary units, and reduce CSS file size."
       />
+      <JsonLd
+        data={[
+          generateWebAppSchema({
+            slug: "css-minifier",
+            name: "CSS Minifier",
+            description: "Minify CSS code by removing whitespace, comments, and unnecessary characters",
+            category: "developer",
+          }),
+          generateBreadcrumbSchema({
+            slug: "css-minifier",
+            name: "CSS Minifier",
+            description: "Minify CSS code by removing whitespace, comments, and unnecessary characters",
+            category: "developer",
+          }),
+          generateFAQSchema([
+            { question: "What is CSS minification?", answer: "CSS minification removes unnecessary characters like whitespace, comments, and redundant semicolons without changing the stylesheet's behavior. This reduces file size, which means faster downloads and improved page load times. Typical savings range from 20-50% depending on the input." },
+            { question: "Will minification break my CSS?", answer: "No. The minifier only removes characters that have no effect on how browsers interpret your CSS. Whitespace inside strings and required spaces (like between values) are preserved. The output is semantically identical to the input." },
+            { question: "How much can I save by minifying CSS?", answer: "Savings depend on how much whitespace and comments your CSS has. Well-commented development CSS typically sees 30-50% reduction. Already compact CSS may only see 10-15%. The tool shows you the exact byte savings and percentage after minifying." },
+            { question: "Is my CSS data safe?", answer: "Yes. All processing happens entirely in your browser using JavaScript. No CSS code is sent to any server. You can safely minify proprietary stylesheets and design system tokens." },
+          ]),
+        ]}
+      />
 
       <div className="min-h-screen bg-slate-900 text-slate-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -423,6 +452,8 @@ export default function CssMinifierPage() {
               ))}
             </div>
           </div>
+
+          <RelatedTools currentSlug="css-minifier" />
 
           {/* FAQ Section */}
           <section className="mt-16 border-t border-slate-700 pt-10">

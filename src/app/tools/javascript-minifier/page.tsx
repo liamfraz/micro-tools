@@ -1,6 +1,13 @@
 "use client";
 
 import { useState, useCallback } from "react";
+import JsonLd from "@/components/JsonLd";
+import RelatedTools from "@/components/RelatedTools";
+import {
+  generateFAQSchema,
+  generateWebAppSchema,
+  generateBreadcrumbSchema,
+} from "@/lib/jsonld";
 
 function minifyJS(code: string): { output: string; error: string | null } {
   try {
@@ -375,6 +382,28 @@ export default function JavaScriptMinifierPage() {
         name="description"
         content="Minify and beautify JavaScript online for free. Remove comments, whitespace, and reduce JS file size. Handles strings, template literals, and regex safely."
       />
+      <JsonLd
+        data={[
+          generateWebAppSchema({
+            slug: "javascript-minifier",
+            name: "JavaScript Minifier",
+            description: "Minify JavaScript code by removing whitespace, comments, and shortening variable names",
+            category: "developer",
+          }),
+          generateBreadcrumbSchema({
+            slug: "javascript-minifier",
+            name: "JavaScript Minifier",
+            description: "Minify JavaScript code by removing whitespace, comments, and shortening variable names",
+            category: "developer",
+          }),
+          generateFAQSchema([
+            { question: "What is JavaScript minification?", answer: "JavaScript minification removes unnecessary characters like comments, whitespace, and newlines without changing the code's behavior. This reduces file size for faster downloads and improved page load times. Typical savings are 30-60% depending on how much commenting and formatting the original code has." },
+            { question: "Does this rename variables (uglification)?", answer: "No. This tool performs whitespace and comment removal only. It does not rename variables, remove dead code, or perform tree shaking. For production builds with variable mangling, use tools like Terser, esbuild, or webpack's built-in minifier. This tool is ideal for quick minification without a build pipeline." },
+            { question: "Will minification break my code?", answer: "The minifier carefully preserves string literals (single, double, and template strings), regular expressions, and required whitespace between identifiers and keywords. It should not alter your code's behavior. However, always test minified code before deploying to production." },
+            { question: "Is my code safe?", answer: "Yes. All minification and beautification happens entirely in your browser. No JavaScript code is sent to any server. You can safely process proprietary code, API keys embedded in config files, and any other sensitive JavaScript." },
+          ]),
+        ]}
+      />
 
       <div className="min-h-screen bg-slate-900 text-slate-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -564,6 +593,8 @@ export default function JavaScriptMinifierPage() {
               ))}
             </div>
           </div>
+
+          <RelatedTools currentSlug="javascript-minifier" />
 
           {/* FAQ Section */}
           <section className="mt-16 border-t border-slate-700 pt-10">

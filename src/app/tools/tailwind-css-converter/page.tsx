@@ -1,6 +1,13 @@
 "use client";
 
 import { useState, useCallback } from "react";
+import JsonLd from "@/components/JsonLd";
+import RelatedTools from "@/components/RelatedTools";
+import {
+  generateFAQSchema,
+  generateWebAppSchema,
+  generateBreadcrumbSchema,
+} from "@/lib/jsonld";
 
 // ── CSS Property → Tailwind class mapping ──
 
@@ -694,6 +701,28 @@ export default function TailwindCssConverterPage() {
         name="description"
         content="Convert CSS to Tailwind utility classes and Tailwind classes back to CSS. Bidirectional conversion with spacing, colors, typography, flexbox, grid, and 80+ properties — all in your browser."
       />
+      <JsonLd
+        data={[
+          generateWebAppSchema({
+            slug: "tailwind-css-converter",
+            name: "Tailwind CSS Converter",
+            description: "Convert between Tailwind CSS classes and plain CSS",
+            category: "developer",
+          }),
+          generateBreadcrumbSchema({
+            slug: "tailwind-css-converter",
+            name: "Tailwind CSS Converter",
+            description: "Convert between Tailwind CSS classes and plain CSS",
+            category: "developer",
+          }),
+          generateFAQSchema([
+            { question: "How does the CSS to Tailwind conversion work?", answer: "The tool parses your CSS declarations and maps each property-value pair to the corresponding Tailwind utility class. It supports the default Tailwind spacing scale, color palette, typography scale, and most common CSS properties. Unrecognized values use Tailwind's arbitrary value syntax (e.g., w-[137px])." },
+            { question: "Does this handle responsive prefixes like sm: and md:?", answer: "For Tailwind \u2192 CSS conversion, responsive and state prefixes (sm:, md:, hover:, focus:, etc.) are stripped during conversion to produce the base CSS properties. For CSS \u2192 Tailwind, you'll need to add responsive prefixes manually since CSS media queries and the Tailwind responsive system map differently." },
+            { question: "What Tailwind version does this target?", answer: "This converter targets Tailwind CSS v3/v4 utility class syntax, which uses the standard spacing scale (0, 0.5, 1, 2, 3, 4... 96), default color palette names, and the JIT-enabled arbitrary value bracket syntax for custom values." },
+            { question: "Is my code safe? Does anything get sent to a server?", answer: "All conversion happens entirely in your browser using JavaScript. No CSS or Tailwind code is sent to any server. Your code never leaves your machine." },
+          ]),
+        ]}
+      />
 
       <main className="min-h-screen bg-slate-900 text-white">
         <div className="max-w-6xl mx-auto px-4 py-12">
@@ -862,26 +891,7 @@ export default function TailwindCssConverterPage() {
             </div>
           </div>
 
-          {/* Related Tools */}
-          <div className="bg-slate-800 rounded-lg p-6 mb-6">
-            <h2 className="text-xl font-semibold mb-4">Related Tools</h2>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-              {[
-                { name: "CSS Minifier & Beautifier", slug: "css-minifier", desc: "Minify or beautify your CSS code" },
-                { name: "CSS Gradient Generator", slug: "css-gradient-generator", desc: "Create beautiful CSS gradients visually" },
-                { name: "Color Converter", slug: "color-converter", desc: "Convert colors between HEX, RGB, HSL formats" },
-              ].map((tool) => (
-                <a
-                  key={tool.slug}
-                  href={`/tools/${tool.slug}`}
-                  className="bg-slate-700/50 hover:bg-slate-700 rounded p-3 transition-colors block"
-                >
-                  <div className="font-medium text-blue-400 text-sm">{tool.name}</div>
-                  <div className="text-xs text-slate-400 mt-1">{tool.desc}</div>
-                </a>
-              ))}
-            </div>
-          </div>
+          <RelatedTools currentSlug="tailwind-css-converter" />
 
           {/* FAQ */}
           <div className="bg-slate-800 rounded-lg p-6">

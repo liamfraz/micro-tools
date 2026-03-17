@@ -1,6 +1,13 @@
 "use client";
 
 import { useState, useCallback, useEffect } from "react";
+import JsonLd from "@/components/JsonLd";
+import RelatedTools from "@/components/RelatedTools";
+import {
+  generateFAQSchema,
+  generateWebAppSchema,
+  generateBreadcrumbSchema,
+} from "@/lib/jsonld";
 
 // Cron field definitions
 const MONTHS = ["", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
@@ -274,6 +281,36 @@ export default function CronExpressionParser() {
   const fieldRanges = ["0-59", "0-23", "1-31", "1-12", "0-6"];
 
   return (
+    <>
+      <title>Cron Expression Parser - Free Online Tool | DevTools Hub</title>
+      <meta
+        name="description"
+        content="Parse and explain cron schedule expressions with next run times. Understand cron syntax with human-readable descriptions and scheduled run previews."
+      />
+      <JsonLd
+        data={[
+          generateWebAppSchema({
+            slug: "cron-expression-parser",
+            name: "Cron Expression Parser",
+            description: "Parse and explain cron schedule expressions with next run times",
+            category: "developer",
+          }),
+          generateBreadcrumbSchema({
+            slug: "cron-expression-parser",
+            name: "Cron Expression Parser",
+            description: "Parse and explain cron schedule expressions with next run times",
+            category: "developer",
+          }),
+          generateFAQSchema([
+            { question: "What is a cron expression?", answer: "A cron expression is a string of 5 fields (minute, hour, day-of-month, month, day-of-week) that defines a recurring schedule. It's used by Unix/Linux cron daemon, CI/CD pipelines, task schedulers, and cloud services like AWS CloudWatch." },
+            { question: "What's the difference between */5 and 0,5,10,15...?", answer: "They produce the same result. */5 means 'every 5th value starting from 0', which expands to 0,5,10,15,20,25,30,35,40,45,50,55. The step syntax (/) is just shorthand." },
+            { question: "Can I use day names like MON, TUE?", answer: "Yes! This parser supports both numbered (0-6) and named (SUN-SAT) day-of-week values, and both numbered (1-12) and named (JAN-DEC) month values. Names are case-insensitive." },
+            { question: "How do day-of-month and day-of-week interact?", answer: "If both are specified (not *), the schedule runs when EITHER condition matches (OR logic). If only one is specified and the other is *, only the specified field is checked." },
+            { question: "Where are cron expressions commonly used?", answer: "Unix/Linux crontab, GitHub Actions (schedule trigger), AWS EventBridge/CloudWatch, Kubernetes CronJobs, Vercel Cron, Google Cloud Scheduler, CI/CD pipelines, and database maintenance jobs." },
+          ]),
+        ]}
+      />
+
     <main className="min-h-screen bg-slate-900 text-white">
       <div className="max-w-4xl mx-auto px-4 py-12">
         {/* Header */}
@@ -441,6 +478,8 @@ export default function CronExpressionParser() {
           </div>
         </div>
 
+        <RelatedTools currentSlug="cron-expression-parser" />
+
         {/* FAQ */}
         <div className="bg-slate-800 rounded-lg p-6">
           <h2 className="text-xl font-semibold mb-4">Frequently Asked Questions</h2>
@@ -476,5 +515,6 @@ export default function CronExpressionParser() {
         </div>
       </div>
     </main>
+    </>
   );
 }

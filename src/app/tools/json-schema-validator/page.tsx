@@ -1,6 +1,13 @@
 "use client";
 
 import { useState, useCallback } from "react";
+import JsonLd from "@/components/JsonLd";
+import RelatedTools from "@/components/RelatedTools";
+import {
+  generateFAQSchema,
+  generateWebAppSchema,
+  generateBreadcrumbSchema,
+} from "@/lib/jsonld";
 
 // ── JSON Schema Validator (Draft-07 subset) ──
 
@@ -426,6 +433,28 @@ export default function JsonSchemaValidatorPage() {
         name="description"
         content="Validate JSON data against JSON Schema (Draft-07) online for free. Check required fields, types, formats, patterns, and constraints — all in your browser."
       />
+      <JsonLd
+        data={[
+          generateWebAppSchema({
+            slug: "json-schema-validator",
+            name: "JSON Schema Validator",
+            description: "Validate JSON data against a JSON Schema with detailed error reporting",
+            category: "developer",
+          }),
+          generateBreadcrumbSchema({
+            slug: "json-schema-validator",
+            name: "JSON Schema Validator",
+            description: "Validate JSON data against a JSON Schema with detailed error reporting",
+            category: "developer",
+          }),
+          generateFAQSchema([
+            { question: "What is JSON Schema?", answer: "JSON Schema is a vocabulary that allows you to annotate and validate JSON documents. It defines the shape of your data \u2014 types, required fields, string patterns, number ranges, and more. It's widely used for API request/response validation, configuration files, and form generation." },
+            { question: "Which JSON Schema draft does this support?", answer: "This validator implements a practical subset of JSON Schema Draft-07, covering the most commonly used keywords: type, properties, required, enum, const, format validations, array constraints, combinators (allOf, anyOf, oneOf, not), conditionals (if/then/else), $ref, and more." },
+            { question: "What formats are validated?", answer: "When format validation is enabled, this tool checks: email, uri, date-time (ISO 8601), date, time, ipv4, ipv6, and uuid. Format validation follows the specification's recommendation of basic structural checks." },
+            { question: "Is my data safe?", answer: "Yes. All validation happens entirely in your browser using JavaScript. No data is sent to any server. Your schemas and data never leave your machine." },
+          ]),
+        ]}
+      />
 
       <main className="min-h-screen bg-slate-900 text-white">
         <div className="max-w-6xl mx-auto px-4 py-12">
@@ -591,26 +620,7 @@ export default function JsonSchemaValidatorPage() {
             </div>
           </div>
 
-          {/* Related Tools */}
-          <div className="bg-slate-800 rounded-lg p-6 mb-6">
-            <h2 className="text-xl font-semibold mb-4">Related Tools</h2>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-              {[
-                { name: "JSON Formatter", slug: "json-formatter", desc: "Format and validate JSON data" },
-                { name: "JSON to YAML", slug: "json-to-yaml", desc: "Convert between JSON and YAML" },
-                { name: "JSON to CSV", slug: "json-to-csv", desc: "Convert JSON arrays to CSV" },
-              ].map((tool) => (
-                <a
-                  key={tool.slug}
-                  href={`/tools/${tool.slug}`}
-                  className="bg-slate-700/50 hover:bg-slate-700 rounded p-3 transition-colors block"
-                >
-                  <div className="font-medium text-blue-400 text-sm">{tool.name}</div>
-                  <div className="text-xs text-slate-400 mt-1">{tool.desc}</div>
-                </a>
-              ))}
-            </div>
-          </div>
+          <RelatedTools currentSlug="json-schema-validator" />
 
           {/* FAQ */}
           <div className="bg-slate-800 rounded-lg p-6">

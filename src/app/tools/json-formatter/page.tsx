@@ -1,6 +1,13 @@
 "use client";
 
 import { useState, useCallback } from "react";
+import JsonLd from "@/components/JsonLd";
+import RelatedTools from "@/components/RelatedTools";
+import {
+  generateFAQSchema,
+  generateWebAppSchema,
+  generateBreadcrumbSchema,
+} from "@/lib/jsonld";
 
 export default function JsonFormatterPage() {
   const [input, setInput] = useState("");
@@ -79,6 +86,28 @@ export default function JsonFormatterPage() {
       <meta
         name="description"
         content="Format, validate, and minify JSON online for free. Pretty-print JSON with customizable indentation, error highlighting with line numbers, and one-click copy."
+      />
+      <JsonLd
+        data={[
+          generateWebAppSchema({
+            slug: "json-formatter",
+            name: "JSON Formatter & Validator",
+            description: "Format, validate, and beautify JSON data with syntax highlighting",
+            category: "developer",
+          }),
+          generateBreadcrumbSchema({
+            slug: "json-formatter",
+            name: "JSON Formatter & Validator",
+            description: "Format, validate, and beautify JSON data with syntax highlighting",
+            category: "developer",
+          }),
+          generateFAQSchema([
+            { question: "What is JSON formatting?", answer: "JSON formatting (also called \"pretty-printing\") adds consistent indentation and line breaks to raw JSON data, making it easier to read and debug. This tool parses your JSON and re-serializes it with your chosen indentation level." },
+            { question: "What does minifying JSON do?", answer: "Minifying removes all unnecessary whitespace from JSON, producing the smallest possible output. This is useful for reducing payload sizes when sending JSON over a network or storing it in databases." },
+            { question: "How do I fix \"Unexpected token\" errors?", answer: "This usually means your JSON has a syntax error such as a trailing comma, missing quote, or unescaped special character. Check the line and column number shown in the error message to locate the issue. Common fixes include removing trailing commas after the last item in an array or object, and ensuring all strings are double-quoted." },
+            { question: "Is my data safe?", answer: "Yes. All processing happens entirely in your browser using JavaScript's built-in JSON.parse and JSON.stringify. No data is sent to any server." },
+          ]),
+        ]}
       />
 
       <div className="min-h-screen bg-slate-900 text-slate-200">
@@ -238,6 +267,8 @@ export default function JsonFormatterPage() {
               />
             </div>
           </div>
+
+          <RelatedTools currentSlug="json-formatter" />
 
           {/* FAQ Section */}
           <section className="mt-16 border-t border-slate-700 pt-10">

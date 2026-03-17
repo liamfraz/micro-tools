@@ -1,6 +1,13 @@
 "use client";
 
 import { useState, useCallback } from "react";
+import JsonLd from "@/components/JsonLd";
+import RelatedTools from "@/components/RelatedTools";
+import {
+  generateFAQSchema,
+  generateWebAppSchema,
+  generateBreadcrumbSchema,
+} from "@/lib/jsonld";
 
 interface RGB { r: number; g: number; b: number }
 interface HSL { h: number; s: number; l: number }
@@ -239,6 +246,28 @@ export default function ColorConverterPage() {
         name="description"
         content="Convert colors between HEX, RGB, HSL, HSV, and CMYK formats instantly. Visual color picker with live preview. All processing in your browser."
       />
+      <JsonLd
+        data={[
+          generateWebAppSchema({
+            slug: "color-converter",
+            name: "Color Converter",
+            description: "Convert colors between HEX, RGB, HSL, and CMYK formats",
+            category: "design",
+          }),
+          generateBreadcrumbSchema({
+            slug: "color-converter",
+            name: "Color Converter",
+            description: "Convert colors between HEX, RGB, HSL, and CMYK formats",
+            category: "design",
+          }),
+          generateFAQSchema([
+            { question: "What is the difference between HSL and HSV?", answer: "HSL (Hue, Saturation, Lightness) and HSV (Hue, Saturation, Value) are both cylindrical color models, but they define brightness differently. In HSL, 50% lightness is the pure color, while 0% is black and 100% is white. In HSV, 100% value is the brightest version of the color. HSL is more common in CSS, while HSV is used in design tools like Photoshop and Figma." },
+            { question: "When should I use CMYK instead of RGB?", answer: "Use RGB for anything displayed on a screen (websites, apps, digital media). Use CMYK for anything that will be physically printed (business cards, flyers, packaging). CMYK is a subtractive color model optimized for ink mixing, while RGB is additive and optimized for light emission. Colors may look different between RGB and CMYK because screens and printers produce color differently." },
+            { question: "Why does my color look different in CMYK?", answer: "RGB screens can display a wider range of colors (gamut) than CMYK printers. Some vibrant RGB colors -- especially bright blues, greens, and saturated reds -- cannot be exactly reproduced in CMYK. The converter shows the closest CMYK approximation, but always verify with a physical proof before printing." },
+            { question: "Is my color data safe?", answer: "Yes. All color conversions happen entirely in your browser using JavaScript math functions. No data is sent to any server." },
+          ]),
+        ]}
+      />
 
       <div className="min-h-screen bg-slate-900 text-slate-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -448,6 +477,8 @@ export default function ColorConverterPage() {
               ))}
             </div>
           </div>
+
+          <RelatedTools currentSlug="color-converter" />
 
           {/* FAQ Section */}
           <section className="mt-16 border-t border-slate-700 pt-10">

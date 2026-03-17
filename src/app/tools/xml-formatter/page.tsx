@@ -1,6 +1,13 @@
 "use client";
 
 import { useState, useCallback } from "react";
+import JsonLd from "@/components/JsonLd";
+import RelatedTools from "@/components/RelatedTools";
+import {
+  generateFAQSchema,
+  generateWebAppSchema,
+  generateBreadcrumbSchema,
+} from "@/lib/jsonld";
 
 type IndentStyle = "2-spaces" | "4-spaces" | "tab";
 
@@ -320,6 +327,28 @@ export default function XmlFormatterPage() {
         name="description"
         content="Format, beautify, and minify XML online for free. Supports nested elements, comments, CDATA, processing instructions, attribute sorting, and customizable indentation."
       />
+      <JsonLd
+        data={[
+          generateWebAppSchema({
+            slug: "xml-formatter",
+            name: "XML Formatter",
+            description: "Format and beautify XML documents with proper indentation",
+            category: "developer",
+          }),
+          generateBreadcrumbSchema({
+            slug: "xml-formatter",
+            name: "XML Formatter",
+            description: "Format and beautify XML documents with proper indentation",
+            category: "developer",
+          }),
+          generateFAQSchema([
+            { question: "What does this XML formatter do?", answer: "This tool takes unformatted or minified XML and adds proper indentation, line breaks, and structure to make it readable. It can also minify formatted XML by removing all unnecessary whitespace and comments, reducing file size for production use." },
+            { question: "Does this tool validate XML?", answer: "This tool performs basic structural parsing to format your XML. It will detect malformed tags, unclosed elements, and syntax errors. However, it does not validate against an XSD schema or DTD. For full schema validation, use a dedicated XML validator." },
+            { question: "What is attribute sorting?", answer: "When enabled, attribute sorting alphabetically orders the attributes on each element. This makes XML more consistent and easier to compare in diffs. For example, <tag z=\"1\" a=\"2\"> becomes <tag a=\"2\" z=\"1\">." },
+            { question: "Is my XML data safe?", answer: "Yes. All XML parsing and formatting happens entirely in your browser using JavaScript. No data is sent to any server. You can safely format sensitive XML documents including configuration files and API responses." },
+          ]),
+        ]}
+      />
 
       <div className="min-h-screen bg-slate-900 text-slate-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -519,6 +548,8 @@ export default function XmlFormatterPage() {
               ))}
             </div>
           </div>
+
+          <RelatedTools currentSlug="xml-formatter" />
 
           {/* FAQ Section */}
           <section className="mt-16 border-t border-slate-700 pt-10">

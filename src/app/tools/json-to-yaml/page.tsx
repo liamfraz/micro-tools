@@ -1,6 +1,13 @@
 "use client";
 
 import { useState, useCallback } from "react";
+import JsonLd from "@/components/JsonLd";
+import RelatedTools from "@/components/RelatedTools";
+import {
+  generateFAQSchema,
+  generateWebAppSchema,
+  generateBreadcrumbSchema,
+} from "@/lib/jsonld";
 
 // JSON to YAML converter — no external dependencies
 const jsonToYaml = (value: unknown, indent: number = 0, inlineArray: boolean = false): string => {
@@ -425,6 +432,29 @@ export default function JsonToYaml() {
 
   return (
     <main className="min-h-screen bg-slate-900 text-white">
+      <JsonLd
+        data={[
+          generateWebAppSchema({
+            slug: "json-to-yaml",
+            name: "JSON to YAML Converter",
+            description: "Convert JSON data to YAML format instantly",
+            category: "conversion",
+          }),
+          generateBreadcrumbSchema({
+            slug: "json-to-yaml",
+            name: "JSON to YAML Converter",
+            description: "Convert JSON data to YAML format instantly",
+            category: "conversion",
+          }),
+          generateFAQSchema([
+            { question: "What is YAML?", answer: "YAML (YAML Ain't Markup Language) is a human-readable data serialization format. It uses indentation instead of brackets, making it popular for configuration files in Kubernetes, Docker Compose, GitHub Actions, and other DevOps tools." },
+            { question: "Can I convert YAML back to JSON?", answer: "Yes! This tool is bidirectional. Click the 'YAML -> JSON' tab to convert YAML to JSON. You can also use the swap button to move your output back to the input and reverse the direction." },
+            { question: "Does this handle nested objects and arrays?", answer: "Yes. The converter handles deeply nested objects, arrays of objects, mixed types, multiline strings, and other complex structures. Nested objects become indented YAML mappings, and arrays become dash-prefixed lists." },
+            { question: "Is YAML a superset of JSON?", answer: "Yes -- valid JSON is also valid YAML. This means you can use JSON syntax within YAML files. However, YAML adds features like comments, anchors, and multiline strings that JSON doesn't support." },
+            { question: "Why would I convert JSON to YAML?", answer: "Common reasons: creating Kubernetes manifests from JSON API responses, converting package.json to a more readable format, migrating configuration files to YAML for better readability and comment support." },
+          ]),
+        ]}
+      />
       <div className="max-w-4xl mx-auto px-4 py-12">
         {/* Header */}
         <div className="mb-8">
@@ -569,26 +599,7 @@ export default function JsonToYaml() {
           </div>
         </div>
 
-        {/* Related Tools */}
-        <div className="bg-slate-800 rounded-lg p-6 mb-6">
-          <h2 className="text-xl font-semibold mb-4">Related Converter Tools</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            {[
-              { name: "JSON Formatter", slug: "json-formatter", desc: "Format and validate JSON data" },
-              { name: "JSON to CSV", slug: "json-to-csv", desc: "Convert JSON arrays to CSV and back" },
-              { name: "XML Formatter", slug: "xml-formatter", desc: "Format and beautify XML documents" },
-            ].map((tool) => (
-              <a
-                key={tool.slug}
-                href={`/tools/${tool.slug}`}
-                className="bg-slate-700/50 hover:bg-slate-700 rounded p-3 transition-colors block"
-              >
-                <div className="font-medium text-blue-400 text-sm">{tool.name}</div>
-                <div className="text-xs text-slate-400 mt-1">{tool.desc}</div>
-              </a>
-            ))}
-          </div>
-        </div>
+        <RelatedTools currentSlug="json-to-yaml" />
 
         {/* FAQ */}
         <div className="bg-slate-800 rounded-lg p-6">

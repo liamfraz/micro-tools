@@ -1,6 +1,13 @@
 "use client";
 
 import { useState, useCallback, useRef } from "react";
+import JsonLd from "@/components/JsonLd";
+import RelatedTools from "@/components/RelatedTools";
+import {
+  generateFAQSchema,
+  generateWebAppSchema,
+  generateBreadcrumbSchema,
+} from "@/lib/jsonld";
 
 const formatBytes = (bytes: number): string => {
   if (bytes === 0) return "0 B";
@@ -175,6 +182,28 @@ export default function SvgToPngPage() {
       <meta
         name="description"
         content="Convert SVG files to PNG, JPEG, or WebP online for free. Scale up to 4x for retina displays with custom dimensions and background options — all in your browser."
+      />
+      <JsonLd
+        data={[
+          generateWebAppSchema({
+            slug: "svg-to-png",
+            name: "SVG to PNG Converter",
+            description: "Convert SVG files to PNG images with customizable dimensions and transparent background",
+            category: "conversion",
+          }),
+          generateBreadcrumbSchema({
+            slug: "svg-to-png",
+            name: "SVG to PNG Converter",
+            description: "Convert SVG files to PNG images with customizable dimensions and transparent background",
+            category: "conversion",
+          }),
+          generateFAQSchema([
+            { question: "Why convert SVG to PNG?", answer: "SVGs are great for web but many platforms (social media, email, documents, presentations) require raster images like PNG. Converting SVG to PNG also lets you control the exact pixel dimensions and create high-resolution versions for retina displays." },
+            { question: "What does the scale option do?", answer: "Scale multiplies the SVG's native dimensions. A 100x100 SVG at 2x becomes a 200x200 PNG, at 4x it becomes 400x400. Higher scales produce sharper images, especially useful for icons and logos on high-DPI (retina) screens." },
+            { question: "Is my SVG uploaded to a server?", answer: "No. All conversion happens entirely in your browser using the Canvas API. Your SVG files and code never leave your device -- nothing is sent to any server." },
+            { question: "Can I paste SVG code directly?", answer: "Yes! Switch to the 'Paste SVG Code' tab and paste your SVG markup. This is useful when you have inline SVG from a website, design tool export, or code editor. The converter will parse the dimensions from the viewBox or width/height attributes." },
+          ]),
+        ]}
       />
 
     <main className="min-h-screen bg-slate-900 text-white">
@@ -461,26 +490,7 @@ export default function SvgToPngPage() {
         {/* Hidden canvas */}
         <canvas ref={canvasRef} className="hidden" />
 
-        {/* Related Tools */}
-        <div className="bg-slate-800 rounded-lg p-6 mb-6">
-          <h2 className="text-xl font-semibold mb-4">Related Tools</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-            {[
-              { name: "Image Resizer", slug: "image-resizer", desc: "Resize images with social media presets" },
-              { name: "Image Compressor", slug: "image-compressor", desc: "Compress images to reduce file size" },
-              { name: "Color Palette Generator", slug: "color-palette-generator", desc: "Generate beautiful color palettes" },
-            ].map((tool) => (
-              <a
-                key={tool.slug}
-                href={`/tools/${tool.slug}`}
-                className="bg-slate-700/50 hover:bg-slate-700 rounded p-3 transition-colors block"
-              >
-                <div className="font-medium text-blue-400 text-sm">{tool.name}</div>
-                <div className="text-xs text-slate-400 mt-1">{tool.desc}</div>
-              </a>
-            ))}
-          </div>
-        </div>
+        <RelatedTools currentSlug="svg-to-png" />
 
         {/* FAQ */}
         <div className="bg-slate-800 rounded-lg p-6">

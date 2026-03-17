@@ -1,6 +1,13 @@
 "use client";
 
 import { useState, useCallback } from "react";
+import JsonLd from "@/components/JsonLd";
+import RelatedTools from "@/components/RelatedTools";
+import {
+  generateFAQSchema,
+  generateWebAppSchema,
+  generateBreadcrumbSchema,
+} from "@/lib/jsonld";
 
 type HashAlgorithm = "MD5" | "SHA-1" | "SHA-256" | "SHA-384" | "SHA-512";
 
@@ -199,6 +206,28 @@ export default function HashGeneratorPage() {
         name="description"
         content="Generate MD5, SHA-1, SHA-256, SHA-384, and SHA-512 hashes online for free. Compute all hash digests simultaneously from any text input. All processing in your browser."
       />
+      <JsonLd
+        data={[
+          generateWebAppSchema({
+            slug: "hash-generator",
+            name: "Hash Generator",
+            description: "Generate MD5, SHA-1, SHA-256, and SHA-512 hashes from text",
+            category: "developer",
+          }),
+          generateBreadcrumbSchema({
+            slug: "hash-generator",
+            name: "Hash Generator",
+            description: "Generate MD5, SHA-1, SHA-256, and SHA-512 hashes from text",
+            category: "developer",
+          }),
+          generateFAQSchema([
+            { question: "What is a hash function?", answer: "A cryptographic hash function takes an input of any size and produces a fixed-size output (the \"digest\"). The same input always produces the same output, but even a tiny change in input produces a completely different hash. Hash functions are one-way \u2014 you cannot reverse a hash back to its original input." },
+            { question: "Which hash algorithm should I use?", answer: "For security purposes, use SHA-256 or SHA-512. MD5 and SHA-1 have known collision vulnerabilities and should not be used for security. MD5 is still acceptable for non-security use cases like file checksums and cache keys. SHA-256 is the most widely used secure hash algorithm today." },
+            { question: "Can I decrypt a hash back to the original text?", answer: "No. Hash functions are one-way by design. You cannot mathematically reverse a hash to recover the original input. \"Hash cracking\" tools work by hashing many possible inputs and comparing results, not by reversing the function. This is why longer, more complex inputs are harder to crack." },
+            { question: "Is my data safe?", answer: "Yes. SHA hashes are computed using your browser's built-in Web Crypto API, and MD5 is computed with a pure JavaScript implementation. No data is sent to any server. Everything runs entirely in your browser." },
+          ]),
+        ]}
+      />
 
       <div className="min-h-screen bg-slate-900 text-slate-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -376,6 +405,8 @@ export default function HashGeneratorPage() {
               </table>
             </div>
           </div>
+
+          <RelatedTools currentSlug="hash-generator" />
 
           {/* FAQ Section */}
           <section className="mt-16 border-t border-slate-700 pt-10">

@@ -1,6 +1,13 @@
 "use client";
 
 import { useState, useCallback } from "react";
+import JsonLd from "@/components/JsonLd";
+import RelatedTools from "@/components/RelatedTools";
+import {
+  generateFAQSchema,
+  generateWebAppSchema,
+  generateBreadcrumbSchema,
+} from "@/lib/jsonld";
 
 // Classic Lorem Ipsum vocabulary — standard words used by generators
 const WORDS = [
@@ -186,6 +193,34 @@ export default function LoremIpsumGenerator() {
 
   return (
     <main className="min-h-screen bg-slate-900 text-white">
+      <title>Lorem Ipsum Generator - Free Online Tool | DevTools Hub</title>
+      <meta
+        name="description"
+        content="Generate placeholder text in paragraphs, sentences, or words. Classic Lorem Ipsum for designs, mockups, and layouts. Free online generator."
+      />
+      <JsonLd
+        data={[
+          generateWebAppSchema({
+            slug: "lorem-ipsum-generator",
+            name: "Lorem Ipsum Generator",
+            description: "Generate placeholder text in paragraphs, sentences, or words",
+            category: "text",
+          }),
+          generateBreadcrumbSchema({
+            slug: "lorem-ipsum-generator",
+            name: "Lorem Ipsum Generator",
+            description: "Generate placeholder text in paragraphs, sentences, or words",
+            category: "text",
+          }),
+          generateFAQSchema([
+            { question: "Why use Lorem Ipsum instead of real text?", answer: "Lorem Ipsum provides a natural distribution of letters and word lengths, making layouts look realistic without distracting readers with meaningful content. It helps focus attention on visual design rather than copy." },
+            { question: "Is this generator free to use?", answer: "Yes, completely free with no limits. Generate as much placeholder text as you need — all processing happens in your browser." },
+            { question: "What does 'Copy as HTML' do?", answer: "It wraps your generated text in HTML tags — paragraphs become <p> tags and list items become <ol><li> elements — ready to paste into HTML templates or CMS editors." },
+            { question: "How many paragraphs should I use?", answer: "For a typical web page mockup, 3-5 paragraphs works well. Use 1 paragraph for card components, 5-10 for long-form content layouts like blog posts." },
+            { question: "Is the generated text real Latin?", answer: "It's based on Latin vocabulary from Cicero's writings, but the sentences are randomly assembled. While individual words are real Latin, the sentences don't form coherent meaning." },
+          ]),
+        ]}
+      />
       <div className="max-w-4xl mx-auto px-4 py-12">
         {/* Header */}
         <div className="mb-8">
@@ -345,6 +380,8 @@ export default function LoremIpsumGenerator() {
             ))}
           </div>
         </div>
+
+        <RelatedTools currentSlug="lorem-ipsum-generator" />
 
         {/* FAQ */}
         <div className="bg-slate-800 rounded-lg p-6">

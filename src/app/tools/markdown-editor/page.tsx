@@ -1,6 +1,13 @@
 "use client";
 
 import { useState, useCallback, useMemo } from "react";
+import JsonLd from "@/components/JsonLd";
+import RelatedTools from "@/components/RelatedTools";
+import {
+  generateFAQSchema,
+  generateWebAppSchema,
+  generateBreadcrumbSchema,
+} from "@/lib/jsonld";
 
 const EXAMPLE_MARKDOWN = `# Welcome to the Markdown Editor
 
@@ -87,6 +94,28 @@ export default function MarkdownEditorPage() {
       <meta
         name="description"
         content="Write and preview Markdown in real-time. Supports headings, bold, italic, links, code blocks, tables, task lists, and more. Export as HTML or copy Markdown."
+      />
+      <JsonLd
+        data={[
+          generateWebAppSchema({
+            slug: "markdown-editor",
+            name: "Markdown Editor",
+            description: "Write and preview Markdown in real time with GitHub-flavored syntax support",
+            category: "text",
+          }),
+          generateBreadcrumbSchema({
+            slug: "markdown-editor",
+            name: "Markdown Editor",
+            description: "Write and preview Markdown in real time with GitHub-flavored syntax support",
+            category: "text",
+          }),
+          generateFAQSchema([
+            { question: "What is Markdown?", answer: "Markdown is a lightweight markup language created by John Gruber in 2004. It uses plain text formatting syntax to create structured documents that can be converted to HTML. It is widely used in README files, documentation, blogs, forums, and messaging platforms like Slack and Discord." },
+            { question: "What Markdown features does this editor support?", answer: "This editor supports headings (h1-h6), bold, italic, strikethrough, links, images, inline code, fenced code blocks with language labels, blockquotes, ordered and unordered lists, task lists with checkboxes, tables, and horizontal rules. It covers the full CommonMark specification plus GitHub Flavored Markdown extensions." },
+            { question: "Can I export the output as HTML?", answer: "Yes. Click the \"Copy HTML\" button to copy the rendered HTML to your clipboard. You can paste it directly into any HTML file, CMS, or email template." },
+            { question: "Is my content saved?", answer: "No. All content is stored only in your browser's memory during the current session. Nothing is saved to a server or persisted between visits. Copy your Markdown before closing the page if you want to keep it." },
+          ]),
+        ]}
       />
 
       <div className="min-h-screen bg-slate-900 text-slate-200">
@@ -249,6 +278,8 @@ export default function MarkdownEditorPage() {
               ))}
             </div>
           </div>
+
+          <RelatedTools currentSlug="markdown-editor" />
 
           {/* FAQ Section */}
           <section className="mt-16 border-t border-slate-700 pt-10">

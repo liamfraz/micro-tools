@@ -1,6 +1,13 @@
 "use client";
 
 import { useState, useCallback, useRef, useEffect } from "react";
+import JsonLd from "@/components/JsonLd";
+import RelatedTools from "@/components/RelatedTools";
+import {
+  generateFAQSchema,
+  generateWebAppSchema,
+  generateBreadcrumbSchema,
+} from "@/lib/jsonld";
 
 // Minimal QR Code generator using Canvas API
 // Uses a simplified approach: renders text into a QR-like matrix using
@@ -420,6 +427,28 @@ export default function QrCodeGeneratorPage() {
         name="description"
         content="Generate QR codes online for free. Create QR codes from any text, URL, or data. Customize colors and size. Download as PNG or SVG. No data sent to any server."
       />
+      <JsonLd
+        data={[
+          generateWebAppSchema({
+            slug: "qr-code-generator",
+            name: "QR Code Generator",
+            description: "Generate QR codes from text, URLs, Wi-Fi credentials, and more. Download as PNG or SVG",
+            category: "developer",
+          }),
+          generateBreadcrumbSchema({
+            slug: "qr-code-generator",
+            name: "QR Code Generator",
+            description: "Generate QR codes from text, URLs, Wi-Fi credentials, and more. Download as PNG or SVG",
+            category: "developer",
+          }),
+          generateFAQSchema([
+            { question: "What is a QR code?", answer: "A QR (Quick Response) code is a two-dimensional barcode that can store text, URLs, contact information, Wi-Fi credentials, and other data. QR codes can be scanned by smartphone cameras and dedicated barcode readers to quickly access the encoded information." },
+            { question: "What types of data can I encode?", answer: "You can encode any text data including website URLs, email addresses (mailto: links), phone numbers (tel: links), Wi-Fi network credentials (WIFI: format), vCard contact information, plain text messages, and more. The maximum capacity depends on the data type but is typically up to 271 bytes in byte mode." },
+            { question: "What's the difference between PNG and SVG downloads?", answer: "PNG is a raster format -- it has a fixed pixel resolution based on your size setting. SVG is a vector format that scales to any size without losing quality, making it ideal for print materials, business cards, and large format displays." },
+            { question: "Is my data safe?", answer: "Yes. The QR code is generated entirely in your browser using JavaScript and the Canvas API. No data is sent to any server. Your text, URLs, and credentials never leave your device." },
+          ]),
+        ]}
+      />
 
       <div className="min-h-screen bg-slate-900 text-slate-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -642,6 +671,8 @@ export default function QrCodeGeneratorPage() {
               <span className="font-bold">Error:</span> {error}
             </div>
           )}
+
+          <RelatedTools currentSlug="qr-code-generator" />
 
           {/* FAQ Section */}
           <section className="mt-16 border-t border-slate-700 pt-10">
