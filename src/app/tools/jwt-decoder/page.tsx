@@ -166,7 +166,24 @@ export default function JwtDecoderPage() {
           2
         );
       }
-      await navigator.clipboard.writeText(text);
+      try {
+        await navigator.clipboard.writeText(text);
+      } catch {
+        // Fallback for non-secure contexts or unfocused pages
+        try {
+          const textarea = document.createElement("textarea");
+          textarea.value = text;
+          textarea.style.position = "fixed";
+          textarea.style.opacity = "0";
+          document.body.appendChild(textarea);
+          textarea.select();
+          document.execCommand("copy");
+          document.body.removeChild(textarea);
+        } catch {
+          // Both methods failed — silently ignore
+          return;
+        }
+      }
       setCopied(which);
       setTimeout(() => setCopied(null), 2000);
     },

@@ -117,12 +117,26 @@ function textColor(h: number, s: number, l: number): string {
   return l > 55 ? "#1e293b" : "#f1f5f9";
 }
 
+// Static placeholder colors used for SSR to avoid hydration mismatch from Math.random()
+const INITIAL_COLORS: ColorEntry[] = [
+  { h: 210, s: 60, l: 50, locked: false },
+  { h: 340, s: 55, l: 45, locked: false },
+  { h: 120, s: 50, l: 55, locked: false },
+  { h: 45, s: 65, l: 50, locked: false },
+  { h: 270, s: 50, l: 50, locked: false },
+];
+
 export default function ColorPaletteGeneratorPage() {
-  const [colors, setColors] = useState<ColorEntry[]>(() =>
-    generatePalette("random", Array.from({ length: 5 }, () => randomColor()))
-  );
+  const [colors, setColors] = useState<ColorEntry[]>(INITIAL_COLORS);
   const [mode, setMode] = useState<HarmonyMode>("random");
   const [copied, setCopied] = useState<string | null>(null);
+  const [mounted, setMounted] = useState(false);
+
+  // Generate random palette only after mount to avoid SSR/client mismatch
+  useEffect(() => {
+    setColors(generatePalette("random", Array.from({ length: 5 }, () => randomColor())));
+    setMounted(true);
+  }, []);
 
   const regenerate = useCallback(() => {
     setColors((prev) => generatePalette(mode, prev));

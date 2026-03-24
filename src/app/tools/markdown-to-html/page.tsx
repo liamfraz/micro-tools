@@ -453,6 +453,7 @@ export default function MarkdownToHtmlPage() {
               {format === "preview" ? (
                 <div
                   className="w-full h-96 bg-slate-800 border border-slate-700 rounded-lg p-6 overflow-y-auto prose-md"
+                  suppressHydrationWarning
                   dangerouslySetInnerHTML={{ __html: output || '<p class="text-slate-500 italic">Preview will appear here...</p>' }}
                 />
               ) : (

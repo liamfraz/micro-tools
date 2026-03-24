@@ -17,7 +17,7 @@ export default function TimestampConverterPage() {
   const [inputMode, setInputMode] = useState<InputMode>("unix");
   const [error, setError] = useState<string | null>(null);
   const [result, setResult] = useState<ConversionResult | null>(null);
-  const [liveTimestamp, setLiveTimestamp] = useState(Math.floor(Date.now() / 1000));
+  const [liveTimestamp, setLiveTimestamp] = useState<number | null>(null);
   const [copied, setCopied] = useState<string | null>(null);
 
   interface ConversionResult {
@@ -33,8 +33,9 @@ export default function TimestampConverterPage() {
     isLeapYear: boolean;
   }
 
-  // Live clock
+  // Live clock — only starts on client to avoid hydration mismatch
   useEffect(() => {
+    setLiveTimestamp(Math.floor(Date.now() / 1000));
     const interval = setInterval(() => {
       setLiveTimestamp(Math.floor(Date.now() / 1000));
     }, 1000);
@@ -246,11 +247,11 @@ export default function TimestampConverterPage() {
             <div>
               <span className="text-sm text-slate-400">Current Unix Timestamp:</span>
               <span className="ml-2 font-mono text-xl text-white font-bold">
-                {liveTimestamp}
+                {liveTimestamp !== null ? liveTimestamp : "—"}
               </span>
             </div>
             <div className="text-sm text-slate-400">
-              {new Date(liveTimestamp * 1000).toUTCString()}
+              {liveTimestamp !== null ? new Date(liveTimestamp * 1000).toUTCString() : "—"}
             </div>
           </div>
 

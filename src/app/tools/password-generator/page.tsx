@@ -149,18 +149,42 @@ export default function PasswordGeneratorPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const fallbackCopy = useCallback((text: string): boolean => {
+    try {
+      const textarea = document.createElement("textarea");
+      textarea.value = text;
+      textarea.style.position = "fixed";
+      textarea.style.opacity = "0";
+      document.body.appendChild(textarea);
+      textarea.select();
+      document.execCommand("copy");
+      document.body.removeChild(textarea);
+      return true;
+    } catch {
+      return false;
+    }
+  }, []);
+
   const copyText = useCallback(async (text: string, id: string) => {
-    await navigator.clipboard.writeText(text);
+    try {
+      await navigator.clipboard.writeText(text);
+    } catch {
+      if (!fallbackCopy(text)) return;
+    }
     setCopied(id);
     setTimeout(() => setCopied(null), 2000);
-  }, []);
+  }, [fallbackCopy]);
 
   const copyAllBulk = useCallback(async () => {
     const text = passwords.join("\n");
-    await navigator.clipboard.writeText(text);
+    try {
+      await navigator.clipboard.writeText(text);
+    } catch {
+      if (!fallbackCopy(text)) return;
+    }
     setCopied("all-bulk");
     setTimeout(() => setCopied(null), 2000);
-  }, [passwords]);
+  }, [passwords, fallbackCopy]);
 
   const entropy = password ? calculateEntropy(password, options) : 0;
   const strength = getStrengthLabel(entropy);
