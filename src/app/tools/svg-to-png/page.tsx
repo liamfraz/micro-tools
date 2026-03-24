@@ -307,7 +307,8 @@ export default function SvgToPngPage() {
             <div className="bg-white/5 border border-slate-700 rounded p-4 flex justify-center"
               style={{ backgroundImage: "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16'%3E%3Crect width='8' height='8' fill='%23333'/%3E%3Crect x='8' y='8' width='8' height='8' fill='%23333'/%3E%3C/svg%3E\")" }}
             >
-              <img src={svgDataUrl} alt="SVG preview" className="max-w-full max-h-48" />
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={svgDataUrl} alt="SVG preview" className="max-w-full max-h-48" loading="lazy" />
             </div>
           </div>
         )}
@@ -475,7 +476,8 @@ export default function SvgToPngPage() {
             </div>
 
             <div className="mb-4 flex justify-center">
-              <img src={outputUrl} alt="Converted output" className="max-w-full max-h-64 rounded border border-slate-700" />
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={outputUrl} alt="Converted output" className="max-w-full max-h-64 rounded border border-slate-700" loading="lazy" />
             </div>
 
             <button

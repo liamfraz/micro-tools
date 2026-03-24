@@ -390,10 +390,12 @@ export default function ImageFormatConverterPage() {
             <div className="mb-4 bg-slate-900 rounded p-2 flex items-center justify-center"
               style={{ backgroundImage: "repeating-conic-gradient(#374151 0% 25%, #1e293b 0% 50%)", backgroundSize: "16px 16px" }}
             >
+              {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={convertedUrl}
                 alt="Converted preview"
                 className="max-w-full max-h-64 rounded"
+                loading="lazy"
               />
             </div>
 

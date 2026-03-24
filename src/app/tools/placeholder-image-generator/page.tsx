@@ -413,12 +413,14 @@ ${customText ? `  <text x="${width / 2}" y="${height / 2 + Math.max(12, Math.min
                   <span className="text-xs text-slate-500">{width} × {height}</span>
                 </div>
                 <div className="bg-slate-900/50 rounded-lg p-3 flex items-center justify-center overflow-hidden" style={{ minHeight: 200 }}>
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
                   {previewUrl && (
                     <img
                       src={previewUrl}
                       alt={`Placeholder ${width}×${height}`}
                       className="max-w-full max-h-80 rounded"
                       style={{ aspectRatio: `${width}/${height}` }}
+                      loading="lazy"
                     />
                   )}
                 </div>

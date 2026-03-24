@@ -379,10 +379,12 @@ export default function ImageCompressorPage() {
 
             {/* Preview */}
             <div className="mb-4">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={compressedUrl}
                 alt="Compressed preview"
                 className="max-w-full max-h-64 mx-auto rounded border border-slate-700"
+                loading="lazy"
               />
             </div>
 

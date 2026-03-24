@@ -243,6 +243,7 @@ export default function ImageResizerPage() {
                 <div className="flex flex-wrap items-center justify-between gap-4">
                   <div className="flex items-center gap-4">
                     <div className="w-16 h-16 bg-slate-700 rounded overflow-hidden shrink-0">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img
                         src={image.src}
                         alt="Original"
@@ -414,10 +415,12 @@ export default function ImageResizerPage() {
                         </div>
                       </div>
                       <div className="bg-slate-900 rounded-lg p-2 mb-3 flex items-center justify-center max-h-80 overflow-hidden">
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img
                           src={resizedUrl}
                           alt="Resized"
                           className="max-w-full max-h-72 object-contain"
+                          loading="lazy"
                         />
                       </div>
                       <button

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import Image from "next/image";
 import "./globals.css";
 import { generateOrgSchema, generateWebSiteSchema } from "@/lib/jsonld";
 
@@ -64,6 +65,10 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark">
       <head>
+        <link rel="preconnect" href="https://www.googletagmanager.com" />
+        <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
+        <link rel="preconnect" href="https://pagead2.googlesyndication.com" />
+        <link rel="dns-prefetch" href="https://pagead2.googlesyndication.com" />
         <script
           async
           src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5516095417661827"
@@ -96,7 +101,7 @@ export default function RootLayout({
           <header className="border-b border-slate-800 bg-slate-900/80 backdrop-blur-sm sticky top-0 z-50">
             <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
               <a href="/" className="group flex items-center gap-3">
-                <img src="/icon.svg" alt="DevTools Hub" className="h-9 w-9 rounded-lg" />
+                <Image src="/icon.svg" alt="DevTools Hub" width={36} height={36} className="h-9 w-9 rounded-lg" priority unoptimized />
                 <div>
                   <span className="text-lg font-bold tracking-tight text-white group-hover:text-blue-400 transition-colors">
                     DevTools Hub
@@ -125,7 +130,7 @@ export default function RootLayout({
             <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:px-8">
               <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
                 <div className="flex items-center gap-2 text-sm text-slate-400">
-                  <img src="/icon.svg" alt="DevTools Hub" className="h-6 w-6 rounded" />
+                  <Image src="/icon.svg" alt="DevTools Hub" width={24} height={24} className="h-6 w-6 rounded" unoptimized />
                   <span>DevTools Hub</span>
                 </div>
                 <div className="flex items-center gap-4">
