@@ -26,6 +26,15 @@ export const metadata: Metadata = {
     description:
       "Free online developer tools, text utilities, and converters. JSON formatter, regex tester, base64 encoder, and more.",
   },
+  icons: {
+    icon: [
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/icon.svg", type: "image/svg+xml" },
+      { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
+      { url: "/favicon-16x16.png", sizes: "16x16", type: "image/png" },
+    ],
+    apple: [{ url: "/apple-touch-icon.png", sizes: "180x180" }],
+  },
   robots: {
     index: true,
     follow: true,
@@ -76,9 +85,7 @@ export default function RootLayout({
           <header className="border-b border-slate-800 bg-slate-900/80 backdrop-blur-sm sticky top-0 z-50">
             <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
               <a href="/" className="group flex items-center gap-3">
-                <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-blue-600 font-bold text-sm">
-                  DH
-                </div>
+                <img src="/icon.svg" alt="DevTools Hub" className="h-9 w-9 rounded-lg" />
                 <div>
                   <h1 className="text-lg font-bold tracking-tight text-white group-hover:text-blue-400 transition-colors">
                     DevTools Hub
@@ -107,9 +114,7 @@ export default function RootLayout({
             <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:px-8">
               <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
                 <div className="flex items-center gap-2 text-sm text-slate-400">
-                  <div className="flex h-6 w-6 items-center justify-center rounded bg-blue-600 text-xs font-bold">
-                    DH
-                  </div>
+                  <img src="/icon.svg" alt="DevTools Hub" className="h-6 w-6 rounded" />
                   <span>DevTools Hub</span>
                 </div>
                 <div className="flex items-center gap-4">
