@@ -455,6 +455,12 @@ export default function YamlFormatterPage() {
     : 0;
 
   return (
+    <>
+      <title>YAML Formatter & Beautifier - Free Online Tool | DevTools Hub</title>
+      <meta
+        name="description"
+        content="Format, beautify, minify, and sort YAML online for free. Perfect for Kubernetes manifests, Docker Compose, GitHub Actions, and config files."
+      />
     <main className="min-h-screen bg-slate-900 text-white">
       <JsonLd
         data={[
@@ -675,5 +681,6 @@ export default function YamlFormatterPage() {
         </div>
       </div>
     </main>
+    </>
   );
 }

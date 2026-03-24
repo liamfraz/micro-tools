@@ -6,6 +6,10 @@ import { generateOrgSchema, generateWebSiteSchema } from "@/lib/jsonld";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://devtools.page"),
+  alternates: {
+    canonical: "/",
+  },
   title: {
     default: "Free Online Tools - DevTools Hub",
     template: "%s | DevTools Hub",
@@ -19,6 +23,14 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_US",
     siteName: "DevTools Hub",
+    images: [
+      {
+        url: "/opengraph-image",
+        width: 1200,
+        height: 630,
+        alt: "DevTools Hub - Free Online Developer Tools",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
@@ -52,7 +64,6 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark">
       <head>
-        <meta name="google-site-verification" content="6IQzjMi4CJbMgDMuMo3dJHxD_WBwxNCM6mA-n7eMQKY" />
         <script
           async
           src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5516095417661827"
@@ -87,9 +98,9 @@ export default function RootLayout({
               <a href="/" className="group flex items-center gap-3">
                 <img src="/icon.svg" alt="DevTools Hub" className="h-9 w-9 rounded-lg" />
                 <div>
-                  <h1 className="text-lg font-bold tracking-tight text-white group-hover:text-blue-400 transition-colors">
+                  <span className="text-lg font-bold tracking-tight text-white group-hover:text-blue-400 transition-colors">
                     DevTools Hub
-                  </h1>
+                  </span>
                   <p className="hidden text-xs text-slate-400 sm:block">
                     Free online developer tools
                   </p>

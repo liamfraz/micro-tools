@@ -132,6 +132,12 @@ export default function AspectRatioCalculatorPage() {
   const previewH = Math.max(Math.round(height1 * previewScale), 20);
 
   return (
+    <>
+      <title>Aspect Ratio Calculator - Free Online Tool | DevTools Hub</title>
+      <meta
+        name="description"
+        content="Calculate and convert aspect ratios for images, video, and responsive design. Common presets for social media, video, and print sizes."
+      />
     <main className="min-h-screen bg-slate-900 text-white">
       <JsonLd
         data={[
@@ -402,5 +408,6 @@ export default function AspectRatioCalculatorPage() {
         </div>
       </div>
     </main>
+    </>
   );
 }

@@ -431,6 +431,12 @@ export default function JsonToYaml() {
   }, []);
 
   return (
+    <>
+      <title>JSON to YAML Converter - Free Online Tool | DevTools Hub</title>
+      <meta
+        name="description"
+        content="Convert JSON to YAML and YAML to JSON instantly. Free bidirectional converter with support for nested objects, arrays, and multiline strings."
+      />
     <main className="min-h-screen bg-slate-900 text-white">
       <JsonLd
         data={[
@@ -636,5 +642,6 @@ export default function JsonToYaml() {
         </div>
       </div>
     </main>
+    </>
   );
 }
