@@ -6,12 +6,12 @@
     </linearGradient>
   </defs>
   <rect width="512" height="512" rx="96" fill="url(#bg)"/>
-  <g fill="none" stroke="white" stroke-width="36" stroke-linecap="round" stroke-linejoin="round">
+  <g fill="none" stroke="white" stroke-width="34" stroke-linecap="round" stroke-linejoin="round">
     <!-- Left bracket < -->
-    <polyline points="185,160 85,256 185,352"/>
-    <!-- Right bracket > -->
-    <polyline points="327,160 427,256 327,352"/>
+    <polyline points="175,155 80,256 175,357"/>
     <!-- Forward slash / -->
-    <line x1="295" y1="148" x2="217" y2="364"/>
+    <line x1="280" y1="145" x2="232" y2="367"/>
+    <!-- Right bracket > -->
+    <polyline points="337,155 432,256 337,357"/>
   </g>
 </svg>
