@@ -467,6 +467,15 @@
       "searchVolume": "medium",
       "status": "live",
       "dateAdded": "2026-03-26"
+    },
+    {
+      "slug": "css-glassmorphism-generator",
+      "name": "CSS Glassmorphism Generator",
+      "description": "Create frosted glass UI effects with backdrop-filter blur, transparency, border, and border radius controls",
+      "category": "design",
+      "searchVolume": "medium",
+      "status": "live",
+      "dateAdded": "2026-03-26"
     }
   ],
   "categories": {
@@ -476,7 +485,7 @@
     "conversion": { "label": "Conversion", "color": "orange" }
   },
   "meta": {
-    "totalTools": 52,
+    "totalTools": 53,
     "lastUpdated": "2026-03-26",
     "nextPriority": ["slug-generator", "css-glassmorphism-generator", "text-to-handwriting", "open-graph-preview", "svg-blob-generator"]
   }
