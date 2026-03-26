@@ -449,6 +449,15 @@
       "searchVolume": "very-high",
       "status": "live",
       "dateAdded": "2026-03-26"
+    },
+    {
+      "slug": "code-to-image",
+      "name": "Code to Image Converter",
+      "description": "Convert code snippets to beautiful images with syntax highlighting, themes, and window chrome. Export as PNG — all in your browser",
+      "category": "developer",
+      "searchVolume": "high",
+      "status": "live",
+      "dateAdded": "2026-03-26"
     }
   ],
   "categories": {
@@ -458,8 +467,8 @@
     "conversion": { "label": "Conversion", "color": "orange" }
   },
   "meta": {
-    "totalTools": 50,
+    "totalTools": 51,
     "lastUpdated": "2026-03-26",
-    "nextPriority": ["code-to-image", "slug-generator", "css-glassmorphism-generator", "text-to-handwriting", "open-graph-preview", "svg-blob-generator"]
+    "nextPriority": ["slug-generator", "css-glassmorphism-generator", "text-to-handwriting", "open-graph-preview", "svg-blob-generator"]
   }
 }
