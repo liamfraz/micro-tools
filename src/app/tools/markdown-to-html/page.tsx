@@ -542,30 +542,7 @@ export default function MarkdownToHtmlPage() {
         </div>
       </main>
 
-      <style>{`
-        .prose-md h1 { font-size: 1.875rem; font-weight: 700; color: white; margin-bottom: 0.75rem; margin-top: 1.5rem; }
-        .prose-md h2 { font-size: 1.5rem; font-weight: 700; color: white; margin-bottom: 0.5rem; margin-top: 1.25rem; }
-        .prose-md h3 { font-size: 1.25rem; font-weight: 600; color: white; margin-bottom: 0.5rem; margin-top: 1rem; }
-        .prose-md h4 { font-size: 1.125rem; font-weight: 600; color: white; margin-bottom: 0.5rem; }
-        .prose-md p { color: #cbd5e1; margin-bottom: 0.75rem; line-height: 1.7; }
-        .prose-md a { color: #60a5fa; text-decoration: underline; }
-        .prose-md strong { color: white; font-weight: 700; }
-        .prose-md em { font-style: italic; }
-        .prose-md del { text-decoration: line-through; color: #64748b; }
-        .prose-md code { background: #0f172a; color: #7dd3fc; padding: 0.125rem 0.375rem; border-radius: 0.25rem; font-size: 0.875rem; font-family: monospace; }
-        .prose-md pre { background: #0f172a; border: 1px solid #334155; border-radius: 0.5rem; padding: 1rem; overflow-x: auto; margin-bottom: 1rem; }
-        .prose-md pre code { background: transparent; padding: 0; color: #e2e8f0; }
-        .prose-md blockquote { border-left: 3px solid #3b82f6; padding-left: 1rem; color: #94a3b8; font-style: italic; margin-bottom: 0.75rem; }
-        .prose-md ul { list-style-type: disc; padding-left: 1.5rem; margin-bottom: 0.75rem; color: #cbd5e1; }
-        .prose-md ol { list-style-type: decimal; padding-left: 1.5rem; margin-bottom: 0.75rem; color: #cbd5e1; }
-        .prose-md li { margin-bottom: 0.25rem; line-height: 1.6; }
-        .prose-md hr { border: none; border-top: 1px solid #334155; margin: 1.5rem 0; }
-        .prose-md table { width: 100%; border-collapse: collapse; margin-bottom: 1rem; }
-        .prose-md th { background: #0f172a; color: white; font-weight: 600; text-align: left; padding: 0.5rem 0.75rem; border: 1px solid #334155; }
-        .prose-md td { padding: 0.5rem 0.75rem; border: 1px solid #334155; color: #cbd5e1; }
-        .prose-md img { max-width: 100%; border-radius: 0.5rem; }
-        .prose-md input[type="checkbox"] { margin-right: 0.5rem; accent-color: #3b82f6; }
-      `}</style>
+      <style suppressHydrationWarning dangerouslySetInnerHTML={{ __html: `.prose-md h1{font-size:1.875rem;font-weight:700;color:white;margin-bottom:.75rem;margin-top:1.5rem}.prose-md h2{font-size:1.5rem;font-weight:700;color:white;margin-bottom:.5rem;margin-top:1.25rem}.prose-md h3{font-size:1.25rem;font-weight:600;color:white;margin-bottom:.5rem;margin-top:1rem}.prose-md h4{font-size:1.125rem;font-weight:600;color:white;margin-bottom:.5rem}.prose-md p{color:#cbd5e1;margin-bottom:.75rem;line-height:1.7}.prose-md a{color:#60a5fa;text-decoration:underline}.prose-md strong{color:white;font-weight:700}.prose-md em{font-style:italic}.prose-md del{text-decoration:line-through;color:#64748b}.prose-md code{background:#0f172a;color:#7dd3fc;padding:.125rem .375rem;border-radius:.25rem;font-size:.875rem;font-family:monospace}.prose-md pre{background:#0f172a;border:1px solid #334155;border-radius:.5rem;padding:1rem;overflow-x:auto;margin-bottom:1rem}.prose-md pre code{background:transparent;padding:0;color:#e2e8f0}.prose-md blockquote{border-left:3px solid #3b82f6;padding-left:1rem;color:#94a3b8;font-style:italic;margin-bottom:.75rem}.prose-md ul{list-style-type:disc;padding-left:1.5rem;margin-bottom:.75rem;color:#cbd5e1}.prose-md ol{list-style-type:decimal;padding-left:1.5rem;margin-bottom:.75rem;color:#cbd5e1}.prose-md li{margin-bottom:.25rem;line-height:1.6}.prose-md hr{border:none;border-top:1px solid #334155;margin:1.5rem 0}.prose-md table{width:100%;border-collapse:collapse;margin-bottom:1rem}.prose-md th{background:#0f172a;color:white;font-weight:600;text-align:left;padding:.5rem .75rem;border:1px solid #334155}.prose-md td{padding:.5rem .75rem;border:1px solid #334155;color:#cbd5e1}.prose-md img{max-width:100%;border-radius:.5rem}.prose-md input[type="checkbox"]{margin-right:.5rem;accent-color:#3b82f6}` }} />
     </>
   );
 }

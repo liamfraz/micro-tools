@@ -130,12 +130,9 @@ export default function ColorPaletteGeneratorPage() {
   const [colors, setColors] = useState<ColorEntry[]>(INITIAL_COLORS);
   const [mode, setMode] = useState<HarmonyMode>("random");
   const [copied, setCopied] = useState<string | null>(null);
-  const [mounted, setMounted] = useState(false);
-
   // Generate random palette only after mount to avoid SSR/client mismatch
   useEffect(() => {
     setColors(generatePalette("random", Array.from({ length: 5 }, () => randomColor())));
-    setMounted(true);
   }, []);
 
   const regenerate = useCallback(() => {
