@@ -14,11 +14,12 @@ export interface RelatedTool {
  * Each key maps to slugs of tools in OTHER categories that are semantically related.
  */
 const crossCategoryLinks: Record<string, string[]> = {
-  "json-formatter": ["json-to-csv", "json-to-yaml", "json-path-tester"],
+  "json-tree-viewer": ["json-to-csv", "json-to-yaml"],
+  "json-formatter": ["json-to-csv", "json-to-yaml", "json-path-tester", "json-tree-viewer"],
   "csv-to-json": ["json-formatter", "json-to-csv"],
   "json-to-csv": ["json-formatter", "csv-to-json"],
   "json-to-yaml": ["json-formatter"],
-  "json-path-tester": ["json-formatter"],
+  "json-path-tester": ["json-formatter", "json-tree-viewer"],
   "markdown-editor": ["markdown-to-html"],
   "markdown-to-html": ["markdown-editor"],
   "url-encoder": ["base64-encoder"],

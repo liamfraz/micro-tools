@@ -431,6 +431,15 @@
       "searchVolume": "high",
       "status": "live",
       "dateAdded": "2026-03-12"
+    },
+    {
+      "slug": "json-tree-viewer",
+      "name": "JSON Tree Viewer",
+      "description": "Parse and display JSON as a collapsible tree view with data type color coding, search, and path copying",
+      "category": "developer",
+      "searchVolume": "high",
+      "status": "live",
+      "dateAdded": "2026-03-26"
     }
   ],
   "categories": {
@@ -440,8 +449,8 @@
     "conversion": { "label": "Conversion", "color": "orange" }
   },
   "meta": {
-    "totalTools": 48,
-    "lastUpdated": "2026-03-12",
-    "nextPriority": ["json-tree-viewer", "code-to-image", "slug-generator", "css-glassmorphism-generator", "image-cropper", "text-to-handwriting", "open-graph-preview", "svg-blob-generator"]
+    "totalTools": 49,
+    "lastUpdated": "2026-03-26",
+    "nextPriority": ["code-to-image", "slug-generator", "css-glassmorphism-generator", "image-cropper", "text-to-handwriting", "open-graph-preview", "svg-blob-generator"]
   }
 }
