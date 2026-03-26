@@ -440,6 +440,15 @@
       "searchVolume": "high",
       "status": "live",
       "dateAdded": "2026-03-26"
+    },
+    {
+      "slug": "image-cropper",
+      "name": "Image Cropper",
+      "description": "Crop images with drag-to-select, preset aspect ratios, and manual dimensions. Download as PNG or JPEG — all in your browser",
+      "category": "design",
+      "searchVolume": "very-high",
+      "status": "live",
+      "dateAdded": "2026-03-26"
     }
   ],
   "categories": {
@@ -449,8 +458,8 @@
     "conversion": { "label": "Conversion", "color": "orange" }
   },
   "meta": {
-    "totalTools": 49,
+    "totalTools": 50,
     "lastUpdated": "2026-03-26",
-    "nextPriority": ["code-to-image", "slug-generator", "css-glassmorphism-generator", "image-cropper", "text-to-handwriting", "open-graph-preview", "svg-blob-generator"]
+    "nextPriority": ["code-to-image", "slug-generator", "css-glassmorphism-generator", "text-to-handwriting", "open-graph-preview", "svg-blob-generator"]
   }
 }
