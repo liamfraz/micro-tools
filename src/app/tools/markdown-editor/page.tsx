@@ -9,57 +9,72 @@ import {
   generateBreadcrumbSchema,
 } from "@/lib/jsonld";
 
-const EXAMPLE_MARKDOWN = `# Welcome to the Markdown Editor
+const SAMPLE_MARKDOWN = `# Markdown Editor
 
-This is a **live preview** editor for Markdown. Start typing on the left to see the rendered output on the right.
+Write and preview Markdown **side by side**. This editor supports the full [GitHub Flavored Markdown](https://github.github.com/gfm/) spec.
 
-## Features
+## Text Formatting
 
-- **Bold** and *italic* text
-- [Links](https://example.com)
-- Inline \`code\` and code blocks
-- Lists (ordered and unordered)
-- Blockquotes
-- Headings (h1-h6)
-- Horizontal rules
-- Images
+You can write **bold**, *italic*, ***bold italic***, and ~~strikethrough~~ text. Inline \`code\` is also supported.
+
+## Links & Images
+
+- [Visit Example](https://example.com)
+- ![Placeholder](https://via.placeholder.com/120x40?text=Image)
 
 ## Code Block
 
 \`\`\`javascript
-function greet(name) {
-  return \`Hello, \${name}!\`;
+function fibonacci(n) {
+  if (n <= 1) return n;
+  return fibonacci(n - 1) + fibonacci(n - 2);
 }
+
+console.log(fibonacci(10)); // 55
 \`\`\`
 
 ## Blockquote
 
-> "The best way to predict the future is to invent it."
-> — Alan Kay
+> "The only way to do great work is to love what you do."
+> — Steve Jobs
 
 ## Table
 
-| Feature | Status |
-|---------|--------|
-| Bold | Supported |
-| Italic | Supported |
-| Links | Supported |
-| Images | Supported |
-| Tables | Supported |
+| Language   | Typing     | Year |
+|------------|------------|------|
+| JavaScript | Dynamic    | 1995 |
+| TypeScript | Static     | 2012 |
+| Rust       | Static     | 2010 |
+| Python     | Dynamic    | 1991 |
 
 ## Task List
 
-- [x] Build the editor
-- [x] Add live preview
+- [x] Split-pane editor
+- [x] Live preview
+- [x] GFM tables & task lists
+- [x] Copy HTML output
+- [x] Download as .md
 - [ ] Take over the world
+
+## Lists
+
+### Ordered
+1. First item
+2. Second item
+3. Third item
+
+### Unordered
+- Apples
+- Oranges
+- Bananas
 
 ---
 
-*Made with DevTools Hub*
+*Start editing to see your changes live!*
 `;
 
 export default function MarkdownEditorPage() {
-  const [markdown, setMarkdown] = useState("");
+  const [markdown, setMarkdown] = useState(SAMPLE_MARKDOWN);
   const [copied, setCopied] = useState<"md" | "html" | null>(null);
   const [view, setView] = useState<"split" | "editor" | "preview">("split");
 
@@ -76,12 +91,23 @@ export default function MarkdownEditorPage() {
     [markdown, html]
   );
 
+  const downloadMd = useCallback(() => {
+    if (!markdown) return;
+    const blob = new Blob([markdown], { type: "text/markdown;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "document.md";
+    a.click();
+    URL.revokeObjectURL(url);
+  }, [markdown]);
+
   const clearAll = useCallback(() => {
     setMarkdown("");
   }, []);
 
-  const loadExample = useCallback(() => {
-    setMarkdown(EXAMPLE_MARKDOWN);
+  const loadSample = useCallback(() => {
+    setMarkdown(SAMPLE_MARKDOWN);
   }, []);
 
   const wordCount = markdown.trim() ? markdown.trim().split(/\s+/).length : 0;
@@ -90,30 +116,35 @@ export default function MarkdownEditorPage() {
 
   return (
     <>
-      <title>Markdown Editor & Preview - Free Online Tool | DevTools Hub</title>
+      <title>Markdown Editor Online - Live Preview & GFM Support | DevTools Hub</title>
       <meta
         name="description"
-        content="Write and preview Markdown in real-time. Supports headings, bold, italic, links, code blocks, tables, task lists, and more. Export as HTML or copy Markdown."
+        content="Free online markdown editor with live preview. Write GitHub Flavored Markdown with tables, task lists, and code blocks. Copy rendered HTML or download as .md file. No sign-up required."
+      />
+      <meta
+        name="keywords"
+        content="markdown editor, markdown preview, markdown to html, online markdown editor, github flavored markdown, gfm editor, markdown live preview, markdown writer"
       />
       <JsonLd
         data={[
           generateWebAppSchema({
             slug: "markdown-editor",
-            name: "Markdown Editor",
-            description: "Write and preview Markdown in real time with GitHub-flavored syntax support",
+            name: "Online Markdown Editor & Preview",
+            description: "Free online markdown editor with live HTML preview, GFM tables, task lists, code blocks, and export options",
             category: "text",
           }),
           generateBreadcrumbSchema({
             slug: "markdown-editor",
             name: "Markdown Editor",
-            description: "Write and preview Markdown in real time with GitHub-flavored syntax support",
+            description: "Free online markdown editor with live HTML preview and GFM support",
             category: "text",
           }),
           generateFAQSchema([
-            { question: "What is Markdown?", answer: "Markdown is a lightweight markup language created by John Gruber in 2004. It uses plain text formatting syntax to create structured documents that can be converted to HTML. It is widely used in README files, documentation, blogs, forums, and messaging platforms like Slack and Discord." },
-            { question: "What Markdown features does this editor support?", answer: "This editor supports headings (h1-h6), bold, italic, strikethrough, links, images, inline code, fenced code blocks with language labels, blockquotes, ordered and unordered lists, task lists with checkboxes, tables, and horizontal rules. It covers the full CommonMark specification plus GitHub Flavored Markdown extensions." },
-            { question: "Can I export the output as HTML?", answer: "Yes. Click the \"Copy HTML\" button to copy the rendered HTML to your clipboard. You can paste it directly into any HTML file, CMS, or email template." },
-            { question: "Is my content saved?", answer: "No. All content is stored only in your browser's memory during the current session. Nothing is saved to a server or persisted between visits. Copy your Markdown before closing the page if you want to keep it." },
+            { question: "What is Markdown?", answer: "Markdown is a lightweight markup language created by John Gruber in 2004. It uses plain text formatting syntax to create structured documents that can be converted to HTML. It is widely used in README files, documentation, blogs, forums, and messaging platforms like GitHub, Slack, and Discord." },
+            { question: "What is GitHub Flavored Markdown (GFM)?", answer: "GitHub Flavored Markdown (GFM) is a superset of standard Markdown created by GitHub. It adds features like tables with pipe syntax, task lists with checkboxes, strikethrough text, fenced code blocks with language syntax labels, and auto-linking of URLs. This editor fully supports GFM." },
+            { question: "Can I export the output as HTML?", answer: "Yes. Click the 'Copy HTML' button to copy the rendered HTML to your clipboard. You can paste it directly into any HTML file, CMS, or email template. You can also download your source as a .md file." },
+            { question: "Is my content saved or sent to a server?", answer: "No. All editing and rendering happens entirely in your browser using JavaScript. Nothing is saved to a server or persisted between visits. Copy your Markdown or download the .md file before closing the page if you want to keep it." },
+            { question: "What Markdown features does this editor support?", answer: "This editor supports headings (h1-h6), bold, italic, bold italic, strikethrough, links, images, inline code, fenced code blocks with language labels, blockquotes, ordered and unordered lists, task lists with checkboxes, tables with alignment, and horizontal rules. It covers the full CommonMark specification plus GitHub Flavored Markdown extensions." },
           ]),
         ]}
       />
@@ -142,30 +173,37 @@ export default function MarkdownEditorPage() {
           {/* Header */}
           <div className="mb-8">
             <h1 className="text-3xl sm:text-4xl font-bold text-white mb-3">
-              Markdown Editor & Preview
+              Online Markdown Editor & Preview
             </h1>
             <p className="text-slate-400 max-w-2xl text-lg">
-              Write Markdown with a live HTML preview. Supports headings, bold,
-              italic, links, images, code blocks, tables, task lists, and more.
-              Copy as Markdown or export as HTML.
+              Write Markdown with a live HTML preview side by side. Full support
+              for GitHub Flavored Markdown — tables, task lists, strikethrough,
+              fenced code blocks, and more. Copy as HTML or download as .md.
             </p>
           </div>
 
           {/* Controls */}
           <div className="flex flex-wrap items-center gap-3 mb-4">
             <button
+              onClick={() => copyText("html")}
+              disabled={!html}
+              className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+            >
+              {copied === "html" ? "Copied!" : "Copy HTML"}
+            </button>
+            <button
               onClick={() => copyText("md")}
               disabled={!markdown}
-              className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+              className="px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white rounded-lg font-medium transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
             >
               {copied === "md" ? "Copied!" : "Copy Markdown"}
             </button>
             <button
-              onClick={() => copyText("html")}
-              disabled={!html}
+              onClick={downloadMd}
+              disabled={!markdown}
               className="px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white rounded-lg font-medium transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
             >
-              {copied === "html" ? "Copied!" : "Copy HTML"}
+              Download .md
             </button>
             <button
               onClick={clearAll}
@@ -174,10 +212,10 @@ export default function MarkdownEditorPage() {
               Clear
             </button>
             <button
-              onClick={loadExample}
+              onClick={loadSample}
               className="px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white rounded-lg font-medium transition-colors"
             >
-              Example
+              Sample
             </button>
 
             <div className="ml-auto flex items-center gap-2">
@@ -206,7 +244,7 @@ export default function MarkdownEditorPage() {
 
           {/* Editor & Preview */}
           <div
-            className={`grid gap-4 mb-4 ${
+            className={`grid gap-4 mb-6 ${
               view === "split"
                 ? "grid-cols-1 lg:grid-cols-2"
                 : "grid-cols-1"
@@ -224,7 +262,7 @@ export default function MarkdownEditorPage() {
                   value={markdown}
                   onChange={(e) => setMarkdown(e.target.value)}
                   placeholder={"Start writing Markdown...\n\n# Heading\n**bold** *italic*\n- list item"}
-                  className="w-full h-[32rem] bg-slate-800 border border-slate-600 rounded-lg p-4 font-mono text-sm text-slate-200 placeholder-slate-500 resize-none focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full h-[36rem] bg-slate-800 border border-slate-600 rounded-lg p-4 font-mono text-sm text-slate-200 placeholder-slate-500 resize-none focus:outline-none focus:ring-2 focus:ring-blue-500 leading-relaxed"
                   spellCheck={false}
                 />
               </div>
@@ -239,7 +277,7 @@ export default function MarkdownEditorPage() {
                   </label>
                 </div>
                 <div
-                  className="w-full h-[32rem] bg-slate-800 border border-slate-600 rounded-lg p-6 overflow-y-auto prose-custom"
+                  className="w-full h-[36rem] bg-slate-800 border border-slate-600 rounded-lg p-6 overflow-y-auto prose-custom"
                   dangerouslySetInnerHTML={{ __html: html || '<p class="text-slate-500 italic">Preview will appear here...</p>' }}
                 />
               </div>
@@ -297,21 +335,20 @@ export default function MarkdownEditorPage() {
                   in 2004. It uses plain text formatting syntax to create
                   structured documents that can be converted to HTML. It is widely
                   used in README files, documentation, blogs, forums, and
-                  messaging platforms like Slack and Discord.
+                  messaging platforms like GitHub, Slack, and Discord.
                 </p>
               </div>
 
               <div>
                 <h3 className="text-lg font-semibold text-white mb-2">
-                  What Markdown features does this editor support?
+                  What is GitHub Flavored Markdown (GFM)?
                 </h3>
                 <p className="text-slate-400">
-                  This editor supports headings (h1-h6), bold, italic,
-                  strikethrough, links, images, inline code, fenced code blocks
-                  with language labels, blockquotes, ordered and unordered lists,
-                  task lists with checkboxes, tables, and horizontal rules. It
-                  covers the full CommonMark specification plus GitHub Flavored
-                  Markdown extensions.
+                  GitHub Flavored Markdown (GFM) is a superset of standard
+                  Markdown created by GitHub. It adds features like tables with
+                  pipe syntax, task lists with checkboxes, strikethrough text,
+                  fenced code blocks with language labels, and auto-linking of
+                  URLs. This editor fully supports GFM.
                 </p>
               </div>
 
@@ -322,19 +359,35 @@ export default function MarkdownEditorPage() {
                 <p className="text-slate-400">
                   Yes. Click the &ldquo;Copy HTML&rdquo; button to copy the
                   rendered HTML to your clipboard. You can paste it directly into
-                  any HTML file, CMS, or email template.
+                  any HTML file, CMS, or email template. You can also download
+                  your source Markdown as a .md file.
                 </p>
               </div>
 
               <div>
                 <h3 className="text-lg font-semibold text-white mb-2">
-                  Is my content saved?
+                  Is my content saved or sent to a server?
                 </h3>
                 <p className="text-slate-400">
-                  No. All content is stored only in your browser&apos;s memory
-                  during the current session. Nothing is saved to a server or
-                  persisted between visits. Copy your Markdown before closing the
-                  page if you want to keep it.
+                  No. All editing and rendering happens entirely in your
+                  browser&apos;s memory using JavaScript. Nothing is saved to a
+                  server or persisted between visits. Copy your Markdown or
+                  download the .md file before closing the page if you want to
+                  keep it.
+                </p>
+              </div>
+
+              <div>
+                <h3 className="text-lg font-semibold text-white mb-2">
+                  What Markdown features does this editor support?
+                </h3>
+                <p className="text-slate-400">
+                  This editor supports headings (h1-h6), bold, italic, bold
+                  italic, strikethrough, links, images, inline code, fenced code
+                  blocks with language labels, blockquotes, ordered and unordered
+                  lists, task lists with checkboxes, tables with alignment, and
+                  horizontal rules. It covers the full CommonMark specification
+                  plus GitHub Flavored Markdown extensions.
                 </p>
               </div>
             </div>
@@ -367,7 +420,7 @@ export default function MarkdownEditorPage() {
         .prose-custom th { background: #0f172a; color: white; font-weight: 600; text-align: left; padding: 0.5rem 0.75rem; border: 1px solid #334155; }
         .prose-custom td { padding: 0.5rem 0.75rem; border: 1px solid #334155; color: #cbd5e1; }
         .prose-custom img { max-width: 100%; border-radius: 0.5rem; margin-bottom: 0.75rem; }
-        .prose-custom input[type="checkbox"] { margin-right: 0.5rem; accent-color: #3b82f6; }
+        .prose-custom input[type=checkbox] { margin-right: 0.5rem; accent-color: #3b82f6; }
       `}</style>
     </>
   );
