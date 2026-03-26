@@ -458,6 +458,15 @@
       "searchVolume": "high",
       "status": "live",
       "dateAdded": "2026-03-26"
+    },
+    {
+      "slug": "slug-generator",
+      "name": "URL Slug Generator",
+      "description": "Generate clean, SEO-friendly URL slugs from any text with separator, case, length, and stop word options",
+      "category": "developer",
+      "searchVolume": "medium",
+      "status": "live",
+      "dateAdded": "2026-03-26"
     }
   ],
   "categories": {
@@ -467,7 +476,7 @@
     "conversion": { "label": "Conversion", "color": "orange" }
   },
   "meta": {
-    "totalTools": 51,
+    "totalTools": 52,
     "lastUpdated": "2026-03-26",
     "nextPriority": ["slug-generator", "css-glassmorphism-generator", "text-to-handwriting", "open-graph-preview", "svg-blob-generator"]
   }

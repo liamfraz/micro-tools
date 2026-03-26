@@ -32,6 +32,7 @@ const crossCategoryLinks: Record<string, string[]> = {
   "image-format-converter": ["image-resizer", "image-compressor", "image-cropper"],
   "image-cropper": ["image-resizer", "image-compressor", "image-format-converter"],
   "code-to-image": ["image-format-converter", "image-compressor"],
+  "slug-generator": ["url-encoder", "text-case-converter"],
   "hash-generator": ["password-generator", "base64-encoder"],
   "password-generator": ["hash-generator"],
   "html-beautifier": ["css-minifier", "javascript-minifier"],
