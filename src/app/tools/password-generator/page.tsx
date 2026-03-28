@@ -3,6 +3,7 @@
 import { useState, useCallback, useEffect } from "react";
 import JsonLd from "@/components/JsonLd";
 import RelatedTools from "@/components/RelatedTools";
+import ToolBreadcrumb from "@/components/ToolBreadcrumb";
 import {
   generateFAQSchema,
   generateWebAppSchema,
@@ -21,6 +22,140 @@ interface PasswordOptions {
 
 const DEFAULT_SYMBOLS = "!@#$%^&*()_+-=[]{}|;:,.<>?";
 const AMBIGUOUS_CHARS = "Il1O0o";
+
+// Common English words for passphrase generation (EFF-inspired short wordlist)
+const WORDLIST = [
+  "acid", "acme", "aged", "also", "arch", "area", "army", "away",
+  "back", "bail", "bake", "band", "bank", "barn", "base", "bath",
+  "bead", "beam", "bean", "bear", "beat", "beef", "been", "bell",
+  "belt", "bend", "best", "bike", "bind", "bird", "bite", "blow",
+  "blue", "blur", "boat", "body", "bold", "bolt", "bomb", "bond",
+  "bone", "book", "boot", "born", "boss", "bowl", "bulk", "bump",
+  "burn", "busy", "cafe", "cage", "cake", "calm", "came", "camp",
+  "cape", "card", "care", "cart", "case", "cash", "cast", "cave",
+  "chef", "chin", "chip", "chop", "cite", "city", "clad", "clam",
+  "clan", "clap", "claw", "clay", "clip", "club", "clue", "coal",
+  "coat", "code", "coil", "coin", "cold", "cole", "colt", "come",
+  "cone", "cook", "cool", "cope", "copy", "cord", "core", "cork",
+  "corn", "cost", "cozy", "crop", "crow", "cube", "cult", "curb",
+  "cure", "curl", "cute", "damp", "dare", "dark", "dart", "dash",
+  "data", "dawn", "deal", "dean", "dear", "deck", "deed", "deem",
+  "deep", "deer", "demo", "deny", "desk", "dial", "dice", "diet",
+  "dire", "dirt", "disk", "dock", "does", "done", "doom", "door",
+  "dose", "dove", "down", "draw", "drop", "drum", "dual", "duck",
+  "duel", "duke", "dull", "dune", "dusk", "dust", "duty", "each",
+  "earl", "earn", "ease", "east", "easy", "echo", "edge", "edit",
+  "else", "emit", "epic", "euro", "even", "ever", "evil", "exam",
+  "exit", "face", "fact", "fade", "fail", "fair", "fake", "fall",
+  "fame", "fang", "fare", "farm", "fast", "fate", "fawn", "fear",
+  "feat", "feed", "feel", "fell", "felt", "fern", "fest", "file",
+  "fill", "film", "find", "fine", "fire", "firm", "fish", "fist",
+  "five", "flag", "flat", "flaw", "fled", "flew", "flex", "flip",
+  "flit", "flog", "flow", "foam", "foil", "fold", "folk", "fond",
+  "font", "food", "fool", "foot", "ford", "fore", "fork", "form",
+  "fort", "foul", "four", "free", "frog", "from", "fuel", "full",
+  "fund", "fury", "fuse", "gain", "gale", "game", "gang", "gape",
+  "garb", "gate", "gave", "gaze", "gear", "gene", "gift", "gild",
+  "girl", "give", "glad", "glen", "glow", "glue", "goat", "goes",
+  "gold", "golf", "gone", "good", "gore", "grab", "gram", "gray",
+  "grew", "grid", "grim", "grin", "grip", "grit", "grow", "gulf",
+  "guru", "gust", "hack", "hail", "hair", "hake", "half", "hall",
+  "halt", "hand", "hang", "hare", "harp", "harm", "haste", "hate",
+  "haul", "have", "haze", "head", "heal", "heap", "hear", "heat",
+  "held", "helm", "help", "herb", "herd", "here", "hero", "hide",
+  "high", "hike", "hill", "hint", "hire", "hold", "hole", "holy",
+  "home", "hood", "hook", "hope", "horn", "host", "hour", "huge",
+  "hull", "hung", "hunt", "hurt", "hush", "hymn", "icon", "idea",
+  "inch", "info", "iron", "isle", "item", "jack", "jade", "jail",
+  "jazz", "jean", "jerk", "jest", "jobs", "join", "joke", "jolt",
+  "jump", "jury", "just", "keen", "keep", "kept", "kick", "kill",
+  "kind", "king", "kiss", "kite", "knee", "knew", "knit", "knob",
+  "knot", "know", "lace", "lack", "laid", "lake", "lamb", "lamp",
+  "land", "lane", "lark", "last", "late", "lawn", "lead", "leaf",
+  "leak", "lean", "leap", "left", "lend", "lens", "less", "lied",
+  "lieu", "life", "lift", "like", "limb", "lime", "limp", "line",
+  "link", "lion", "lips", "list", "live", "load", "loaf", "loan",
+  "lock", "logo", "lone", "long", "look", "loop", "lord", "lore",
+  "lose", "loss", "lost", "loud", "love", "luck", "lump", "lure",
+  "lurk", "lush", "made", "mail", "main", "make", "male", "mall",
+  "malt", "mane", "many", "maps", "mare", "mark", "mars", "mask",
+  "mass", "mast", "mate", "maze", "meal", "mean", "meat", "meet",
+  "meld", "melt", "memo", "mend", "menu", "mesh", "mild", "mile",
+  "milk", "mill", "mime", "mind", "mine", "mint", "mist", "mode",
+  "mold", "monk", "mood", "moon", "more", "moss", "most", "moth",
+  "move", "much", "mule", "muse", "must", "myth", "nail", "name",
+  "navy", "near", "neat", "neck", "need", "nest", "news", "next",
+  "nice", "nine", "node", "none", "noon", "norm", "nose", "note",
+  "noun", "nude", "oath", "obey", "odds", "oils", "okay", "once",
+  "only", "onto", "open", "oral", "oven", "over", "pace", "pack",
+  "page", "paid", "pain", "pair", "pale", "palm", "pane", "park",
+  "part", "pass", "past", "path", "pave", "peak", "pear", "peel",
+  "peer", "perk", "pest", "pick", "pier", "pile", "pine", "pink",
+  "pipe", "pity", "plan", "play", "plea", "plod", "plot", "plow",
+  "plug", "plum", "plus", "poem", "poet", "pole", "poll", "polo",
+  "pond", "pool", "pope", "pork", "port", "pose", "post", "pour",
+  "pray", "prey", "prop", "pull", "pulp", "pump", "punk", "pure",
+  "push", "quit", "quiz", "race", "rack", "rage", "raid", "rail",
+  "rain", "rake", "ramp", "rang", "rank", "rare", "rash", "rate",
+  "rave", "rays", "read", "real", "reap", "rear", "reed", "reef",
+  "reel", "rely", "rent", "rest", "rice", "rich", "ride", "rift",
+  "ring", "riot", "rise", "risk", "road", "roam", "roar", "robe",
+  "rock", "rode", "role", "roll", "roof", "room", "root", "rope",
+  "rose", "ruin", "rule", "rush", "rust", "safe", "sage", "said",
+  "sail", "sake", "sale", "salt", "same", "sand", "sang", "sank",
+  "save", "scan", "seal", "seam", "seat", "seed", "seek", "seem",
+  "seen", "self", "sell", "send", "sent", "sept", "shed", "shin",
+  "ship", "shoe", "shop", "shot", "show", "shut", "side", "sigh",
+  "sign", "silk", "sing", "sink", "site", "size", "skip", "slab",
+  "slam", "slap", "slew", "slid", "slim", "slip", "slit", "slot",
+  "slow", "slug", "snap", "snow", "soak", "soap", "soar", "sock",
+  "soft", "soil", "sold", "sole", "solo", "some", "song", "soon",
+  "sort", "soul", "sour", "span", "spar", "spec", "sped", "spin",
+  "spit", "spot", "spur", "star", "stay", "stem", "step", "stew",
+  "stir", "stop", "stow", "stub", "stud", "such", "suit", "sung",
+  "sure", "surf", "swan", "swap", "swim", "tabs", "tack", "tail",
+  "take", "tale", "talk", "tall", "tame", "tank", "tape", "taps",
+  "tart", "task", "taxi", "team", "tear", "tell", "tend", "tent",
+  "term", "test", "text", "that", "them", "then", "they", "thin",
+  "this", "thou", "tick", "tide", "tidy", "tied", "tier", "tile",
+  "till", "tilt", "time", "tiny", "tire", "toad", "toil", "told",
+  "toll", "tomb", "tone", "took", "tool", "tops", "tore", "torn",
+  "tour", "town", "trap", "tray", "tree", "trim", "trio", "trip",
+  "trot", "true", "tube", "tuck", "tug", "tulip", "tune", "turn",
+  "twin", "type", "ugly", "undo", "unit", "unto", "upon", "urge",
+  "used", "user", "vain", "vale", "van", "vary", "vast", "veil",
+  "vein", "vent", "verb", "very", "vest", "veto", "vibe", "view",
+  "vine", "visa", "void", "volt", "vote", "wade", "wage", "wait",
+  "wake", "walk", "wall", "wand", "ward", "warm", "warn", "warp",
+  "wary", "wash", "vast", "wave", "wavy", "weak", "wear", "weed",
+  "week", "well", "went", "were", "west", "what", "when", "whim",
+  "whip", "whom", "wide", "wife", "wild", "will", "wilt", "wily",
+  "wind", "wine", "wing", "wink", "wipe", "wire", "wise", "wish",
+  "with", "woke", "wolf", "wood", "wool", "word", "wore", "work",
+  "worm", "worn", "wrap", "writ", "yard", "yarn", "year", "yell",
+  "yoga", "yoke", "your", "zeal", "zero", "zinc", "zone", "zoom",
+];
+
+const SEPARATORS = [
+  { label: "Hyphen (-)", value: "-" },
+  { label: "Space", value: " " },
+  { label: "Period (.)", value: "." },
+  { label: "Underscore (_)", value: "_" },
+  { label: "Comma (,)", value: "," },
+  { label: "None", value: "" },
+];
+
+function generatePassphrase(wordCount: number, separator: string): string {
+  const array = new Uint32Array(wordCount);
+  crypto.getRandomValues(array);
+  return Array.from(array)
+    .map((n) => WORDLIST[n % WORDLIST.length])
+    .join(separator);
+}
+
+function calculatePassphraseEntropy(wordCount: number): number {
+  return Math.floor(wordCount * Math.log2(WORDLIST.length));
+}
 
 function generatePassword(options: PasswordOptions): string {
   let chars = "";
@@ -127,27 +262,30 @@ export default function PasswordGeneratorPage() {
   const [bulkCount, setBulkCount] = useState(5);
   const [copied, setCopied] = useState<string | null>(null);
   const [showBulk, setShowBulk] = useState(false);
+  const [mode, setMode] = useState<"password" | "passphrase">("password");
+  const [wordCount, setWordCount] = useState(4);
+  const [separator, setSeparator] = useState("-");
 
   const generate = useCallback(() => {
-    const pw = generatePassword(options);
+    const pw = mode === "passphrase" ? generatePassphrase(wordCount, separator) : generatePassword(options);
     setPassword(pw);
     setPasswords([]);
     setShowBulk(false);
-  }, [options]);
+  }, [options, mode, wordCount, separator]);
 
   const generateBulk = useCallback(() => {
     const pws: string[] = [];
     for (let i = 0; i < bulkCount; i++) {
-      pws.push(generatePassword(options));
+      pws.push(mode === "passphrase" ? generatePassphrase(wordCount, separator) : generatePassword(options));
     }
     setPasswords(pws);
     setShowBulk(true);
-  }, [options, bulkCount]);
+  }, [options, bulkCount, mode, wordCount, separator]);
 
   useEffect(() => {
     generate();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [mode, wordCount, separator]);
 
   const fallbackCopy = useCallback((text: string): boolean => {
     try {
@@ -186,7 +324,11 @@ export default function PasswordGeneratorPage() {
     setTimeout(() => setCopied(null), 2000);
   }, [passwords, fallbackCopy]);
 
-  const entropy = password ? calculateEntropy(password, options) : 0;
+  const entropy = password
+    ? mode === "passphrase"
+      ? calculatePassphraseEntropy(wordCount)
+      : calculateEntropy(password, options)
+    : 0;
   const strength = getStrengthLabel(entropy);
   const crackTime = estimateCrackTime(entropy);
 
@@ -204,10 +346,14 @@ export default function PasswordGeneratorPage() {
 
   return (
     <>
-      <title>Password Generator - Free Secure Random Password Tool | DevTools Hub</title>
+      <title>Password Generator - Free Random Password &amp; Passphrase Generator | DevTools Hub</title>
       <meta
         name="description"
-        content="Generate cryptographically secure random passwords with customizable length, character sets, and strength analysis. All passwords generated in your browser using the Web Crypto API."
+        content="Generate strong random passwords and passphrases with customizable length, character sets, and entropy-based strength analysis. Free online password generator using the Web Crypto API — no data sent anywhere."
+      />
+      <meta
+        name="keywords"
+        content="password generator, random password generator, strong password generator, secure password generator, passphrase generator, password strength meter, crypto random password"
       />
       <JsonLd
         data={[
@@ -215,39 +361,27 @@ export default function PasswordGeneratorPage() {
             slug: "password-generator",
             name: "Password Generator",
             description: "Generate strong, random passwords with customizable length and character sets",
-            category: "developer",
+            category: "generator",
           }),
           generateBreadcrumbSchema({
             slug: "password-generator",
             name: "Password Generator",
             description: "Generate strong, random passwords with customizable length and character sets",
-            category: "developer",
+            category: "generator",
           }),
           generateFAQSchema([
             { question: "How are these passwords generated?", answer: "Passwords are generated using the Web Crypto API (crypto.getRandomValues()), which provides cryptographically secure random numbers. This is the same randomness source used by TLS, SSH, and other security protocols. No pseudo-random fallback is used." },
             { question: "Are my generated passwords stored or sent anywhere?", answer: "No. All password generation happens entirely in your browser. No passwords are transmitted over the network, stored in cookies, or logged anywhere. You can verify this by using the tool offline or inspecting network traffic in your browser's developer tools." },
             { question: "How long should my password be?", answer: "For most accounts, 16 characters with mixed character types provides excellent security (80+ bits of entropy). For high-security applications like master passwords or encryption keys, use 20-32 characters. A 12-character password with all character types is the minimum for reasonable security today." },
             { question: "What does \"entropy\" mean?", answer: "Entropy measures the randomness or unpredictability of a password in bits. Each bit of entropy doubles the number of possible passwords an attacker must try. A password with 80 bits of entropy has 2^80 (about 1.2 septillion) possible combinations. Higher entropy means a stronger password." },
+            { question: "What is a passphrase and is it more secure?", answer: "A passphrase is a sequence of random words separated by hyphens (e.g., 'crane-bolt-mist-fork'). A 4-word passphrase from a large dictionary provides roughly 40-50 bits of entropy. While this is less than a 16-character random password, passphrases are much easier to memorize. For maximum security, use 6-8 words or combine a passphrase with numbers and symbols." },
           ]),
         ]}
       />
 
       <div className="min-h-screen bg-slate-900 text-slate-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          {/* Breadcrumb */}
-          <nav className="text-sm text-slate-400 mb-6" aria-label="Breadcrumb">
-            <ol className="flex items-center gap-2">
-              <li>
-                <a href="/" className="hover:text-white transition-colors">Home</a>
-              </li>
-              <li><span className="mx-1">/</span></li>
-              <li>
-                <a href="/tools" className="hover:text-white transition-colors">Developer Tools</a>
-              </li>
-              <li><span className="mx-1">/</span></li>
-              <li className="text-slate-200">Password Generator</li>
-            </ol>
-          </nav>
+          <ToolBreadcrumb slug="password-generator" />
 
           {/* Header */}
           <div className="mb-8">
@@ -258,6 +392,16 @@ export default function PasswordGeneratorPage() {
               Generate cryptographically secure random passwords using the Web
               Crypto API. Customize length, character sets, and generate in bulk.
               Everything runs in your browser — no data is sent anywhere.
+            </p>
+          </div>
+
+          {/* Security Notice */}
+          <div className="bg-green-900/20 border border-green-700/40 rounded-lg px-4 py-3 mb-6 flex items-center gap-3">
+            <svg className="w-5 h-5 text-green-400 shrink-0" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
+            </svg>
+            <p className="text-sm text-green-300">
+              <strong>Generated entirely in your browser.</strong> No passwords are stored or transmitted. Uses the Web Crypto API for cryptographic randomness.
             </p>
           </div>
 
@@ -324,15 +468,91 @@ export default function PasswordGeneratorPage() {
                 onChange={(e) => setBulkCount(Number(e.target.value))}
                 className="bg-slate-800 border border-slate-600 rounded px-2 py-1 text-sm text-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
-                {[5, 10, 20, 50].map((n) => (
+                {[1, 5, 10, 15, 20].map((n) => (
                   <option key={n} value={n}>{n}</option>
                 ))}
               </select>
             </div>
           </div>
 
+          {/* Mode Toggle */}
+          <div className="flex items-center gap-1 bg-slate-800 border border-slate-700 rounded-lg p-1 mb-6 w-fit">
+            <button
+              onClick={() => { setMode("password"); }}
+              className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
+                mode === "password"
+                  ? "bg-blue-600 text-white"
+                  : "text-slate-400 hover:text-white"
+              }`}
+            >
+              Password
+            </button>
+            <button
+              onClick={() => { setMode("passphrase"); }}
+              className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
+                mode === "passphrase"
+                  ? "bg-blue-600 text-white"
+                  : "text-slate-400 hover:text-white"
+              }`}
+            >
+              Passphrase
+            </button>
+          </div>
+
+          {/* Passphrase Options */}
+          {mode === "passphrase" && (
+            <div className="bg-slate-800 border border-slate-700 rounded-lg p-5 mb-6">
+              <h2 className="text-sm font-semibold text-white mb-4">Passphrase Options</h2>
+              <div className="flex items-center justify-between mb-2">
+                <label className="text-sm text-slate-300">Number of Words</label>
+                <input
+                  type="number"
+                  min={4}
+                  max={8}
+                  value={wordCount}
+                  onChange={(e) => {
+                    const v = Math.max(4, Math.min(8, Number(e.target.value) || 4));
+                    setWordCount(v);
+                  }}
+                  className="w-16 bg-slate-900 border border-slate-600 rounded px-2 py-1 text-sm text-center text-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+              <input
+                type="range"
+                min={4}
+                max={8}
+                value={wordCount}
+                onChange={(e) => setWordCount(Number(e.target.value))}
+                className="w-full accent-blue-500"
+              />
+              <div className="flex justify-between text-xs text-slate-500 mt-1">
+                <span>4 words</span>
+                <span>6 words</span>
+                <span>8 words</span>
+              </div>
+              <div className="mt-4">
+                <div className="flex items-center justify-between mb-2">
+                  <label className="text-sm text-slate-300">Word Separator</label>
+                  <select
+                    value={separator}
+                    onChange={(e) => setSeparator(e.target.value)}
+                    className="bg-slate-900 border border-slate-600 rounded px-2 py-1 text-sm text-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  >
+                    {SEPARATORS.map((sep) => (
+                      <option key={sep.label} value={sep.value}>{sep.label}</option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+              <p className="text-xs text-slate-500 mt-3">
+                Passphrases use random dictionary words with your chosen separator. They are
+                easier to remember while providing strong security through length and randomness.
+              </p>
+            </div>
+          )}
+
           {/* Options */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+          {mode === "password" && <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
             {/* Length & Presets */}
             <div className="bg-slate-800 border border-slate-700 rounded-lg p-5">
               <h2 className="text-sm font-semibold text-white mb-4">Length & Presets</h2>
@@ -342,11 +562,11 @@ export default function PasswordGeneratorPage() {
                   <label className="text-sm text-slate-300">Password Length</label>
                   <input
                     type="number"
-                    min={1}
+                    min={8}
                     max={128}
                     value={options.length}
                     onChange={(e) => {
-                      const v = Math.max(1, Math.min(128, Number(e.target.value) || 1));
+                      const v = Math.max(8, Math.min(128, Number(e.target.value) || 8));
                       updateOption("length", v);
                     }}
                     className="w-16 bg-slate-900 border border-slate-600 rounded px-2 py-1 text-sm text-center text-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -354,14 +574,14 @@ export default function PasswordGeneratorPage() {
                 </div>
                 <input
                   type="range"
-                  min={1}
+                  min={8}
                   max={128}
                   value={options.length}
                   onChange={(e) => updateOption("length", Number(e.target.value))}
                   className="w-full accent-blue-500"
                 />
                 <div className="flex justify-between text-xs text-slate-500 mt-1">
-                  <span>1</span>
+                  <span>8</span>
                   <span>32</span>
                   <span>64</span>
                   <span>128</span>
@@ -442,7 +662,7 @@ export default function PasswordGeneratorPage() {
                 </div>
               )}
             </div>
-          </div>
+          </div>}
 
           {/* Bulk Passwords */}
           {showBulk && passwords.length > 0 && (
@@ -563,6 +783,20 @@ export default function PasswordGeneratorPage() {
                   possible passwords an attacker must try. A password with 80 bits
                   of entropy has 2^80 (about 1.2 septillion) possible combinations.
                   Higher entropy means a stronger password.
+                </p>
+              </div>
+
+              <div>
+                <h3 className="text-lg font-semibold text-white mb-2">
+                  What is a passphrase and is it more secure?
+                </h3>
+                <p className="text-slate-400">
+                  A passphrase is a sequence of random words separated by hyphens
+                  (e.g., &ldquo;crane-bolt-mist-fork&rdquo;). A 4-word passphrase
+                  from a large dictionary provides roughly 40-50 bits of entropy.
+                  While this is less than a 16-character random password, passphrases
+                  are much easier to memorize. For maximum security, use 6-8 words
+                  or combine a passphrase with numbers and symbols.
                 </p>
               </div>
             </div>
