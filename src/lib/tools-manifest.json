@@ -3,17 +3,17 @@
     {
       "slug": "json-formatter",
       "name": "JSON Formatter & Validator",
-      "description": "Format, validate, and beautify JSON data with syntax highlighting",
-      "category": "developer",
+      "description": "Format, validate, beautify, and minify JSON online. Pretty-print with 2-space, 4-space, or tab indentation. Download formatted output as .json.",
+      "category": "json",
       "searchVolume": "high",
       "status": "live",
       "dateAdded": "2026-03-10"
     },
     {
       "slug": "base64-encoder",
-      "name": "Base64 Encoder/Decoder",
-      "description": "Encode and decode Base64 strings instantly",
-      "category": "developer",
+      "name": "Base64 Encoder & Decoder",
+      "description": "Base64 encode and decode online. Convert text, files, and images to Base64. Decode Base64 to image with live preview. URL-safe mode supported",
+      "category": "encoding",
       "searchVolume": "high",
       "status": "live",
       "dateAdded": "2026-03-10"
@@ -31,15 +31,15 @@
       "slug": "color-palette-generator",
       "name": "Color Palette Generator",
       "description": "Generate beautiful color palettes with hex, RGB, and HSL values",
-      "category": "design",
+      "category": "css",
       "searchVolume": "medium",
       "status": "live",
       "dateAdded": "2026-03-10"
     },
     {
       "slug": "regex-tester",
-      "name": "Regex Tester",
-      "description": "Test and debug regular expressions with real-time matching, highlighting, and replacement preview",
+      "name": "Regex Tester & Debugger — Free Online Tool",
+      "description": "Test and debug regular expressions with real-time matching, live highlighting, capture groups, and a built-in cheatsheet. Free regex tester with flags support (g, i, m, s)",
       "category": "developer",
       "searchVolume": "high",
       "status": "live",
@@ -57,8 +57,8 @@
     {
       "slug": "qr-code-generator",
       "name": "QR Code Generator",
-      "description": "Generate QR codes from text, URLs, Wi-Fi credentials, and more. Download as PNG or SVG",
-      "category": "developer",
+      "description": "Generate QR codes for URLs, Wi-Fi, vCard contacts, email, phone, and SMS. Custom size, colors, error correction. Download PNG/SVG. Bulk mode up to 100",
+      "category": "generator",
       "searchVolume": "very-high",
       "status": "live",
       "dateAdded": "2026-03-11"
@@ -75,8 +75,8 @@
     {
       "slug": "uuid-generator",
       "name": "UUID Generator",
-      "description": "Generate UUIDs (v1, v4) with bulk generation, format options, and validation",
-      "category": "developer",
+      "description": "Generate UUID v4 (random), v1 (timestamp), v7 (sortable) with bulk generation up to 1000, format options, download, and validation",
+      "category": "generator",
       "searchVolume": "high",
       "status": "live",
       "dateAdded": "2026-03-11"
@@ -85,7 +85,7 @@
       "slug": "timestamp-converter",
       "name": "Unix Timestamp Converter",
       "description": "Convert Unix timestamps to human-readable dates and vice versa with live clock",
-      "category": "conversion",
+      "category": "encoding",
       "searchVolume": "high",
       "status": "live",
       "dateAdded": "2026-03-11"
@@ -93,9 +93,9 @@
     {
       "slug": "css-gradient-generator",
       "name": "CSS Gradient Generator",
-      "description": "Create beautiful CSS gradients visually with linear, radial, and conic options",
-      "category": "design",
-      "searchVolume": "medium",
+      "description": "Free CSS gradient generator with visual editor. Create linear and radial gradients with color stops, transparency, angle picker, 24 presets, cross-browser CSS output, and PNG download.",
+      "category": "css",
+      "searchVolume": "high",
       "status": "live",
       "dateAdded": "2026-03-11"
     },
@@ -119,10 +119,10 @@
     },
     {
       "slug": "markdown-editor",
-      "name": "Markdown Editor & Preview",
-      "description": "Write Markdown with live HTML preview, cheat sheet, and export to HTML",
+      "name": "Online Markdown Editor & Preview",
+      "description": "Free online markdown editor with live preview. Write GitHub Flavored Markdown with tables, task lists, code blocks, and strikethrough. Copy rendered HTML or download as .md file",
       "category": "text",
-      "searchVolume": "medium",
+      "searchVolume": "high",
       "status": "live",
       "dateAdded": "2026-03-11"
     },
@@ -130,25 +130,34 @@
       "slug": "url-encoder",
       "name": "URL Encoder & Decoder",
       "description": "Encode and decode URLs with encodeURIComponent, encodeURI, and query string modes",
-      "category": "conversion",
+      "category": "encoding",
       "searchVolume": "medium",
       "status": "live",
       "dateAdded": "2026-03-11"
     },
     {
+      "slug": "url-encode-decode",
+      "name": "URL Encode Decode Online",
+      "description": "URL encode and decode online with bulk mode for multiple URLs. Component vs full URL encoding toggle, query string parser, and clipboard copy. Free browser-based tool.",
+      "category": "encoding",
+      "searchVolume": "high",
+      "status": "live",
+      "dateAdded": "2026-03-29"
+    },
+    {
       "slug": "hash-generator",
       "name": "Hash Generator",
-      "description": "Generate MD5, SHA-1, SHA-256, SHA-384, and SHA-512 hashes from any text input",
-      "category": "developer",
-      "searchVolume": "medium",
+      "description": "Generate MD5, SHA-1, SHA-224, SHA-256, SHA-384, SHA-512 hashes from text or files. HMAC-SHA256, hash comparison, drag-and-drop file hashing. All in-browser.",
+      "category": "encoding",
+      "searchVolume": "high",
       "status": "live",
       "dateAdded": "2026-03-11"
     },
     {
       "slug": "password-generator",
       "name": "Password Generator",
-      "description": "Generate cryptographically secure random passwords with customizable length and character sets",
-      "category": "developer",
+      "description": "Generate cryptographically secure random passwords and passphrases with customizable length, character sets, strength meter, and bulk generation",
+      "category": "generator",
       "searchVolume": "very-high",
       "status": "live",
       "dateAdded": "2026-03-11"
@@ -157,7 +166,7 @@
       "slug": "json-to-csv",
       "name": "JSON to CSV Converter",
       "description": "Convert JSON arrays to CSV and CSV back to JSON with nested object flattening and custom delimiters",
-      "category": "conversion",
+      "category": "json",
       "searchVolume": "high",
       "status": "live",
       "dateAdded": "2026-03-11"
@@ -175,7 +184,7 @@
       "slug": "css-minifier",
       "name": "CSS Minifier & Beautifier",
       "description": "Minify CSS to reduce file size or beautify for readability with hex shortening and zero-unit removal",
-      "category": "developer",
+      "category": "css",
       "searchVolume": "high",
       "status": "live",
       "dateAdded": "2026-03-11"
@@ -190,10 +199,19 @@
       "dateAdded": "2026-03-11"
     },
     {
+      "slug": "color-picker",
+      "name": "Color Picker",
+      "description": "Free online color picker with visual selector. Convert between HEX, RGB, HSL, CMYK. Generate harmonious color palettes. Copy CSS color codes instantly.",
+      "category": "css",
+      "searchVolume": "very-high",
+      "status": "live",
+      "dateAdded": "2026-03-28"
+    },
+    {
       "slug": "color-converter",
       "name": "Color Converter",
       "description": "Convert colors between HEX, RGB, HSL, HSV, and CMYK formats with visual picker and live preview",
-      "category": "design",
+      "category": "css",
       "searchVolume": "high",
       "status": "live",
       "dateAdded": "2026-03-11"
@@ -202,7 +220,7 @@
       "slug": "image-resizer",
       "name": "Image Resizer",
       "description": "Resize images to any dimension with social media presets, percentage scaling, and PNG/JPEG/WebP export",
-      "category": "design",
+      "category": "image",
       "searchVolume": "very-high",
       "status": "live",
       "dateAdded": "2026-03-11"
@@ -219,9 +237,9 @@
     {
       "slug": "lorem-ipsum-generator",
       "name": "Lorem Ipsum Generator",
-      "description": "Generate placeholder text for designs, mockups, and layouts with paragraphs, sentences, words, or list items",
-      "category": "text",
-      "searchVolume": "medium",
+      "description": "Generate dummy placeholder text in paragraphs, sentences, or words. Classic lorem ipsum, hipster ipsum, bacon ipsum, and corporate ipsum variations with copy to clipboard",
+      "category": "generator",
+      "searchVolume": "high",
       "status": "live",
       "dateAdded": "2026-03-11"
     },
@@ -229,7 +247,7 @@
       "slug": "json-to-yaml",
       "name": "JSON to YAML Converter",
       "description": "Convert between JSON and YAML formats instantly with bidirectional support",
-      "category": "conversion",
+      "category": "json",
       "searchVolume": "medium",
       "status": "live",
       "dateAdded": "2026-03-11"
@@ -244,6 +262,15 @@
       "dateAdded": "2026-03-11"
     },
     {
+      "slug": "cron-expression-generator",
+      "name": "Cron Expression Generator",
+      "description": "Build cron expressions visually with dropdowns, preset templates, human-readable descriptions, and next run time previews. Reverse-parse any cron expression",
+      "category": "developer",
+      "searchVolume": "medium",
+      "status": "live",
+      "dateAdded": "2026-03-28"
+    },
+    {
       "slug": "yaml-formatter",
       "name": "YAML Formatter & Beautifier",
       "description": "Format, beautify, minify, and sort YAML with proper indentation for Kubernetes, Docker, and config files",
@@ -256,7 +283,7 @@
       "slug": "html-entity-encoder",
       "name": "HTML Entity Encoder & Decoder",
       "description": "Encode special characters to HTML entities or decode entities back to text with named, decimal, and hex formats",
-      "category": "developer",
+      "category": "encoding",
       "searchVolume": "medium",
       "status": "live",
       "dateAdded": "2026-03-11"
@@ -265,16 +292,16 @@
       "slug": "number-base-converter",
       "name": "Number Base Converter",
       "description": "Convert numbers between binary, octal, decimal, and hexadecimal with BigInt precision and formatting",
-      "category": "conversion",
+      "category": "encoding",
       "searchVolume": "medium",
       "status": "live",
       "dateAdded": "2026-03-11"
     },
     {
       "slug": "image-compressor",
-      "name": "Image Compressor",
-      "description": "Compress images to reduce file size with quality control. JPEG, WebP, and PNG output — all in your browser",
-      "category": "design",
+      "name": "Image Compressor - Reduce File Size Online",
+      "description": "Free online image compressor. Reduce JPEG, PNG and WebP file sizes by up to 80%. Batch compress up to 10 images — all in your browser",
+      "category": "image",
       "searchVolume": "very-high",
       "status": "live",
       "dateAdded": "2026-03-11"
@@ -283,7 +310,7 @@
       "slug": "aspect-ratio-calculator",
       "name": "Aspect Ratio Calculator",
       "description": "Calculate and convert aspect ratios for images, videos, and screens with social media and video presets",
-      "category": "design",
+      "category": "image",
       "searchVolume": "medium",
       "status": "live",
       "dateAdded": "2026-03-11"
@@ -292,7 +319,7 @@
       "slug": "svg-to-png",
       "name": "SVG to PNG Converter",
       "description": "Convert SVG files to PNG, JPEG, or WebP with custom scale, dimensions, and background options",
-      "category": "conversion",
+      "category": "image",
       "searchVolume": "high",
       "status": "live",
       "dateAdded": "2026-03-11"
@@ -301,7 +328,7 @@
       "slug": "json-schema-validator",
       "name": "JSON Schema Validator",
       "description": "Validate JSON data against JSON Schema (Draft-07) with detailed error reporting and path navigation",
-      "category": "developer",
+      "category": "json",
       "searchVolume": "high",
       "status": "live",
       "dateAdded": "2026-03-11"
@@ -319,7 +346,7 @@
       "slug": "markdown-to-html",
       "name": "Markdown to HTML Converter",
       "description": "Convert Markdown to clean, semantic HTML with pretty formatting, preview mode, and full document export",
-      "category": "conversion",
+      "category": "encoding",
       "searchVolume": "high",
       "status": "live",
       "dateAdded": "2026-03-12"
@@ -328,7 +355,7 @@
       "slug": "json-path-tester",
       "name": "JSONPath Tester",
       "description": "Test and evaluate JSONPath expressions with dot notation, wildcards, array slices, filters, and recursive descent",
-      "category": "developer",
+      "category": "json",
       "searchVolume": "medium",
       "status": "live",
       "dateAdded": "2026-03-12"
@@ -337,7 +364,7 @@
       "slug": "placeholder-image-generator",
       "name": "Placeholder Image Generator",
       "description": "Generate placeholder images with custom dimensions, colors, and text. Download as PNG, JPEG, WebP, or SVG",
-      "category": "design",
+      "category": "image",
       "searchVolume": "medium",
       "status": "live",
       "dateAdded": "2026-03-12"
@@ -346,7 +373,7 @@
       "slug": "tailwind-css-converter",
       "name": "Tailwind CSS Converter",
       "description": "Convert CSS to Tailwind utility classes and Tailwind back to CSS with 80+ property support",
-      "category": "developer",
+      "category": "css",
       "searchVolume": "medium",
       "status": "live",
       "dateAdded": "2026-03-12"
@@ -373,7 +400,7 @@
       "slug": "csv-to-json",
       "name": "CSV to JSON Converter",
       "description": "Convert CSV and TSV data to JSON with type detection, nested key unflattening, and RFC 4180 parsing",
-      "category": "conversion",
+      "category": "json",
       "searchVolume": "high",
       "status": "live",
       "dateAdded": "2026-03-12"
@@ -391,7 +418,7 @@
       "slug": "image-format-converter",
       "name": "Image Format Converter",
       "description": "Convert images between PNG, JPG, WebP, BMP, and GIF formats instantly in your browser",
-      "category": "conversion",
+      "category": "image",
       "searchVolume": "very-high",
       "status": "live",
       "dateAdded": "2026-03-12"
@@ -400,7 +427,7 @@
       "slug": "box-shadow-generator",
       "name": "CSS Box Shadow Generator",
       "description": "Create CSS box-shadow effects visually with multiple layers, blur, spread, color, and inset options",
-      "category": "design",
+      "category": "css",
       "searchVolume": "high",
       "status": "live",
       "dateAdded": "2026-03-12"
@@ -409,7 +436,7 @@
       "slug": "color-picker-from-image",
       "name": "Color Picker from Image",
       "description": "Upload any image and pick colors with a click. Extract dominant color palettes with HEX, RGB, and HSL values",
-      "category": "design",
+      "category": "image",
       "searchVolume": "high",
       "status": "live",
       "dateAdded": "2026-03-12"
@@ -418,7 +445,7 @@
       "slug": "barcode-generator",
       "name": "Barcode Generator",
       "description": "Generate Code 128, EAN-13, and UPC-A barcodes with custom size, colors, and PNG download",
-      "category": "developer",
+      "category": "generator",
       "searchVolume": "high",
       "status": "live",
       "dateAdded": "2026-03-12"
@@ -427,7 +454,7 @@
       "slug": "border-radius-generator",
       "name": "CSS Border Radius Generator",
       "description": "Generate CSS border-radius visually with individual corner controls, elliptical mode, presets, and live preview",
-      "category": "design",
+      "category": "css",
       "searchVolume": "high",
       "status": "live",
       "dateAdded": "2026-03-12"
@@ -436,7 +463,7 @@
       "slug": "json-tree-viewer",
       "name": "JSON Tree Viewer",
       "description": "Parse and display JSON as a collapsible tree view with data type color coding, search, and path copying",
-      "category": "developer",
+      "category": "json",
       "searchVolume": "high",
       "status": "live",
       "dateAdded": "2026-03-26"
@@ -445,7 +472,7 @@
       "slug": "image-cropper",
       "name": "Image Cropper",
       "description": "Crop images with drag-to-select, preset aspect ratios, and manual dimensions. Download as PNG or JPEG — all in your browser",
-      "category": "design",
+      "category": "image",
       "searchVolume": "very-high",
       "status": "live",
       "dateAdded": "2026-03-26"
@@ -454,7 +481,7 @@
       "slug": "code-to-image",
       "name": "Code to Image Converter",
       "description": "Convert code snippets to beautiful images with syntax highlighting, themes, and window chrome. Export as PNG — all in your browser",
-      "category": "developer",
+      "category": "image",
       "searchVolume": "high",
       "status": "live",
       "dateAdded": "2026-03-26"
@@ -463,7 +490,7 @@
       "slug": "slug-generator",
       "name": "URL Slug Generator",
       "description": "Generate clean, SEO-friendly URL slugs from any text with separator, case, length, and stop word options",
-      "category": "developer",
+      "category": "generator",
       "searchVolume": "medium",
       "status": "live",
       "dateAdded": "2026-03-26"
@@ -472,21 +499,370 @@
       "slug": "css-glassmorphism-generator",
       "name": "CSS Glassmorphism Generator",
       "description": "Create frosted glass UI effects with backdrop-filter blur, transparency, border, and border radius controls",
-      "category": "design",
+      "category": "css",
       "searchVolume": "medium",
       "status": "live",
       "dateAdded": "2026-03-26"
+    },
+    {
+      "slug": "compound-interest-calculator",
+      "name": "Compound Interest Calculator",
+      "description": "Calculate compound interest with monthly, quarterly, or annual compounding. See how investments grow over time with optional monthly contributions",
+      "category": "finance",
+      "searchVolume": "very-high",
+      "status": "live",
+      "dateAdded": "2026-03-27"
+    },
+    {
+      "slug": "salary-to-hourly-calculator",
+      "name": "Salary to Hourly Calculator",
+      "description": "Convert annual salary to hourly rate and hourly to salary. See breakdowns for daily, weekly, bi-weekly, monthly, and quarterly pay periods",
+      "category": "finance",
+      "searchVolume": "very-high",
+      "status": "live",
+      "dateAdded": "2026-03-27"
+    },
+    {
+      "slug": "roi-calculator",
+      "name": "ROI Calculator",
+      "description": "Calculate return on investment percentage, net profit, and annualized ROI from your investment cost and returns",
+      "category": "finance",
+      "searchVolume": "high",
+      "status": "live",
+      "dateAdded": "2026-03-27"
+    },
+    {
+      "slug": "markup-calculator",
+      "name": "Markup & Margin Calculator",
+      "description": "Calculate markup percentage, profit margin, and selling price from cost. Convert between markup and margin instantly",
+      "category": "finance",
+      "searchVolume": "high",
+      "status": "live",
+      "dateAdded": "2026-03-27"
+    },
+    {
+      "slug": "tip-calculator",
+      "name": "Tip Calculator",
+      "description": "Calculate tips and split bills easily. Choose tip percentage, split between multiple people, and see per-person amounts",
+      "category": "finance",
+      "searchVolume": "very-high",
+      "status": "live",
+      "dateAdded": "2026-03-27"
+    },
+    {
+      "slug": "bmi-calculator",
+      "name": "BMI Calculator",
+      "description": "Calculate your Body Mass Index (BMI) instantly. Check if you're underweight, normal, overweight, or obese with metric and imperial units",
+      "category": "health",
+      "searchVolume": "very-high",
+      "status": "live",
+      "dateAdded": "2026-03-27"
+    },
+    {
+      "slug": "calorie-calculator",
+      "name": "Calorie Calculator",
+      "description": "Calculate your daily calorie needs using the Mifflin-St Jeor equation. Find your BMR, TDEE, and calories for weight loss or gain",
+      "category": "health",
+      "searchVolume": "very-high",
+      "status": "live",
+      "dateAdded": "2026-03-27"
+    },
+    {
+      "slug": "body-fat-calculator",
+      "name": "Body Fat Percentage Calculator",
+      "description": "Estimate your body fat percentage using the US Navy method. See fat mass, lean mass, and body fat category for men and women",
+      "category": "health",
+      "searchVolume": "high",
+      "status": "live",
+      "dateAdded": "2026-03-27"
+    },
+    {
+      "slug": "macro-calculator",
+      "name": "Macro Calculator",
+      "description": "Calculate your daily macros for protein, carbs, and fat. Choose from balanced, low carb, high protein, or keto splits based on your TDEE",
+      "category": "health",
+      "searchVolume": "high",
+      "status": "live",
+      "dateAdded": "2026-03-27"
+    },
+    {
+      "slug": "due-date-calculator",
+      "name": "Pregnancy Due Date Calculator",
+      "description": "Calculate your pregnancy due date from last menstrual period, conception date, or IVF transfer. See trimester timeline and key milestones",
+      "category": "health",
+      "searchVolume": "very-high",
+      "status": "live",
+      "dateAdded": "2026-03-27"
+    },
+    {
+      "slug": "ai-prompt-generator",
+      "name": "AI Prompt Generator",
+      "description": "Generate optimized prompts for ChatGPT, Claude, and Gemini. Choose style, tone, and model target to create effective AI prompts instantly",
+      "category": "ai",
+      "searchVolume": "high",
+      "status": "live",
+      "dateAdded": "2026-03-27"
+    },
+    {
+      "slug": "ai-email-writer",
+      "name": "AI Email Writer",
+      "description": "Generate professional email drafts instantly. Choose email type, tone, and length for follow-ups, introductions, requests, and more",
+      "category": "ai",
+      "searchVolume": "high",
+      "status": "live",
+      "dateAdded": "2026-03-27"
+    },
+    {
+      "slug": "ai-resume-bullet-points",
+      "name": "AI Resume Bullet Points",
+      "description": "Generate tailored resume bullet points from any job description. Optimized with action verbs, metrics, and keywords for your industry and seniority",
+      "category": "ai",
+      "searchVolume": "high",
+      "status": "live",
+      "dateAdded": "2026-03-27"
+    },
+    {
+      "slug": "ai-product-description-generator",
+      "name": "AI Product Description Generator",
+      "description": "Generate compelling e-commerce product descriptions. Feature-benefit, lifestyle, and SEO-optimized copy for any product category",
+      "category": "ai",
+      "searchVolume": "high",
+      "status": "live",
+      "dateAdded": "2026-03-27"
+    },
+    {
+      "slug": "ai-meeting-summary-template",
+      "name": "AI Meeting Summary Generator",
+      "description": "Transform raw meeting notes into structured summaries with action items, decisions, and next steps. Supports standups, planning, retros, and more",
+      "category": "ai",
+      "searchVolume": "high",
+      "status": "live",
+      "dateAdded": "2026-03-27"
+    },
+    {
+      "slug": "invoice-generator",
+      "name": "Free Invoice Generator",
+      "description": "Create and download professional PDF invoices for free. Add line items, tax, payment terms, and company details — all in your browser",
+      "category": "finance",
+      "searchVolume": "very-high",
+      "status": "live",
+      "dateAdded": "2026-03-27"
+    },
+    {
+      "slug": "profit-margin-calculator",
+      "name": "Profit Margin Calculator",
+      "description": "Calculate gross and net profit margin, markup percentage, and cost ratio from revenue and costs. Compare margin scenarios instantly",
+      "category": "finance",
+      "searchVolume": "high",
+      "status": "live",
+      "dateAdded": "2026-03-27"
+    },
+    {
+      "slug": "business-name-generator",
+      "name": "Business Name Generator",
+      "description": "Generate creative business name ideas for any industry. Get professional, modern, and unique name suggestions with one click",
+      "category": "finance",
+      "searchVolume": "high",
+      "status": "live",
+      "dateAdded": "2026-03-27"
+    },
+    {
+      "slug": "ai-paragraph-rewriter",
+      "name": "AI Paragraph Rewriter",
+      "description": "Rewrite any paragraph in 6 styles: simplify, professional, creative, academic, concise, or expanded. Get two unique variations instantly",
+      "category": "ai",
+      "searchVolume": "very-high",
+      "status": "live",
+      "dateAdded": "2026-03-27"
+    },
+    {
+      "slug": "ai-blog-title-generator",
+      "name": "AI Blog Title Generator",
+      "description": "Generate 10 catchy, SEO-friendly blog post titles for any topic. Choose from how-to, listicle, question, controversial, data-driven, and guide styles",
+      "category": "ai",
+      "searchVolume": "high",
+      "status": "live",
+      "dateAdded": "2026-03-27"
+    },
+    {
+      "slug": "ai-linkedin-post-generator",
+      "name": "AI LinkedIn Post Generator",
+      "description": "Create engaging LinkedIn posts for thought leadership, career updates, industry news, and more. Choose tone, length, and format instantly",
+      "category": "ai",
+      "searchVolume": "high",
+      "status": "live",
+      "dateAdded": "2026-03-27"
+    },
+    {
+      "slug": "ai-color-palette-generator",
+      "name": "AI Color Palette Generator",
+      "description": "Enter a mood or brand description and get 5 harmonious colors with hex, RGB, and Tailwind CSS classes. Free AI-powered color palette generator",
+      "category": "ai",
+      "searchVolume": "high",
+      "status": "live",
+      "dateAdded": "2026-03-27"
+    },
+    {
+      "slug": "ai-meta-description-generator",
+      "name": "AI Meta Description Generator",
+      "description": "Generate 3 SEO-optimized meta descriptions for any page. AI-powered meta description generator with character count and keyword optimization",
+      "category": "ai",
+      "searchVolume": "high",
+      "status": "live",
+      "dateAdded": "2026-03-27"
+    },
+    {
+      "slug": "ai-regex-generator",
+      "name": "AI Regex Generator",
+      "description": "Describe what you want to match in plain English and get the regex pattern with explanation. Free AI-powered regex generator with live testing",
+      "category": "ai",
+      "searchVolume": "high",
+      "status": "live",
+      "dateAdded": "2026-03-27"
+    },
+    {
+      "slug": "ai-commit-message-generator",
+      "name": "AI Commit Message Generator",
+      "description": "Paste a git diff and get a conventional commit message instantly. AI-powered commit message generator following conventional commits standard",
+      "category": "ai",
+      "searchVolume": "high",
+      "status": "live",
+      "dateAdded": "2026-03-27"
+    },
+    {
+      "slug": "ai-privacy-policy-generator",
+      "name": "AI Privacy Policy Generator",
+      "description": "Generate a basic privacy policy for your website or app. Enter your business details and get a professional privacy policy instantly. Free AI-powered generator",
+      "category": "ai",
+      "searchVolume": "high",
+      "status": "live",
+      "dateAdded": "2026-03-27"
+    },
+    {
+      "slug": "concrete-calculator",
+      "name": "Concrete Calculator",
+      "description": "Calculate concrete volume in cubic metres for slabs, footings, columns and stairs. Includes wastage allowance and pre-mix bag estimates. Free online concrete calculator",
+      "category": "construction",
+      "searchVolume": "high",
+      "status": "live",
+      "dateAdded": "2026-03-27"
+    },
+    {
+      "slug": "brick-calculator",
+      "name": "Brick Calculator",
+      "description": "Calculate bricks per square metre with mortar joints and wastage allowance. Supports standard Australian brick sizes and bond patterns. Free online brick calculator",
+      "category": "construction",
+      "searchVolume": "medium",
+      "status": "live",
+      "dateAdded": "2026-03-27"
+    },
+    {
+      "slug": "roof-pitch-calculator",
+      "name": "Roof Pitch Calculator",
+      "description": "Calculate roof pitch in degrees, rise and run, rafter length and roof area multiplier. Convert between angle, ratio and percentage. Free online roof pitch calculator",
+      "category": "construction",
+      "searchVolume": "medium",
+      "status": "live",
+      "dateAdded": "2026-03-27"
+    },
+    {
+      "slug": "electrical-cable-size-calculator",
+      "name": "Electrical Cable Size Calculator",
+      "description": "Calculate minimum cable size for voltage drop compliance per AS/NZS 3008. Single and three phase, copper and aluminium. Free online cable size calculator",
+      "category": "construction",
+      "searchVolume": "medium",
+      "status": "live",
+      "dateAdded": "2026-03-27"
+    },
+    {
+      "slug": "paint-coverage-calculator",
+      "name": "Paint Coverage Calculator",
+      "description": "Calculate how much paint you need in litres for walls and ceilings. Room mode with door and window deductions, multiple coat types. Free online paint calculator",
+      "category": "construction",
+      "searchVolume": "medium",
+      "status": "live",
+      "dateAdded": "2026-03-27"
+    },
+    {
+      "slug": "bas-calculator",
+      "name": "BAS Calculator",
+      "description": "Calculate your quarterly Business Activity Statement GST amounts. Estimate GST on sales, purchases, and net payable or refund. Free Australian BAS calculator 2026",
+      "category": "finance",
+      "searchVolume": "high",
+      "status": "live",
+      "dateAdded": "2026-03-28"
+    },
+    {
+      "slug": "sole-trader-tax-estimator",
+      "name": "Sole Trader Tax Estimator",
+      "description": "Estimate Australian sole trader income tax, Medicare levy, and take-home pay for 2025-26. Free sole trader tax calculator with ATO tax brackets",
+      "category": "finance",
+      "searchVolume": "high",
+      "status": "live",
+      "dateAdded": "2026-03-28"
+    },
+    {
+      "slug": "abn-lookup",
+      "name": "ABN Lookup",
+      "description": "Validate Australian Business Numbers with the official ABN algorithm. Check ABN format, view validation breakdown, and extract ACN. Free ABN lookup tool 2026",
+      "category": "finance",
+      "searchVolume": "very-high",
+      "status": "live",
+      "dateAdded": "2026-03-28"
+    },
+    {
+      "slug": "wfh-deduction-calculator",
+      "name": "Work From Home Deduction Calculator",
+      "description": "Compare fixed rate (67c/hr) vs actual cost method for Australian work from home tax deductions 2025-26. Find which method gives you a bigger deduction",
+      "category": "finance",
+      "searchVolume": "high",
+      "status": "live",
+      "dateAdded": "2026-03-28"
+    },
+    {
+      "slug": "crypto-tax-calculator-au",
+      "name": "Crypto Tax Calculator AU",
+      "description": "Calculate Australian capital gains tax on cryptocurrency trades. 12-month CGT discount, multiple trades, ATO 2025-26 tax brackets. Free crypto tax calculator",
+      "category": "finance",
+      "searchVolume": "very-high",
+      "status": "live",
+      "dateAdded": "2026-03-28"
+    },
+    {
+      "slug": "unix-timestamp-converter",
+      "name": "Unix Timestamp Converter & Epoch Tool",
+      "description": "Convert Unix timestamps to human-readable dates and back. Live counter, timezone selector, milliseconds toggle, and common timestamps reference table",
+      "category": "developer",
+      "searchVolume": "very-high",
+      "status": "live",
+      "dateAdded": "2026-03-29"
+    },
+    {
+      "slug": "markdown-table-generator",
+      "name": "Markdown Table Generator",
+      "description": "Build Markdown tables visually with a table editor, live preview, CSV/TSV import, column alignment, and one-click copy. GitHub-flavoured Markdown output",
+      "category": "text",
+      "searchVolume": "high",
+      "status": "live",
+      "dateAdded": "2026-03-29"
     }
   ],
   "categories": {
-    "developer": { "label": "Developer", "color": "blue" },
-    "text": { "label": "Text", "color": "green" },
-    "design": { "label": "Design", "color": "purple" },
-    "conversion": { "label": "Conversion", "color": "orange" }
+    "developer": { "label": "Developer Tools", "color": "blue" },
+    "text": { "label": "Text Tools", "color": "green" },
+    "json": { "label": "JSON Tools", "color": "amber" },
+    "image": { "label": "Image Tools", "color": "purple" },
+    "encoding": { "label": "Encoding Tools", "color": "orange" },
+    "generator": { "label": "Generator Tools", "color": "pink" },
+    "css": { "label": "CSS Tools", "color": "cyan" },
+    "finance": { "label": "Finance Tools", "color": "emerald" },
+    "health": { "label": "Health & Fitness", "color": "red" },
+    "ai": { "label": "AI Tools", "color": "violet" },
+    "construction": { "label": "Construction & Trades", "color": "yellow" }
   },
   "meta": {
-    "totalTools": 53,
-    "lastUpdated": "2026-03-26",
-    "nextPriority": ["slug-generator", "css-glassmorphism-generator", "text-to-handwriting", "open-graph-preview", "svg-blob-generator"]
+    "totalTools": 86,
+    "lastUpdated": "2026-03-27",
+    "nextPriority": ["text-to-handwriting", "open-graph-preview", "svg-blob-generator"]
   }
 }
