@@ -265,13 +265,22 @@ export default function PasswordGeneratorPage() {
   const [mode, setMode] = useState<"password" | "passphrase">("password");
   const [wordCount, setWordCount] = useState(4);
   const [separator, setSeparator] = useState("-");
+  const [history, setHistory] = useState<string[]>([]);
+
+  const addToHistory = useCallback((pw: string) => {
+    setHistory((prev) => {
+      const next = [pw, ...prev.filter((p) => p !== pw)];
+      return next.slice(0, 10);
+    });
+  }, []);
 
   const generate = useCallback(() => {
     const pw = mode === "passphrase" ? generatePassphrase(wordCount, separator) : generatePassword(options);
     setPassword(pw);
+    if (pw) addToHistory(pw);
     setPasswords([]);
     setShowBulk(false);
-  }, [options, mode, wordCount, separator]);
+  }, [options, mode, wordCount, separator, addToHistory]);
 
   const generateBulk = useCallback(() => {
     const pws: string[] = [];
@@ -280,7 +289,8 @@ export default function PasswordGeneratorPage() {
     }
     setPasswords(pws);
     setShowBulk(true);
-  }, [options, bulkCount, mode, wordCount, separator]);
+    pws.forEach((pw) => addToHistory(pw));
+  }, [options, bulkCount, mode, wordCount, separator, addToHistory]);
 
   useEffect(() => {
     generate();
@@ -346,7 +356,7 @@ export default function PasswordGeneratorPage() {
 
   return (
     <>
-      <title>Password Generator - Free Random Password &amp; Passphrase Generator | DevTools Hub</title>
+      <title>Free Password Generator | Strong &amp; Secure | devtools.page</title>
       <meta
         name="description"
         content="Generate strong random passwords and passphrases with customizable length, character sets, and entropy-based strength analysis. Free online password generator using the Web Crypto API — no data sent anywhere."
@@ -370,9 +380,9 @@ export default function PasswordGeneratorPage() {
             category: "generator",
           }),
           generateFAQSchema([
-            { question: "How are these passwords generated?", answer: "Passwords are generated using the Web Crypto API (crypto.getRandomValues()), which provides cryptographically secure random numbers. This is the same randomness source used by TLS, SSH, and other security protocols. No pseudo-random fallback is used." },
-            { question: "Are my generated passwords stored or sent anywhere?", answer: "No. All password generation happens entirely in your browser. No passwords are transmitted over the network, stored in cookies, or logged anywhere. You can verify this by using the tool offline or inspecting network traffic in your browser's developer tools." },
+            { question: "Is this password generator safe?", answer: "Yes. This password generator runs entirely in your browser using the Web Crypto API (crypto.getRandomValues()), the same cryptographic randomness source used by TLS and SSH. No passwords are transmitted over the network, stored in cookies, or logged anywhere. You can verify this by using the tool offline or inspecting network traffic in your browser's developer tools." },
             { question: "How long should my password be?", answer: "For most accounts, 16 characters with mixed character types provides excellent security (80+ bits of entropy). For high-security applications like master passwords or encryption keys, use 20-32 characters. A 12-character password with all character types is the minimum for reasonable security today." },
+            { question: "How are these passwords generated?", answer: "Passwords are generated using the Web Crypto API (crypto.getRandomValues()), which provides cryptographically secure random numbers. This is the same randomness source used by TLS, SSH, and other security protocols. No pseudo-random fallback is used." },
             { question: "What does \"entropy\" mean?", answer: "Entropy measures the randomness or unpredictability of a password in bits. Each bit of entropy doubles the number of possible passwords an attacker must try. A password with 80 bits of entropy has 2^80 (about 1.2 septillion) possible combinations. Higher entropy means a stronger password." },
             { question: "What is a passphrase and is it more secure?", answer: "A passphrase is a sequence of random words separated by hyphens (e.g., 'crane-bolt-mist-fork'). A 4-word passphrase from a large dictionary provides roughly 40-50 bits of entropy. While this is less than a 16-character random password, passphrases are much easier to memorize. For maximum security, use 6-8 words or combine a passphrase with numbers and symbols." },
           ]),
@@ -697,6 +707,39 @@ export default function PasswordGeneratorPage() {
             </div>
           )}
 
+          {/* Password History */}
+          {history.length > 0 && (
+            <div className="bg-slate-800 border border-slate-700 rounded-lg p-5 mb-6">
+              <div className="flex items-center justify-between mb-3">
+                <h2 className="text-sm font-semibold text-white">
+                  Recent Passwords ({history.length})
+                </h2>
+                <button
+                  onClick={() => setHistory([])}
+                  className="text-xs text-slate-400 hover:text-red-400 transition-colors"
+                >
+                  Clear History
+                </button>
+              </div>
+              <p className="text-xs text-slate-500 mb-3">Session only — not persisted or stored anywhere.</p>
+              <div className="space-y-1 max-h-48 overflow-y-auto">
+                {history.map((pw, i) => (
+                  <div key={`${pw}-${i}`} className="flex items-center gap-2 bg-slate-900 rounded px-3 py-1.5">
+                    <code className="text-sm font-mono text-slate-300 break-all select-all flex-1">
+                      {pw}
+                    </code>
+                    <button
+                      onClick={() => copyText(pw, `hist-${i}`)}
+                      className="text-xs text-slate-400 hover:text-white transition-colors shrink-0"
+                    >
+                      {copied === `hist-${i}` ? "Copied!" : "Copy"}
+                    </button>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
           {/* Password Tips */}
           <div className="bg-slate-800 border border-slate-700 rounded-lg p-6 mb-6">
             <h2 className="text-lg font-semibold text-white mb-4">
@@ -737,6 +780,20 @@ export default function PasswordGeneratorPage() {
             <div className="space-y-6">
               <div>
                 <h3 className="text-lg font-semibold text-white mb-2">
+                  Is this password generator safe?
+                </h3>
+                <p className="text-slate-400">
+                  Yes. This password generator runs entirely in your browser using
+                  the Web Crypto API (<code className="text-slate-300">crypto.getRandomValues()</code>),
+                  the same cryptographic randomness source used by TLS and SSH.
+                  No passwords are transmitted over the network, stored in cookies,
+                  or logged anywhere. You can verify this by using the tool offline
+                  or inspecting network traffic in your browser&apos;s developer tools.
+                </p>
+              </div>
+
+              <div>
+                <h3 className="text-lg font-semibold text-white mb-2">
                   How are these passwords generated?
                 </h3>
                 <p className="text-slate-400">
@@ -745,18 +802,6 @@ export default function PasswordGeneratorPage() {
                   which provides cryptographically secure random numbers. This is
                   the same randomness source used by TLS, SSH, and other security
                   protocols. No pseudo-random fallback is used.
-                </p>
-              </div>
-
-              <div>
-                <h3 className="text-lg font-semibold text-white mb-2">
-                  Are my generated passwords stored or sent anywhere?
-                </h3>
-                <p className="text-slate-400">
-                  No. All password generation happens entirely in your browser.
-                  No passwords are transmitted over the network, stored in cookies,
-                  or logged anywhere. You can verify this by using the tool offline
-                  or inspecting network traffic in your browser&apos;s developer tools.
                 </p>
               </div>
 
