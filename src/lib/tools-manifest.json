@@ -56,8 +56,8 @@
     },
     {
       "slug": "jwt-decoder",
-      "name": "JWT Decoder",
-      "description": "Decode and inspect JSON Web Tokens — view header, payload claims, expiration status, and signature",
+      "name": "JWT Decoder & Debugger",
+      "description": "Decode and debug JSON Web Tokens online. Verify HS256 & RS256 signatures, check expiration, inspect header & payload claims. 100% client-side.",
       "category": "developer",
       "searchVolume": "high",
       "status": "live",
@@ -102,7 +102,7 @@
     {
       "slug": "css-gradient-generator",
       "name": "CSS Gradient Generator",
-      "description": "Free CSS gradient generator with visual editor. Create linear and radial gradients with color stops, transparency, angle picker, 24 presets, cross-browser CSS output, and PNG download.",
+      "description": "Free CSS gradient generator with visual editor. Create linear, radial, and conic gradients with draggable color stops, transparency, angle picker, 24 presets, Tailwind CSS output, cross-browser CSS code, and PNG download.",
       "category": "css",
       "searchVolume": "high",
       "status": "live",
@@ -908,6 +908,15 @@
       "searchVolume": "medium",
       "status": "live",
       "dateAdded": "2026-03-29"
+    },
+    {
+      "slug": "svg-to-png-converter",
+      "name": "SVG to PNG/JPG Converter",
+      "description": "Convert SVG files to PNG or JPG images online. Upload or paste SVG code, set custom dimensions, choose scale factor for retina exports, and download high-quality raster images. 100% client-side.",
+      "category": "image",
+      "searchVolume": "high",
+      "status": "live",
+      "dateAdded": "2026-03-29"
     }
   ],
   "categories": {
@@ -924,7 +933,7 @@
     "construction": { "label": "Construction & Trades", "color": "yellow" }
   },
   "meta": {
-    "totalTools": 90,
+    "totalTools": 91,
     "lastUpdated": "2026-03-29",
     "nextPriority": ["text-to-handwriting", "open-graph-preview", "svg-blob-generator"]
   }
