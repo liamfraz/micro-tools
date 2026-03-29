@@ -327,7 +327,7 @@
     {
       "slug": "image-compressor",
       "name": "Image Compressor - Reduce File Size Online",
-      "description": "Free online image compressor. Reduce JPEG, PNG and WebP file sizes by up to 80%. Batch compress up to 10 images — all in your browser",
+      "description": "Free online image compressor. Reduce JPEG, PNG and WebP file sizes by up to 80%. Batch compress up to 20 images with quality control, format conversion, dimension resize, and before/after preview — all in your browser.",
       "category": "image",
       "searchVolume": "very-high",
       "status": "live",
