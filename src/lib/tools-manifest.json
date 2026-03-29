@@ -102,7 +102,7 @@
     {
       "slug": "sql-formatter",
       "name": "SQL Formatter & Beautifier",
-      "description": "Format, beautify, and minify SQL queries with keyword casing and custom indentation",
+      "description": "Format, beautify, and minify SQL queries online. Supports MySQL, PostgreSQL, SQLite, SQL Server, Oracle dialects with configurable indentation and keyword casing",
       "category": "developer",
       "searchVolume": "high",
       "status": "live",
@@ -161,6 +161,15 @@
       "searchVolume": "very-high",
       "status": "live",
       "dateAdded": "2026-03-11"
+    },
+    {
+      "slug": "password-strength-checker",
+      "name": "Password Strength Checker",
+      "description": "Check how strong your password is with entropy calculation, crack time estimation, and improvement suggestions. 100% client-side — your password never leaves your browser",
+      "category": "generator",
+      "searchVolume": "high",
+      "status": "live",
+      "dateAdded": "2026-03-29"
     },
     {
       "slug": "json-to-csv",
@@ -854,6 +863,33 @@
       "searchVolume": "high",
       "status": "live",
       "dateAdded": "2026-03-29"
+    },
+    {
+      "slug": "http-status-codes",
+      "name": "HTTP Status Codes Reference",
+      "description": "Complete HTTP status codes reference. Search all HTTP response codes from 100 to 511 with descriptions, common use cases, and category filters. Find what 404, 500, 301, 429 and every other status code means",
+      "category": "developer",
+      "searchVolume": "very-high",
+      "status": "live",
+      "dateAdded": "2026-03-29"
+    },
+    {
+      "slug": "chmod-calculator",
+      "name": "Chmod Calculator",
+      "description": "Interactive Unix file permission calculator. Convert between numeric (755, 644) and symbolic (rwxr-xr-x) permissions with checkboxes, common presets, and ready-to-copy chmod commands",
+      "category": "developer",
+      "searchVolume": "high",
+      "status": "live",
+      "dateAdded": "2026-03-29"
+    },
+    {
+      "slug": "svg-path-editor",
+      "name": "SVG Path Editor",
+      "description": "Visual SVG path editor with live preview, draggable control points, command breakdown, shape presets, and transform controls. Edit SVG path d attributes interactively",
+      "category": "css",
+      "searchVolume": "medium",
+      "status": "live",
+      "dateAdded": "2026-03-29"
     }
   ],
   "categories": {
@@ -870,7 +906,7 @@
     "construction": { "label": "Construction & Trades", "color": "yellow" }
   },
   "meta": {
-    "totalTools": 86,
+    "totalTools": 89,
     "lastUpdated": "2026-03-27",
     "nextPriority": ["text-to-handwriting", "open-graph-preview", "svg-blob-generator"]
   }
