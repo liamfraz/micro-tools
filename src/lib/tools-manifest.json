@@ -899,6 +899,15 @@
       "searchVolume": "medium",
       "status": "live",
       "dateAdded": "2026-03-29"
+    },
+    {
+      "slug": "http-headers-analyzer",
+      "name": "HTTP Headers Analyzer",
+      "description": "Parse, categorize, and audit HTTP headers with plain-English explanations, security scoring, and export as curl or JSON. Paste raw headers from DevTools or curl.",
+      "category": "developer",
+      "searchVolume": "medium",
+      "status": "live",
+      "dateAdded": "2026-03-29"
     }
   ],
   "categories": {
@@ -915,8 +924,8 @@
     "construction": { "label": "Construction & Trades", "color": "yellow" }
   },
   "meta": {
-    "totalTools": 89,
-    "lastUpdated": "2026-03-27",
+    "totalTools": 90,
+    "lastUpdated": "2026-03-29",
     "nextPriority": ["text-to-handwriting", "open-graph-preview", "svg-blob-generator"]
   }
 }
