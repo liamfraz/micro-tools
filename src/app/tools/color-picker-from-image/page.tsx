@@ -3,6 +3,7 @@
 import { useState, useRef, useCallback, useEffect } from "react";
 import JsonLd from "@/components/JsonLd";
 import RelatedTools from "@/components/RelatedTools";
+import ToolBreadcrumb from "@/components/ToolBreadcrumb";
 import {
   generateFAQSchema,
   generateWebAppSchema,
@@ -199,13 +200,13 @@ export default function ColorPickerFromImagePage() {
             slug: "color-picker-from-image",
             name: "Color Picker from Image",
             description: "Extract colors from any image — click to pick hex, RGB, and HSL values instantly",
-            category: "design",
+            category: "image",
           }),
           generateBreadcrumbSchema({
             slug: "color-picker-from-image",
             name: "Color Picker from Image",
             description: "Extract colors from any image — click to pick hex, RGB, and HSL values instantly",
-            category: "design",
+            category: "image",
           }),
           generateFAQSchema([
             { question: "How does the color picker work?", answer: "When you upload an image, it's drawn onto an HTML canvas element in your browser. Clicking anywhere on the image reads the pixel data at that position to extract the exact color. Dominant colors are extracted by sampling pixels across the image and grouping similar colors together. No data leaves your browser." },
@@ -218,20 +219,7 @@ export default function ColorPickerFromImagePage() {
 
       <div className="min-h-screen bg-slate-900 text-slate-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          {/* Breadcrumb */}
-          <nav className="text-sm text-slate-400 mb-6" aria-label="Breadcrumb">
-            <ol className="flex items-center gap-2">
-              <li>
-                <a href="/" className="hover:text-white transition-colors">Home</a>
-              </li>
-              <li><span className="mx-1">/</span></li>
-              <li>
-                <a href="/tools" className="hover:text-white transition-colors">Design Tools</a>
-              </li>
-              <li><span className="mx-1">/</span></li>
-              <li className="text-slate-200">Color Picker from Image</li>
-            </ol>
-          </nav>
+          <ToolBreadcrumb slug="color-picker-from-image" />
 
           {/* Header */}
           <div className="mb-8">

@@ -34,6 +34,19 @@ export function generateFAQSchema(faqs: FAQ[]) {
   };
 }
 
+const categoryToAppCategory: Record<string, string> = {
+  developer: "DeveloperApplication",
+  json: "DeveloperApplication",
+  encoding: "DeveloperApplication",
+  css: "DesignApplication",
+  image: "MultimediaApplication",
+  generator: "UtilitiesApplication",
+  text: "UtilitiesApplication",
+  finance: "FinanceApplication",
+  health: "HealthApplication",
+  construction: "UtilitiesApplication",
+};
+
 export function generateWebAppSchema(tool: ToolMeta) {
   return {
     "@context": "https://schema.org",
@@ -41,8 +54,9 @@ export function generateWebAppSchema(tool: ToolMeta) {
     name: tool.name,
     description: tool.description,
     url: `${SITE_URL}/tools/${tool.slug}`,
-    applicationCategory: "DeveloperApplication",
-    operatingSystem: "Any",
+    applicationCategory:
+      categoryToAppCategory[tool.category] ?? "UtilitiesApplication",
+    operatingSystem: "Web",
     browserRequirements: "Requires JavaScript",
     offers: {
       "@type": "Offer",
@@ -68,6 +82,7 @@ export function generateBreadcrumbSchema(tool: ToolMeta) {
         "@type": "ListItem",
         position: 2,
         name: categoryLabel,
+        item: `${SITE_URL}/tools/category/${tool.category}`,
       },
       {
         "@type": "ListItem",
@@ -77,6 +92,15 @@ export function generateBreadcrumbSchema(tool: ToolMeta) {
       },
     ],
   };
+}
+
+export function getToolBySlug(slug: string) {
+  const tool = manifest.tools.find(
+    (t) => t.slug === slug && (t as { status?: string }).status === "live"
+  );
+  if (!tool) return null;
+  const categoryLabel = categories[tool.category]?.label ?? tool.category;
+  return { ...tool, categoryLabel };
 }
 
 export function generateOrgSchema() {

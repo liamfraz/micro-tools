@@ -3,6 +3,7 @@
 import { useState, useCallback } from "react";
 import JsonLd from "@/components/JsonLd";
 import RelatedTools from "@/components/RelatedTools";
+import ToolBreadcrumb from "@/components/ToolBreadcrumb";
 import {
   generateFAQSchema,
   generateWebAppSchema,
@@ -211,13 +212,13 @@ export default function NumberBaseConverterPage() {
             slug: "number-base-converter",
             name: "Number Base Converter",
             description: "Convert numbers between binary, octal, decimal, and hexadecimal bases",
-            category: "conversion",
+            category: "encoding",
           }),
           generateBreadcrumbSchema({
             slug: "number-base-converter",
             name: "Number Base Converter",
             description: "Convert numbers between binary, octal, decimal, and hexadecimal bases",
-            category: "conversion",
+            category: "encoding",
           }),
           generateFAQSchema([
             { question: "What number bases are supported?", answer: "This converter supports the 4 most common bases in programming: binary (base 2, used in low-level computing), octal (base 8, used in Unix file permissions), decimal (base 10, standard human notation), and hexadecimal (base 16, used in memory addresses, colors, and byte representation)." },

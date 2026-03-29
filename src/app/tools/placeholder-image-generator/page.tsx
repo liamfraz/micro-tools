@@ -3,6 +3,7 @@
 import { useState, useCallback, useRef, useEffect } from "react";
 import JsonLd from "@/components/JsonLd";
 import RelatedTools from "@/components/RelatedTools";
+import ToolBreadcrumb from "@/components/ToolBreadcrumb";
 import {
   generateFAQSchema,
   generateWebAppSchema,
@@ -192,13 +193,13 @@ ${customText ? `  <text x="${width / 2}" y="${height / 2 + Math.max(12, Math.min
             slug: "placeholder-image-generator",
             name: "Placeholder Image Generator",
             description: "Generate placeholder images with custom size, color, text, and format for wireframes and mockups",
-            category: "design",
+            category: "image",
           }),
           generateBreadcrumbSchema({
             slug: "placeholder-image-generator",
             name: "Placeholder Image Generator",
             description: "Generate placeholder images with custom size, color, text, and format for wireframes and mockups",
-            category: "design",
+            category: "image",
           }),
           generateFAQSchema([
             { question: "What is a placeholder image?", answer: "A placeholder image is a temporary image used in web design, mockups, and prototypes to represent where a real image will go. They typically display the image dimensions and a solid background color, making it easy to see the layout before final content is ready." },
@@ -211,16 +212,7 @@ ${customText ? `  <text x="${width / 2}" y="${height / 2 + Math.max(12, Math.min
 
       <main className="min-h-screen bg-slate-900 text-white">
         <div className="max-w-6xl mx-auto px-4 py-12">
-          {/* Breadcrumb */}
-          <nav className="text-sm text-slate-400 mb-6" aria-label="Breadcrumb">
-            <ol className="flex items-center gap-2">
-              <li><a href="/" className="hover:text-white transition-colors">Home</a></li>
-              <li><span className="mx-1">/</span></li>
-              <li><a href="/tools" className="hover:text-white transition-colors">Design Tools</a></li>
-              <li><span className="mx-1">/</span></li>
-              <li className="text-slate-200">Placeholder Image Generator</li>
-            </ol>
-          </nav>
+          <ToolBreadcrumb slug="placeholder-image-generator" />
 
           {/* Header */}
           <div className="mb-8">

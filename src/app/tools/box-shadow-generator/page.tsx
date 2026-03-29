@@ -3,6 +3,7 @@
 import { useState, useCallback, useMemo } from "react";
 import JsonLd from "@/components/JsonLd";
 import RelatedTools from "@/components/RelatedTools";
+import ToolBreadcrumb from "@/components/ToolBreadcrumb";
 import {
   generateFAQSchema,
   generateWebAppSchema,
@@ -154,13 +155,13 @@ export default function BoxShadowGeneratorPage() {
             slug: "box-shadow-generator",
             name: "CSS Box Shadow Generator",
             description: "Create and customize CSS box shadows with a visual editor — adjust offsets, blur, spread, color, and inset",
-            category: "design",
+            category: "css",
           }),
           generateBreadcrumbSchema({
             slug: "box-shadow-generator",
             name: "CSS Box Shadow Generator",
             description: "Create and customize CSS box shadows with a visual editor — adjust offsets, blur, spread, color, and inset",
-            category: "design",
+            category: "css",
           }),
           generateFAQSchema([
             { question: "How does the CSS box-shadow property work?", answer: "The box-shadow property adds shadow effects around an element. The syntax is: box-shadow: [inset] x-offset y-offset blur spread color. You can add multiple shadows separated by commas, and they stack in the order listed (first shadow on top)." },

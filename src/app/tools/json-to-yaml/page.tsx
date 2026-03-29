@@ -3,6 +3,7 @@
 import { useState, useCallback } from "react";
 import JsonLd from "@/components/JsonLd";
 import RelatedTools from "@/components/RelatedTools";
+import ToolBreadcrumb from "@/components/ToolBreadcrumb";
 import {
   generateFAQSchema,
   generateWebAppSchema,
@@ -444,13 +445,13 @@ export default function JsonToYaml() {
             slug: "json-to-yaml",
             name: "JSON to YAML Converter",
             description: "Convert JSON data to YAML format instantly",
-            category: "conversion",
+            category: "json",
           }),
           generateBreadcrumbSchema({
             slug: "json-to-yaml",
             name: "JSON to YAML Converter",
             description: "Convert JSON data to YAML format instantly",
-            category: "conversion",
+            category: "json",
           }),
           generateFAQSchema([
             { question: "What is YAML?", answer: "YAML (YAML Ain't Markup Language) is a human-readable data serialization format. It uses indentation instead of brackets, making it popular for configuration files in Kubernetes, Docker Compose, GitHub Actions, and other DevOps tools." },

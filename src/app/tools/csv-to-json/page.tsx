@@ -3,6 +3,7 @@
 import { useState, useCallback } from "react";
 import JsonLd from "@/components/JsonLd";
 import RelatedTools from "@/components/RelatedTools";
+import ToolBreadcrumb from "@/components/ToolBreadcrumb";
 import {
   generateFAQSchema,
   generateWebAppSchema,
@@ -341,13 +342,13 @@ export default function CsvToJsonPage() {
             slug: "csv-to-json",
             name: "CSV to JSON Converter",
             description: "Convert CSV data to JSON format with automatic header detection",
-            category: "conversion",
+            category: "json",
           }),
           generateBreadcrumbSchema({
             slug: "csv-to-json",
             name: "CSV to JSON Converter",
             description: "Convert CSV data to JSON format with automatic header detection",
-            category: "conversion",
+            category: "json",
           }),
           generateFAQSchema([
             { question: "How does CSV to JSON conversion work?", answer: "The first row of your CSV is treated as column headers, and each subsequent row becomes a JSON object with those headers as keys. The result is an array of objects. For example, a CSV with headers 'name,age' and row 'Alice,30' becomes [{\"name\": \"Alice\", \"age\": 30}]." },
@@ -360,16 +361,7 @@ export default function CsvToJsonPage() {
 
       <main className="min-h-screen bg-slate-900 text-white">
         <div className="max-w-6xl mx-auto px-4 py-12">
-          {/* Breadcrumb */}
-          <nav className="text-sm text-slate-400 mb-6" aria-label="Breadcrumb">
-            <ol className="flex items-center gap-2">
-              <li><a href="/" className="hover:text-white transition-colors">Home</a></li>
-              <li><span className="mx-1">/</span></li>
-              <li><a href="/tools" className="hover:text-white transition-colors">Conversion Tools</a></li>
-              <li><span className="mx-1">/</span></li>
-              <li className="text-slate-200">CSV to JSON</li>
-            </ol>
-          </nav>
+          <ToolBreadcrumb slug="csv-to-json" />
 
           {/* Header */}
           <div className="mb-8">

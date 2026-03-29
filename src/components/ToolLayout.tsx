@@ -1,5 +1,7 @@
 import Link from "next/link";
 import manifest from "@/lib/tools-manifest.json";
+import AdUnit from "@/components/AdUnit";
+import { getRelatedTools } from "@/lib/related-tools";
 
 const categories = manifest.categories as Record<
   string,
@@ -36,7 +38,12 @@ export default function ToolLayout({
           Home
         </Link>
         <span>/</span>
-        <span className="text-slate-400">{categoryInfo.label}</span>
+        <Link
+          href={`/tools/category/${category}`}
+          className="text-slate-400 hover:text-white transition-colors"
+        >
+          {categoryInfo.label}
+        </Link>
         <span>/</span>
         <span className="text-slate-300">{title}</span>
       </nav>
@@ -49,20 +56,14 @@ export default function ToolLayout({
         <p className="mt-2 text-base text-slate-400">{description}</p>
       </div>
 
-      {/* Ad slot placeholder */}
-      <div className="mb-6 flex min-h-[90px] items-center justify-center rounded-lg border border-dashed border-slate-700 bg-slate-800/30 text-xs text-slate-600">
-        {/* AdSense ad slot — configure in Google AdSense dashboard */}
-        Ad Space
-      </div>
+      {/* AdSense top unit */}
+      <AdUnit slot="TOP_SLOT" format="horizontal" className="mb-6" />
 
       {/* Tool content */}
       <div className="mb-12">{children}</div>
 
-      {/* Ad slot placeholder */}
-      <div className="mb-12 flex min-h-[90px] items-center justify-center rounded-lg border border-dashed border-slate-700 bg-slate-800/30 text-xs text-slate-600">
-        {/* AdSense ad slot — configure in Google AdSense dashboard */}
-        Ad Space
-      </div>
+      {/* AdSense bottom unit */}
+      <AdUnit slot="BOTTOM_SLOT" format="auto" className="mb-12" />
 
       {/* Related tools */}
       {relatedTools.length > 0 && (

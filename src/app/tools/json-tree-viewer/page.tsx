@@ -3,6 +3,7 @@
 import { useState, useCallback, useMemo, useRef } from "react";
 import JsonLd from "@/components/JsonLd";
 import RelatedTools from "@/components/RelatedTools";
+import ToolBreadcrumb from "@/components/ToolBreadcrumb";
 import {
   generateFAQSchema,
   generateWebAppSchema,
@@ -407,14 +408,14 @@ export default function JsonTreeViewerPage() {
             name: "JSON Tree Viewer",
             description:
               "Parse and display JSON as a collapsible tree view with data type color coding, search, and path copying",
-            category: "developer",
+            category: "json",
           }),
           generateBreadcrumbSchema({
             slug: "json-tree-viewer",
             name: "JSON Tree Viewer",
             description:
               "Parse and display JSON as a collapsible tree view with data type color coding, search, and path copying",
-            category: "developer",
+            category: "json",
           }),
           generateFAQSchema([
             {
@@ -443,34 +444,7 @@ export default function JsonTreeViewerPage() {
 
       <div className="min-h-screen bg-slate-900 text-slate-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          {/* Breadcrumb */}
-          <nav
-            className="text-sm text-slate-400 mb-6"
-            aria-label="Breadcrumb"
-          >
-            <ol className="flex items-center gap-2">
-              <li>
-                <a href="/" className="hover:text-white transition-colors">
-                  Home
-                </a>
-              </li>
-              <li>
-                <span className="mx-1">/</span>
-              </li>
-              <li>
-                <a
-                  href="/tools"
-                  className="hover:text-white transition-colors"
-                >
-                  Developer Tools
-                </a>
-              </li>
-              <li>
-                <span className="mx-1">/</span>
-              </li>
-              <li className="text-slate-200">JSON Tree Viewer</li>
-            </ol>
-          </nav>
+          <ToolBreadcrumb slug="json-tree-viewer" />
 
           {/* Header */}
           <div className="mb-8">

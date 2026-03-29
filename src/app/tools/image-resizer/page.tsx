@@ -3,6 +3,7 @@
 import { useState, useCallback, useRef } from "react";
 import JsonLd from "@/components/JsonLd";
 import RelatedTools from "@/components/RelatedTools";
+import ToolBreadcrumb from "@/components/ToolBreadcrumb";
 import {
   generateFAQSchema,
   generateWebAppSchema,
@@ -167,13 +168,13 @@ export default function ImageResizerPage() {
             slug: "image-resizer",
             name: "Image Resizer",
             description: "Resize images by pixels or percentage while maintaining aspect ratio",
-            category: "design",
+            category: "image",
           }),
           generateBreadcrumbSchema({
             slug: "image-resizer",
             name: "Image Resizer",
             description: "Resize images by pixels or percentage while maintaining aspect ratio",
-            category: "design",
+            category: "image",
           }),
           generateFAQSchema([
             { question: "Is my image uploaded to a server?", answer: "No. All image processing happens entirely in your browser using the HTML5 Canvas API. Your image never leaves your device. You can verify this by using the tool with your internet disconnected." },
@@ -186,20 +187,7 @@ export default function ImageResizerPage() {
 
       <div className="min-h-screen bg-slate-900 text-slate-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          {/* Breadcrumb */}
-          <nav className="text-sm text-slate-400 mb-6" aria-label="Breadcrumb">
-            <ol className="flex items-center gap-2">
-              <li>
-                <a href="/" className="hover:text-white transition-colors">Home</a>
-              </li>
-              <li><span className="mx-1">/</span></li>
-              <li>
-                <a href="/tools" className="hover:text-white transition-colors">Design Tools</a>
-              </li>
-              <li><span className="mx-1">/</span></li>
-              <li className="text-slate-200">Image Resizer</li>
-            </ol>
-          </nav>
+          <ToolBreadcrumb slug="image-resizer" />
 
           {/* Header */}
           <div className="mb-8">

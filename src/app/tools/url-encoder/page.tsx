@@ -3,6 +3,7 @@
 import { useState, useCallback } from "react";
 import JsonLd from "@/components/JsonLd";
 import RelatedTools from "@/components/RelatedTools";
+import ToolBreadcrumb from "@/components/ToolBreadcrumb";
 import {
   generateFAQSchema,
   generateWebAppSchema,
@@ -151,13 +152,13 @@ export default function UrlEncoderPage() {
             slug: "url-encoder",
             name: "URL Encoder & Decoder",
             description: "Encode and decode URLs and URI components instantly",
-            category: "developer",
+            category: "encoding",
           }),
           generateBreadcrumbSchema({
             slug: "url-encoder",
             name: "URL Encoder & Decoder",
             description: "Encode and decode URLs and URI components instantly",
-            category: "developer",
+            category: "encoding",
           }),
           generateFAQSchema([
             { question: "What is URL encoding?", answer: "URL encoding (also called percent-encoding) converts characters that are not allowed in URLs into a format that can be transmitted. Special characters are replaced with a percent sign (%) followed by two hexadecimal digits representing the character's ASCII code. For example, a space becomes %20." },
@@ -170,20 +171,7 @@ export default function UrlEncoderPage() {
 
       <div className="min-h-screen bg-slate-900 text-slate-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          {/* Breadcrumb */}
-          <nav className="text-sm text-slate-400 mb-6" aria-label="Breadcrumb">
-            <ol className="flex items-center gap-2">
-              <li>
-                <a href="/" className="hover:text-white transition-colors">Home</a>
-              </li>
-              <li><span className="mx-1">/</span></li>
-              <li>
-                <a href="/tools" className="hover:text-white transition-colors">Developer Tools</a>
-              </li>
-              <li><span className="mx-1">/</span></li>
-              <li className="text-slate-200">URL Encoder</li>
-            </ol>
-          </nav>
+          <ToolBreadcrumb slug="url-encoder" />
 
           {/* Header */}
           <div className="mb-8">

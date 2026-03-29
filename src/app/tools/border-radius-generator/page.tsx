@@ -3,6 +3,7 @@
 import { useState, useCallback, useMemo } from "react";
 import JsonLd from "@/components/JsonLd";
 import RelatedTools from "@/components/RelatedTools";
+import ToolBreadcrumb from "@/components/ToolBreadcrumb";
 import {
   generateFAQSchema,
   generateWebAppSchema,
@@ -160,13 +161,13 @@ export default function BorderRadiusGeneratorPage() {
             slug: "border-radius-generator",
             name: "CSS Border Radius Generator",
             description: "Create and customize CSS border-radius values with a visual editor — adjust each corner independently",
-            category: "design",
+            category: "css",
           }),
           generateBreadcrumbSchema({
             slug: "border-radius-generator",
             name: "CSS Border Radius Generator",
             description: "Create and customize CSS border-radius values with a visual editor — adjust each corner independently",
-            category: "design",
+            category: "css",
           }),
           generateFAQSchema([
             { question: "What is CSS border-radius?", answer: "The CSS border-radius property rounds the corners of an element. You can set all four corners to the same value for uniform rounding, or control each corner independently. The shorthand accepts 1 to 4 values: one value applies to all corners, two values apply to top-left/bottom-right and top-right/bottom-left, three values apply to top-left, top-right/bottom-left, and bottom-right, and four values apply to each corner clockwise from top-left." },
@@ -179,20 +180,7 @@ export default function BorderRadiusGeneratorPage() {
 
       <div className="min-h-screen bg-slate-900 text-slate-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          {/* Breadcrumb */}
-          <nav className="text-sm text-slate-400 mb-6" aria-label="Breadcrumb">
-            <ol className="flex items-center gap-2">
-              <li>
-                <a href="/" className="hover:text-white transition-colors">Home</a>
-              </li>
-              <li><span className="mx-1">/</span></li>
-              <li>
-                <a href="/tools" className="hover:text-white transition-colors">Design Tools</a>
-              </li>
-              <li><span className="mx-1">/</span></li>
-              <li className="text-slate-200">Border Radius Generator</li>
-            </ol>
-          </nav>
+          <ToolBreadcrumb slug="border-radius-generator" />
 
           {/* Header */}
           <div className="mb-8">

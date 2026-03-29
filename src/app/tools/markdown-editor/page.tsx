@@ -1,8 +1,9 @@
 "use client";
 
-import { useState, useCallback, useMemo } from "react";
+import { useState, useCallback, useMemo, useRef } from "react";
 import JsonLd from "@/components/JsonLd";
 import RelatedTools from "@/components/RelatedTools";
+import ToolBreadcrumb from "@/components/ToolBreadcrumb";
 import {
   generateFAQSchema,
   generateWebAppSchema,
@@ -77,8 +78,61 @@ export default function MarkdownEditorPage() {
   const [markdown, setMarkdown] = useState(SAMPLE_MARKDOWN);
   const [copied, setCopied] = useState<"md" | "html" | null>(null);
   const [view, setView] = useState<"split" | "editor" | "preview">("split");
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const html = useMemo(() => renderMarkdown(markdown), [markdown]);
+
+  const insertAtCursor = useCallback(
+    (before: string, after: string, placeholder: string) => {
+      const ta = textareaRef.current;
+      if (!ta) return;
+      const start = ta.selectionStart;
+      const end = ta.selectionEnd;
+      const selected = markdown.slice(start, end);
+      const text = selected || placeholder;
+      const newValue =
+        markdown.slice(0, start) + before + text + after + markdown.slice(end);
+      setMarkdown(newValue);
+      requestAnimationFrame(() => {
+        ta.focus();
+        const cursorStart = start + before.length;
+        ta.setSelectionRange(cursorStart, cursorStart + text.length);
+      });
+    },
+    [markdown]
+  );
+
+  const importFile = useCallback(() => {
+    fileInputRef.current?.click();
+  }, []);
+
+  const handleFileImport = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const file = e.target.files?.[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = (ev) => {
+        const text = ev.target?.result;
+        if (typeof text === "string") setMarkdown(text);
+      };
+      reader.readAsText(file);
+      e.target.value = "";
+    },
+    []
+  );
+
+  const exportHtml = useCallback(() => {
+    if (!html) return;
+    const fullHtml = `<!DOCTYPE html>\n<html lang="en">\n<head>\n  <meta charset="UTF-8">\n  <meta name="viewport" content="width=device-width, initial-scale=1.0">\n  <title>Document</title>\n</head>\n<body>\n${html}\n</body>\n</html>`;
+    const blob = new Blob([fullHtml], { type: "text/html;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "document.html";
+    a.click();
+    URL.revokeObjectURL(url);
+  }, [html]);
 
   const copyText = useCallback(
     async (which: "md" | "html") => {
@@ -151,24 +205,7 @@ export default function MarkdownEditorPage() {
 
       <div className="min-h-screen bg-slate-900 text-slate-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          {/* Breadcrumb */}
-          <nav className="text-sm text-slate-400 mb-6" aria-label="Breadcrumb">
-            <ol className="flex items-center gap-2">
-              <li>
-                <a href="/" className="hover:text-white transition-colors">
-                  Home
-                </a>
-              </li>
-              <li><span className="mx-1">/</span></li>
-              <li>
-                <a href="/tools" className="hover:text-white transition-colors">
-                  Text Tools
-                </a>
-              </li>
-              <li><span className="mx-1">/</span></li>
-              <li className="text-slate-200">Markdown Editor</li>
-            </ol>
-          </nav>
+          <ToolBreadcrumb slug="markdown-editor" />
 
           {/* Header */}
           <div className="mb-8">
@@ -180,6 +217,42 @@ export default function MarkdownEditorPage() {
               for GitHub Flavored Markdown — tables, task lists, strikethrough,
               fenced code blocks, and more. Copy as HTML or download as .md.
             </p>
+          </div>
+
+          {/* Toolbar */}
+          <div className="flex flex-wrap items-center gap-1 mb-3 bg-slate-800 border border-slate-700 rounded-lg p-2">
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept=".md,.markdown,.txt"
+              onChange={handleFileImport}
+              className="hidden"
+            />
+            {[
+              { label: "B", title: "Bold", before: "**", after: "**", placeholder: "bold text" },
+              { label: "I", title: "Italic", before: "*", after: "*", placeholder: "italic text" },
+              { label: "S", title: "Strikethrough", before: "~~", after: "~~", placeholder: "strikethrough" },
+              { label: "H1", title: "Heading 1", before: "# ", after: "", placeholder: "Heading" },
+              { label: "H2", title: "Heading 2", before: "## ", after: "", placeholder: "Heading" },
+              { label: "H3", title: "Heading 3", before: "### ", after: "", placeholder: "Heading" },
+              { label: "🔗", title: "Link", before: "[", after: "](https://example.com)", placeholder: "link text" },
+              { label: "🖼", title: "Image", before: "![", after: "](https://example.com/image.png)", placeholder: "alt text" },
+              { label: "<>", title: "Inline Code", before: "`", after: "`", placeholder: "code" },
+              { label: "```", title: "Code Block", before: "```\n", after: "\n```", placeholder: "code here" },
+              { label: "❝", title: "Blockquote", before: "> ", after: "", placeholder: "quote" },
+              { label: "─", title: "Horizontal Rule", before: "\n---\n", after: "", placeholder: "" },
+              { label: "☐", title: "Task List", before: "- [ ] ", after: "", placeholder: "task" },
+              { label: "⊞", title: "Table", before: "| Column 1 | Column 2 | Column 3 |\n|----------|----------|----------|\n| ", after: " | data | data |", placeholder: "data" },
+            ].map((btn) => (
+              <button
+                key={btn.label}
+                title={btn.title}
+                onClick={() => insertAtCursor(btn.before, btn.after, btn.placeholder)}
+                className="px-2.5 py-1.5 text-sm font-medium bg-slate-700 hover:bg-slate-600 text-slate-300 hover:text-white rounded transition-colors"
+              >
+                {btn.label}
+              </button>
+            ))}
           </div>
 
           {/* Controls */}
@@ -199,11 +272,24 @@ export default function MarkdownEditorPage() {
               {copied === "md" ? "Copied!" : "Copy Markdown"}
             </button>
             <button
+              onClick={exportHtml}
+              disabled={!html}
+              className="px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white rounded-lg font-medium transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+            >
+              Export HTML
+            </button>
+            <button
               onClick={downloadMd}
               disabled={!markdown}
               className="px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white rounded-lg font-medium transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
             >
               Download .md
+            </button>
+            <button
+              onClick={importFile}
+              className="px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white rounded-lg font-medium transition-colors"
+            >
+              Import .md
             </button>
             <button
               onClick={clearAll}
@@ -259,6 +345,7 @@ export default function MarkdownEditorPage() {
                   </label>
                 </div>
                 <textarea
+                  ref={textareaRef}
                   value={markdown}
                   onChange={(e) => setMarkdown(e.target.value)}
                   placeholder={"Start writing Markdown...\n\n# Heading\n**bold** *italic*\n- list item"}

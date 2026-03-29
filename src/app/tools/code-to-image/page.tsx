@@ -3,6 +3,7 @@
 import { useState, useCallback, useRef } from "react";
 import JsonLd from "@/components/JsonLd";
 import RelatedTools from "@/components/RelatedTools";
+import ToolBreadcrumb from "@/components/ToolBreadcrumb";
 import {
   generateFAQSchema,
   generateWebAppSchema,
@@ -542,40 +543,18 @@ export default function CodeToImagePage() {
               slug: SLUG,
               name: TOOL_NAME,
               description: TOOL_DESC,
-              category: "developer",
+              category: "image",
             }),
             generateBreadcrumbSchema({
               slug: SLUG,
               name: TOOL_NAME,
               description: TOOL_DESC,
-              category: "developer",
+              category: "image",
             }),
             generateFAQSchema(faqs),
           ]}
         />
-
-        {/* Breadcrumb */}
-        <nav className="text-sm text-slate-400 mb-6" aria-label="Breadcrumb">
-          <ol className="flex items-center gap-2">
-            <li>
-              <a href="/" className="hover:text-slate-200 transition-colors">
-                Home
-              </a>
-            </li>
-            <li>
-              <span className="mx-1">/</span>
-            </li>
-            <li>
-              <a href="/tools" className="hover:text-slate-200 transition-colors">
-                Developer Tools
-              </a>
-            </li>
-            <li>
-              <span className="mx-1">/</span>
-            </li>
-            <li className="text-slate-200">Code to Image Converter</li>
-          </ol>
-        </nav>
+          <ToolBreadcrumb slug="code-to-image" />
 
         {/* Header */}
         <h1 className="text-3xl font-bold text-white mb-2">

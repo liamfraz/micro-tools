@@ -1,21 +1,110 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import JsonLd from "@/components/JsonLd";
 import RelatedTools from "@/components/RelatedTools";
+import ToolBreadcrumb from "@/components/ToolBreadcrumb";
 import {
   generateFAQSchema,
   generateWebAppSchema,
   generateBreadcrumbSchema,
 } from "@/lib/jsonld";
 
-type UUIDVersion = "v4" | "v1" | "nil";
+type UUIDVersion = "v4" | "v1" | "v7" | "nil";
 
 interface GeneratedUUID {
   value: string;
   version: UUIDVersion;
   timestamp: number;
 }
+
+function formatBytes(bytes: Uint8Array): string {
+  const hex = Array.from(bytes)
+    .map((b) => b.toString(16).padStart(2, "0"))
+    .join("");
+  return [
+    hex.slice(0, 8),
+    hex.slice(8, 12),
+    hex.slice(12, 16),
+    hex.slice(16, 20),
+    hex.slice(20, 32),
+  ].join("-");
+}
+
+function generateV4(): string {
+  const bytes = new Uint8Array(16);
+  crypto.getRandomValues(bytes);
+  bytes[6] = (bytes[6] & 0x0f) | 0x40;
+  bytes[8] = (bytes[8] & 0x3f) | 0x80;
+  return formatBytes(bytes);
+}
+
+function generateV1(): string {
+  const now = Date.now();
+  const uuidEpoch = BigInt("122192928000000000");
+  const timestamp = BigInt(now) * BigInt(10000) + uuidEpoch;
+
+  const timeLow = Number(timestamp & BigInt(0xffffffff));
+  const timeMid = Number((timestamp >> BigInt(32)) & BigInt(0xffff));
+  const timeHi =
+    Number((timestamp >> BigInt(48)) & BigInt(0x0fff)) | 0x1000;
+
+  const clockSeq =
+    (crypto.getRandomValues(new Uint16Array(1))[0] & 0x3fff) | 0x8000;
+  const node = crypto.getRandomValues(new Uint8Array(6));
+
+  const hex = (n: number, len: number) => n.toString(16).padStart(len, "0");
+  return [
+    hex(timeLow, 8),
+    hex(timeMid, 4),
+    hex(timeHi, 4),
+    hex(clockSeq, 4),
+    Array.from(node)
+      .map((b) => hex(b, 2))
+      .join(""),
+  ].join("-");
+}
+
+function generateV7(): string {
+  const now = Date.now();
+  const bytes = new Uint8Array(16);
+  crypto.getRandomValues(bytes);
+
+  // First 48 bits: Unix timestamp in milliseconds (big-endian)
+  bytes[0] = (now / 2 ** 40) & 0xff;
+  bytes[1] = (now / 2 ** 32) & 0xff;
+  bytes[2] = (now / 2 ** 24) & 0xff;
+  bytes[3] = (now / 2 ** 16) & 0xff;
+  bytes[4] = (now / 2 ** 8) & 0xff;
+  bytes[5] = now & 0xff;
+
+  // Set version 7 (0111)
+  bytes[6] = (bytes[6] & 0x0f) | 0x70;
+  // Set variant (10xx)
+  bytes[8] = (bytes[8] & 0x3f) | 0x80;
+
+  return formatBytes(bytes);
+}
+
+function generateNil(): string {
+  return "00000000-0000-0000-0000-000000000000";
+}
+
+const GENERATORS: Record<UUIDVersion, () => string> = {
+  v4: generateV4,
+  v1: generateV1,
+  v7: generateV7,
+  nil: generateNil,
+};
+
+const VERSION_DESCRIPTIONS: Record<UUIDVersion, string> = {
+  v4: "Version 4: Cryptographically random. Best for most use cases.",
+  v1: "Version 1: Timestamp-based with random node. Sortable by creation time.",
+  v7: "Version 7: Unix epoch timestamp + random. Sortable and database-friendly (RFC 9562).",
+  nil: "Nil UUID: All zeros. Used as a null/empty placeholder.",
+};
+
+const BULK_OPTIONS = [1, 5, 10, 25, 50, 100, 250, 500, 1000];
 
 export default function UUIDGeneratorPage() {
   const [uuids, setUuids] = useState<GeneratedUUID[]>([]);
@@ -31,64 +120,9 @@ export default function UUIDGeneratorPage() {
     message: string;
   } | null>(null);
 
-  // UUID v4: Random
-  const generateV4 = useCallback((): string => {
-    const bytes = new Uint8Array(16);
-    crypto.getRandomValues(bytes);
-    // Set version bits (0100 for v4)
-    bytes[6] = (bytes[6] & 0x0f) | 0x40;
-    // Set variant bits (10xx for RFC 4122)
-    bytes[8] = (bytes[8] & 0x3f) | 0x80;
-    return formatUUID(bytes);
-  }, []);
-
-  // UUID v1-like: Timestamp-based (browser approximation — no MAC address)
-  const generateV1 = useCallback((): string => {
-    const now = Date.now();
-    // UUID epoch offset: Oct 15, 1582
-    const uuidEpoch = BigInt("122192928000000000");
-    const timestamp = BigInt(now) * BigInt(10000) + uuidEpoch;
-
-    const timeLow = Number(timestamp & BigInt(0xffffffff));
-    const timeMid = Number((timestamp >> BigInt(32)) & BigInt(0xffff));
-    const timeHi = Number((timestamp >> BigInt(48)) & BigInt(0x0fff)) | 0x1000; // version 1
-
-    const clockSeq = crypto.getRandomValues(new Uint16Array(1))[0] & 0x3fff | 0x8000;
-    const node = crypto.getRandomValues(new Uint8Array(6));
-
-    const hex = (n: number, len: number) => n.toString(16).padStart(len, "0");
-    return [
-      hex(timeLow, 8),
-      hex(timeMid, 4),
-      hex(timeHi, 4),
-      hex(clockSeq, 4),
-      Array.from(node).map((b) => hex(b, 2)).join(""),
-    ].join("-");
-  }, []);
-
-  // Nil UUID
-  const generateNil = useCallback((): string => {
-    return "00000000-0000-0000-0000-000000000000";
-  }, []);
-
-  function formatUUID(bytes: Uint8Array): string {
-    const hex = Array.from(bytes)
-      .map((b) => b.toString(16).padStart(2, "0"))
-      .join("");
-    return [
-      hex.slice(0, 8),
-      hex.slice(8, 12),
-      hex.slice(12, 16),
-      hex.slice(16, 20),
-      hex.slice(20, 32),
-    ].join("-");
-  }
-
   const generate = useCallback(() => {
+    const generator = GENERATORS[version];
     const newUuids: GeneratedUUID[] = [];
-    const generator =
-      version === "v4" ? generateV4 : version === "v1" ? generateV1 : generateNil;
-
     for (let i = 0; i < count; i++) {
       let value = generator();
       if (uppercase) value = value.toUpperCase();
@@ -97,7 +131,13 @@ export default function UUIDGeneratorPage() {
     }
     setUuids(newUuids);
     setCopied(null);
-  }, [version, count, uppercase, noDashes, generateV4, generateV1, generateNil]);
+  }, [version, count, uppercase, noDashes]);
+
+  // Auto-generate one UUID on mount
+  useEffect(() => {
+    generate();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const copyOne = useCallback(
     async (index: number) => {
@@ -117,6 +157,18 @@ export default function UUIDGeneratorPage() {
     setTimeout(() => setCopied(null), 2000);
   }, [uuids]);
 
+  const downloadAsText = useCallback(() => {
+    if (uuids.length === 0) return;
+    const text = uuids.map((u) => u.value).join("\n");
+    const blob = new Blob([text], { type: "text/plain" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `uuids-${version}-${uuids.length}.txt`;
+    a.click();
+    URL.revokeObjectURL(url);
+  }, [uuids, version]);
+
   const validateUUID = useCallback(() => {
     const input = validateInput.trim();
     if (!input) {
@@ -124,13 +176,12 @@ export default function UUIDGeneratorPage() {
       return;
     }
 
-    // Standard UUID regex (with or without dashes)
-    const withDashes = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+    const withDashes =
+      /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
     const withoutDashes = /^[0-9a-f]{32}$/i;
 
     let normalized = input;
     if (withoutDashes.test(input)) {
-      // Add dashes for analysis
       normalized = [
         input.slice(0, 8),
         input.slice(8, 12),
@@ -144,25 +195,28 @@ export default function UUIDGeneratorPage() {
       setValidationResult({
         valid: false,
         version: "N/A",
-        message: "Invalid UUID format. Expected 32 hex characters with or without dashes.",
+        message:
+          "Invalid UUID format. Expected 32 hex characters with or without dashes.",
       });
       return;
     }
 
-    // Check nil
     if (normalized === "00000000-0000-0000-0000-000000000000") {
-      setValidationResult({ valid: true, version: "Nil", message: "Valid Nil UUID." });
+      setValidationResult({
+        valid: true,
+        version: "Nil",
+        message: "Valid Nil UUID.",
+      });
       return;
     }
 
-    // Detect version from the 13th hex character
     const versionChar = normalized.charAt(14);
     const versionNum = parseInt(versionChar, 16);
 
-    // Check variant (character at position 19)
     const variantChar = normalized.charAt(19);
     const variantNum = parseInt(variantChar, 16);
-    const isRFC4122 = (variantNum & 0x8) === 0x8 && (variantNum & 0xc) !== 0xc;
+    const isRFC4122 =
+      (variantNum & 0x8) === 0x8 && (variantNum & 0xc) !== 0xc;
 
     const versionNames: Record<number, string> = {
       1: "v1 (Timestamp)",
@@ -175,7 +229,8 @@ export default function UUIDGeneratorPage() {
       8: "v8 (Custom)",
     };
 
-    const detectedVersion = versionNames[versionNum] || `Unknown (${versionNum})`;
+    const detectedVersion =
+      versionNames[versionNum] || `Unknown (${versionNum})`;
 
     if (!isRFC4122) {
       setValidationResult({
@@ -189,65 +244,77 @@ export default function UUIDGeneratorPage() {
     setValidationResult({
       valid: true,
       version: detectedVersion,
-      message: `Valid RFC 4122 UUID.`,
+      message: "Valid RFC 4122 UUID.",
     });
   }, [validateInput]);
 
   return (
     <>
-      <title>UUID Generator - Free Online Tool | DevTools Hub</title>
+      <title>
+        UUID Generator - Generate UUID v4, v1, v7 Online Free | DevTools Hub
+      </title>
       <meta
         name="description"
-        content="Generate UUIDs (v1, v4) online for free. Bulk generation, copy to clipboard, format options, and UUID validation. All processing in your browser."
+        content="Free online UUID generator. Generate UUID v4 (random), v1 (timestamp), v7 (sortable) instantly. Bulk generate up to 1000 UUIDs, copy, download, and validate. No server — 100% client-side."
+      />
+      <meta
+        name="keywords"
+        content="uuid generator, generate uuid, uuid v4 generator, bulk uuid generator, uuid v7, uuid v1, uuid validator, random uuid, unique identifier"
       />
       <JsonLd
         data={[
           generateWebAppSchema({
             slug: "uuid-generator",
             name: "UUID Generator",
-            description: "Generate random UUIDs (v4) and decode existing UUIDs with version and variant info",
-            category: "developer",
+            description:
+              "Generate UUID v4, v1, v7 online. Bulk generation up to 1000, format options, copy, download, and validation.",
+            category: "generator",
           }),
           generateBreadcrumbSchema({
             slug: "uuid-generator",
             name: "UUID Generator",
-            description: "Generate random UUIDs (v4) and decode existing UUIDs with version and variant info",
-            category: "developer",
+            description:
+              "Generate UUID v4, v1, v7 online. Bulk generation up to 1000, format options, copy, download, and validation.",
+            category: "generator",
           }),
           generateFAQSchema([
-            { question: "What is a UUID?", answer: "A UUID (Universally Unique Identifier) is a 128-bit identifier standardized by RFC 4122. UUIDs are designed to be unique across space and time without requiring a central authority, making them ideal for distributed systems, database primary keys, and session identifiers." },
-            { question: "What is the difference between UUID v1 and v4?", answer: "UUID v1 is based on timestamp and node (typically MAC address), making it partially sequential and sortable. UUID v4 is entirely random, offering better uniqueness guarantees and no information leakage. For most applications, v4 is recommended." },
-            { question: "How unique are UUIDs?", answer: "UUID v4 uses 122 random bits, giving approximately 5.3 x 10^36 possible values. The probability of generating a duplicate is astronomically low -- you would need to generate about 2.71 x 10^18 UUIDs to have a 50% chance of a single collision." },
-            { question: "Is my data safe?", answer: "Yes. All UUIDs are generated entirely in your browser using the Web Crypto API (crypto.getRandomValues). No data is sent to any server. The source code runs client-side only." },
-            { question: "What about UUID v6, v7, and v8?", answer: "UUID v6, v7, and v8 are newer versions defined in RFC 9562 (2024). v7 is particularly notable as it uses Unix timestamps for better database indexing. Our validator can detect these versions if you paste one in. Generation support for v7 is planned." },
+            {
+              question: "What is a UUID?",
+              answer:
+                "A UUID (Universally Unique Identifier) is a 128-bit identifier standardized by RFC 4122. UUIDs are designed to be unique across space and time without requiring a central authority, making them ideal for distributed systems, database primary keys, and session identifiers.",
+            },
+            {
+              question: "What is the difference between UUID v1, v4, and v7?",
+              answer:
+                "UUID v1 uses a timestamp and node (MAC address), making it partially sequential. UUID v4 is entirely random with 122 bits of entropy — best for most applications. UUID v7 (RFC 9562) combines a Unix timestamp with randomness, giving you both sortability and uniqueness — ideal for database primary keys.",
+            },
+            {
+              question: "How unique are UUIDs?",
+              answer:
+                "UUID v4 uses 122 random bits, giving approximately 5.3 x 10^36 possible values. The probability of generating a duplicate is astronomically low — you would need to generate about 2.71 x 10^18 UUIDs to have a 50% chance of a single collision.",
+            },
+            {
+              question: "Is my data safe?",
+              answer:
+                "Yes. All UUIDs are generated entirely in your browser using the Web Crypto API (crypto.getRandomValues). No data is sent to any server. The source code runs client-side only.",
+            },
+            {
+              question: "When should I use UUID v7?",
+              answer:
+                "UUID v7 is ideal when you need sortable, time-ordered unique identifiers — for example, database primary keys where insert performance and chronological ordering matter. Defined in RFC 9562 (2024), v7 embeds a Unix millisecond timestamp in the first 48 bits followed by random data.",
+            },
+            {
+              question: "Can I generate UUIDs in bulk?",
+              answer:
+                "Yes. This tool supports generating up to 1,000 UUIDs at once. Select your desired count from the dropdown, click Generate, then use Copy All or Download as Text to export them.",
+            },
           ]),
         ]}
       />
 
       <div className="min-h-screen bg-slate-900 text-slate-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          {/* Breadcrumb */}
-          <nav className="text-sm text-slate-400 mb-6" aria-label="Breadcrumb">
-            <ol className="flex items-center gap-2">
-              <li>
-                <a href="/" className="hover:text-white transition-colors">
-                  Home
-                </a>
-              </li>
-              <li>
-                <span className="mx-1">/</span>
-              </li>
-              <li>
-                <a href="/tools" className="hover:text-white transition-colors">
-                  Developer Tools
-                </a>
-              </li>
-              <li>
-                <span className="mx-1">/</span>
-              </li>
-              <li className="text-slate-200">UUID Generator</li>
-            </ol>
-          </nav>
+          <ToolBreadcrumb slug="uuid-generator" />
 
           {/* Header */}
           <div className="mb-8">
@@ -255,9 +322,9 @@ export default function UUIDGeneratorPage() {
               UUID Generator
             </h1>
             <p className="text-slate-400 max-w-2xl text-lg">
-              Generate universally unique identifiers (UUIDs) instantly. Supports
-              v1 (timestamp), v4 (random), and nil UUIDs with bulk generation and
-              format options.
+              Generate universally unique identifiers instantly. Supports v1
+              (timestamp), v4 (random), and v7 (sortable) UUIDs with bulk
+              generation up to 1,000, format options, and validation.
             </p>
           </div>
 
@@ -276,6 +343,7 @@ export default function UUIDGeneratorPage() {
                 >
                   <option value="v4">v4 (Random)</option>
                   <option value="v1">v1 (Timestamp)</option>
+                  <option value="v7">v7 (Sortable)</option>
                   <option value="nil">Nil (All Zeros)</option>
                 </select>
               </div>
@@ -290,7 +358,7 @@ export default function UUIDGeneratorPage() {
                   onChange={(e) => setCount(Number(e.target.value))}
                   className="bg-slate-700 border border-slate-600 text-white rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
-                  {[1, 5, 10, 25, 50, 100].map((n) => (
+                  {BULK_OPTIONS.map((n) => (
                     <option key={n} value={n}>
                       {n}
                     </option>
@@ -316,7 +384,7 @@ export default function UUIDGeneratorPage() {
                     onChange={(e) => setNoDashes(e.target.checked)}
                     className="w-4 h-4 rounded bg-slate-700 border-slate-600 text-blue-500 focus:ring-blue-500"
                   />
-                  No Dashes
+                  No Hyphens
                 </label>
               </div>
 
@@ -331,12 +399,7 @@ export default function UUIDGeneratorPage() {
 
             {/* Version description */}
             <p className="text-xs text-slate-500">
-              {version === "v4" &&
-                "Version 4: Cryptographically random. Best for most use cases."}
-              {version === "v1" &&
-                "Version 1: Timestamp-based with random node. Sortable by creation time."}
-              {version === "nil" &&
-                "Nil UUID: All zeros. Used as a null/empty placeholder."}
+              {VERSION_DESCRIPTIONS[version]}
             </p>
           </div>
 
@@ -347,12 +410,20 @@ export default function UUIDGeneratorPage() {
                 <h2 className="text-lg font-semibold text-white">
                   Generated UUIDs ({uuids.length})
                 </h2>
-                <button
-                  onClick={copyAll}
-                  className="px-3 py-1.5 bg-slate-700 hover:bg-slate-600 text-white rounded-lg text-sm font-medium transition-colors"
-                >
-                  {copied === "all" ? "Copied All!" : "Copy All"}
-                </button>
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={downloadAsText}
+                    className="px-3 py-1.5 bg-slate-700 hover:bg-slate-600 text-white rounded-lg text-sm font-medium transition-colors"
+                  >
+                    Download .txt
+                  </button>
+                  <button
+                    onClick={copyAll}
+                    className="px-3 py-1.5 bg-slate-700 hover:bg-slate-600 text-white rounded-lg text-sm font-medium transition-colors"
+                  >
+                    {copied === "all" ? "Copied All!" : "Copy All"}
+                  </button>
+                </div>
               </div>
 
               <div className="space-y-1 max-h-96 overflow-y-auto">
@@ -439,23 +510,26 @@ export default function UUIDGeneratorPage() {
                   What is a UUID?
                 </h3>
                 <p className="text-slate-400">
-                  A UUID (Universally Unique Identifier) is a 128-bit identifier
-                  standardized by RFC 4122. UUIDs are designed to be unique across
-                  space and time without requiring a central authority, making them
-                  ideal for distributed systems, database primary keys, and session
-                  identifiers.
+                  A UUID (Universally Unique Identifier) is a 128-bit
+                  identifier standardized by RFC 4122. UUIDs are designed to be
+                  unique across space and time without requiring a central
+                  authority, making them ideal for distributed systems, database
+                  primary keys, and session identifiers.
                 </p>
               </div>
 
               <div>
                 <h3 className="text-lg font-semibold text-white mb-2">
-                  What is the difference between UUID v1 and v4?
+                  What is the difference between UUID v1, v4, and v7?
                 </h3>
                 <p className="text-slate-400">
-                  UUID v1 is based on timestamp and node (typically MAC address),
-                  making it partially sequential and sortable. UUID v4 is entirely
-                  random, offering better uniqueness guarantees and no information
-                  leakage. For most applications, v4 is recommended.
+                  UUID v1 is based on timestamp and node (typically MAC
+                  address), making it partially sequential and sortable. UUID v4
+                  is entirely random, offering better uniqueness guarantees and
+                  no information leakage. UUID v7 (RFC 9562) combines a Unix
+                  millisecond timestamp with randomness — it is sortable,
+                  database-friendly, and the recommended choice for new systems
+                  that need time-ordered IDs.
                 </p>
               </div>
 
@@ -464,10 +538,11 @@ export default function UUIDGeneratorPage() {
                   How unique are UUIDs?
                 </h3>
                 <p className="text-slate-400">
-                  UUID v4 uses 122 random bits, giving approximately 5.3 x 10^36
-                  possible values. The probability of generating a duplicate is
-                  astronomically low — you would need to generate about 2.71 x
-                  10^18 UUIDs to have a 50% chance of a single collision.
+                  UUID v4 uses 122 random bits, giving approximately 5.3 x
+                  10^36 possible values. The probability of generating a
+                  duplicate is astronomically low — you would need to generate
+                  about 2.71 x 10^18 UUIDs to have a 50% chance of a single
+                  collision.
                 </p>
               </div>
 
@@ -476,21 +551,33 @@ export default function UUIDGeneratorPage() {
                   Is my data safe?
                 </h3>
                 <p className="text-slate-400">
-                  Yes. All UUIDs are generated entirely in your browser using the
-                  Web Crypto API (crypto.getRandomValues). No data is sent to any
-                  server. The source code runs client-side only.
+                  Yes. All UUIDs are generated entirely in your browser using
+                  the Web Crypto API (crypto.getRandomValues). No data is sent
+                  to any server. The source code runs client-side only.
                 </p>
               </div>
 
               <div>
                 <h3 className="text-lg font-semibold text-white mb-2">
-                  What about UUID v6, v7, and v8?
+                  When should I use UUID v7?
                 </h3>
                 <p className="text-slate-400">
-                  UUID v6, v7, and v8 are newer versions defined in RFC 9562
-                  (2024). v7 is particularly notable as it uses Unix timestamps for
-                  better database indexing. Our validator can detect these versions
-                  if you paste one in. Generation support for v7 is planned.
+                  UUID v7 is ideal when you need sortable, time-ordered unique
+                  identifiers — for example, database primary keys where insert
+                  performance and chronological ordering matter. Defined in RFC
+                  9562 (2024), v7 embeds a Unix millisecond timestamp in the
+                  first 48 bits followed by random data.
+                </p>
+              </div>
+
+              <div>
+                <h3 className="text-lg font-semibold text-white mb-2">
+                  Can I generate UUIDs in bulk?
+                </h3>
+                <p className="text-slate-400">
+                  Yes. This tool supports generating up to 1,000 UUIDs at once.
+                  Select your desired count from the dropdown, click Generate,
+                  then use Copy All or Download as Text to export them.
                 </p>
               </div>
             </div>

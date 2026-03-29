@@ -3,6 +3,7 @@
 import { useState, useCallback, useRef } from "react";
 import JsonLd from "@/components/JsonLd";
 import RelatedTools from "@/components/RelatedTools";
+import ToolBreadcrumb from "@/components/ToolBreadcrumb";
 import {
   generateFAQSchema,
   generateWebAppSchema,
@@ -189,13 +190,13 @@ export default function SvgToPngPage() {
             slug: "svg-to-png",
             name: "SVG to PNG Converter",
             description: "Convert SVG files to PNG images with customizable dimensions and transparent background",
-            category: "conversion",
+            category: "image",
           }),
           generateBreadcrumbSchema({
             slug: "svg-to-png",
             name: "SVG to PNG Converter",
             description: "Convert SVG files to PNG images with customizable dimensions and transparent background",
-            category: "conversion",
+            category: "image",
           }),
           generateFAQSchema([
             { question: "Why convert SVG to PNG?", answer: "SVGs are great for web but many platforms (social media, email, documents, presentations) require raster images like PNG. Converting SVG to PNG also lets you control the exact pixel dimensions and create high-resolution versions for retina displays." },
@@ -208,16 +209,7 @@ export default function SvgToPngPage() {
 
     <main className="min-h-screen bg-slate-900 text-white">
       <div className="max-w-4xl mx-auto px-4 py-12">
-        {/* Breadcrumb */}
-        <nav className="text-sm text-slate-400 mb-6" aria-label="Breadcrumb">
-          <ol className="flex items-center gap-2">
-            <li><a href="/" className="hover:text-white transition-colors">Home</a></li>
-            <li><span className="mx-1">/</span></li>
-            <li><a href="/tools" className="hover:text-white transition-colors">Conversion Tools</a></li>
-            <li><span className="mx-1">/</span></li>
-            <li className="text-slate-200">SVG to PNG Converter</li>
-          </ol>
-        </nav>
+          <ToolBreadcrumb slug="svg-to-png" />
 
         {/* Header */}
         <div className="mb-8">

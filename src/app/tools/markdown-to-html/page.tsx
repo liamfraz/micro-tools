@@ -3,6 +3,7 @@
 import { useState, useCallback } from "react";
 import JsonLd from "@/components/JsonLd";
 import RelatedTools from "@/components/RelatedTools";
+import ToolBreadcrumb from "@/components/ToolBreadcrumb";
 import {
   generateFAQSchema,
   generateWebAppSchema,
@@ -322,13 +323,13 @@ export default function MarkdownToHtmlPage() {
             slug: "markdown-to-html",
             name: "Markdown to HTML Converter",
             description: "Convert Markdown text to clean HTML with live preview",
-            category: "conversion",
+            category: "encoding",
           }),
           generateBreadcrumbSchema({
             slug: "markdown-to-html",
             name: "Markdown to HTML Converter",
             description: "Convert Markdown text to clean HTML with live preview",
-            category: "conversion",
+            category: "encoding",
           }),
           generateFAQSchema([
             { question: "What Markdown features are supported?", answer: "This converter supports headings (h1-h6), bold, italic, strikethrough, links, images, inline code, fenced code blocks with language classes, blockquotes, ordered and unordered lists, task lists with checkboxes, tables with column alignment, and horizontal rules." },
@@ -341,16 +342,7 @@ export default function MarkdownToHtmlPage() {
 
       <main className="min-h-screen bg-slate-900 text-white">
         <div className="max-w-6xl mx-auto px-4 py-12">
-          {/* Breadcrumb */}
-          <nav className="text-sm text-slate-400 mb-6" aria-label="Breadcrumb">
-            <ol className="flex items-center gap-2">
-              <li><a href="/" className="hover:text-white transition-colors">Home</a></li>
-              <li><span className="mx-1">/</span></li>
-              <li><a href="/tools" className="hover:text-white transition-colors">Conversion Tools</a></li>
-              <li><span className="mx-1">/</span></li>
-              <li className="text-slate-200">Markdown to HTML</li>
-            </ol>
-          </nav>
+          <ToolBreadcrumb slug="markdown-to-html" />
 
           {/* Header */}
           <div className="mb-8">

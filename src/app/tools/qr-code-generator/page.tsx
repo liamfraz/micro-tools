@@ -1,479 +1,379 @@
 "use client";
 
 import { useState, useCallback, useRef, useEffect } from "react";
+import QRCode from "qrcode";
 import JsonLd from "@/components/JsonLd";
 import RelatedTools from "@/components/RelatedTools";
+import ToolBreadcrumb from "@/components/ToolBreadcrumb";
 import {
   generateFAQSchema,
   generateWebAppSchema,
   generateBreadcrumbSchema,
 } from "@/lib/jsonld";
 
-// Minimal QR Code generator using Canvas API
-// Uses a simplified approach: renders text into a QR-like matrix using
-// the established QR encoding algorithm for alphanumeric/byte mode
+// ---- Types ----
 
-// ---- QR Code Core Algorithm ----
+type ECLevel = "L" | "M" | "Q" | "H";
+type PresetType = "text" | "url" | "wifi" | "vcard" | "email" | "phone" | "sms";
 
-// Reed-Solomon and QR matrix generation
-// This implements QR Code Model 2 (ISO/IEC 18004)
+interface WiFiData {
+  ssid: string;
+  password: string;
+  encryption: "WPA" | "WEP" | "nopass";
+  hidden: boolean;
+}
 
-const EC_CODEWORDS_PER_BLOCK: Record<string, number[][]> = {
-  L: [
-    [1, 7, 19],    // Version 1
-    [1, 10, 34],   // Version 2
-    [1, 15, 55],   // Version 3
-    [1, 20, 80],   // Version 4
-    [1, 26, 108],  // Version 5
-    [2, 18, 68],   // Version 6
-    [2, 20, 78],   // Version 7
-    [2, 24, 97],   // Version 8
-    [2, 30, 116],  // Version 9
-    [2, 18, 68, 2, 19, 69], // Version 10
-  ],
+interface VCardData {
+  name: string;
+  phone: string;
+  email: string;
+  company: string;
+  title: string;
+  website: string;
+}
+
+interface EmailData {
+  address: string;
+  subject: string;
+  body: string;
+}
+
+interface SMSData {
+  number: string;
+  message: string;
+}
+
+// ---- Helpers ----
+
+function buildWiFiString(data: WiFiData): string {
+  const escape = (s: string) => s.replace(/[\\;,":\t]/g, (c) => "\\" + c);
+  let str = `WIFI:T:${data.encryption};S:${escape(data.ssid)};`;
+  if (data.encryption !== "nopass" && data.password) {
+    str += `P:${escape(data.password)};`;
+  }
+  if (data.hidden) str += "H:true;";
+  str += ";";
+  return str;
+}
+
+function buildVCardString(data: VCardData): string {
+  const lines = ["BEGIN:VCARD", "VERSION:3.0"];
+  if (data.name) lines.push(`FN:${data.name}`);
+  if (data.phone) lines.push(`TEL:${data.phone}`);
+  if (data.email) lines.push(`EMAIL:${data.email}`);
+  if (data.company) lines.push(`ORG:${data.company}`);
+  if (data.title) lines.push(`TITLE:${data.title}`);
+  if (data.website) lines.push(`URL:${data.website}`);
+  lines.push("END:VCARD");
+  return lines.join("\n");
+}
+
+function buildEmailString(data: EmailData): string {
+  let str = `mailto:${data.address}`;
+  const params: string[] = [];
+  if (data.subject) params.push(`subject=${encodeURIComponent(data.subject)}`);
+  if (data.body) params.push(`body=${encodeURIComponent(data.body)}`);
+  if (params.length) str += "?" + params.join("&");
+  return str;
+}
+
+function buildSMSString(data: SMSData): string {
+  let str = `sms:${data.number}`;
+  if (data.message) str += `?body=${encodeURIComponent(data.message)}`;
+  return str;
+}
+
+const EC_LABELS: Record<ECLevel, string> = {
+  L: "Low (7%)",
+  M: "Medium (15%)",
+  Q: "Quartile (25%)",
+  H: "High (30%)",
 };
 
-// For simplicity, we'll use the Canvas API with a proven approach:
-// Generate the QR matrix and render it to canvas
+const PRESET_LABELS: Record<PresetType, string> = {
+  text: "Plain Text",
+  url: "URL",
+  wifi: "Wi-Fi Network",
+  vcard: "vCard Contact",
+  email: "Email",
+  phone: "Phone",
+  sms: "SMS",
+};
 
-function generateQRMatrix(text: string): boolean[][] {
-  // Use a well-tested approach: encode data and build module matrix
-  const size = getMinVersion(text);
-  const modules = size * 4 + 17; // QR version to module count
-
-  // Initialize matrix
-  const matrix: boolean[][] = Array.from({ length: modules }, () =>
-    Array(modules).fill(false)
-  );
-
-  // Add finder patterns
-  addFinderPattern(matrix, 0, 0);
-  addFinderPattern(matrix, modules - 7, 0);
-  addFinderPattern(matrix, 0, modules - 7);
-
-  // Add timing patterns
-  for (let i = 8; i < modules - 8; i++) {
-    matrix[6][i] = i % 2 === 0;
-    matrix[i][6] = i % 2 === 0;
-  }
-
-  // Add alignment pattern for version >= 2
-  if (size >= 2) {
-    const pos = getAlignmentPositions(size);
-    for (const r of pos) {
-      for (const c of pos) {
-        if (isFinderArea(r, c, modules)) continue;
-        addAlignmentPattern(matrix, r, c);
-      }
-    }
-  }
-
-  // Encode data
-  const bits = encodeData(text, size);
-
-  // Place data bits
-  placeDataBits(matrix, bits, modules);
-
-  // Apply mask (mask 0 for simplicity)
-  applyMask(matrix, modules);
-
-  // Add format info
-  addFormatInfo(matrix, modules);
-
-  return matrix;
-}
-
-function getMinVersion(text: string): number {
-  const len = new TextEncoder().encode(text).length;
-  // Byte mode capacities for error correction level L
-  const capacities = [17, 32, 53, 78, 106, 134, 154, 192, 230, 271];
-  for (let v = 0; v < capacities.length; v++) {
-    if (len <= capacities[v]) return v + 1;
-  }
-  return 10; // Max we support
-}
-
-function addFinderPattern(matrix: boolean[][], row: number, col: number) {
-  for (let r = -1; r <= 7; r++) {
-    for (let c = -1; c <= 7; c++) {
-      const mr = row + r;
-      const mc = col + c;
-      if (mr < 0 || mr >= matrix.length || mc < 0 || mc >= matrix.length) continue;
-      if (r === -1 || r === 7 || c === -1 || c === 7) {
-        matrix[mr][mc] = false; // Separator
-      } else if (r === 0 || r === 6 || c === 0 || c === 6) {
-        matrix[mr][mc] = true; // Border
-      } else if (r >= 2 && r <= 4 && c >= 2 && c <= 4) {
-        matrix[mr][mc] = true; // Inner
-      } else {
-        matrix[mr][mc] = false;
-      }
-    }
-  }
-}
-
-function addAlignmentPattern(matrix: boolean[][], row: number, col: number) {
-  for (let r = -2; r <= 2; r++) {
-    for (let c = -2; c <= 2; c++) {
-      const mr = row + r;
-      const mc = col + c;
-      if (mr < 0 || mr >= matrix.length || mc < 0 || mc >= matrix.length) continue;
-      if (Math.abs(r) === 2 || Math.abs(c) === 2 || (r === 0 && c === 0)) {
-        matrix[mr][mc] = true;
-      } else {
-        matrix[mr][mc] = false;
-      }
-    }
-  }
-}
-
-function getAlignmentPositions(version: number): number[] {
-  if (version === 1) return [];
-  const positions: number[][] = [
-    [], [6, 18], [6, 22], [6, 26], [6, 30], [6, 34],
-    [6, 22, 38], [6, 24, 42], [6, 26, 46], [6, 28, 52],
-  ];
-  return positions[version - 1] || [6, 18];
-}
-
-function isFinderArea(row: number, col: number, size: number): boolean {
-  return (
-    (row < 9 && col < 9) ||
-    (row < 9 && col > size - 9) ||
-    (row > size - 9 && col < 9)
-  );
-}
-
-function encodeData(text: string, version: number): number[] {
-  const bytes = Array.from(new TextEncoder().encode(text));
-  const bits: number[] = [];
-
-  // Mode indicator: byte mode = 0100
-  bits.push(0, 1, 0, 0);
-
-  // Character count indicator (8 bits for versions 1-9, 16 for 10+)
-  const countBits = version <= 9 ? 8 : 16;
-  for (let i = countBits - 1; i >= 0; i--) {
-    bits.push((bytes.length >> i) & 1);
-  }
-
-  // Data
-  for (const byte of bytes) {
-    for (let i = 7; i >= 0; i--) {
-      bits.push((byte >> i) & 1);
-    }
-  }
-
-  // Terminator
-  const totalBits = getDataCapacityBits(version);
-  const terminatorLen = Math.min(4, totalBits - bits.length);
-  for (let i = 0; i < terminatorLen; i++) {
-    bits.push(0);
-  }
-
-  // Pad to byte boundary
-  while (bits.length % 8 !== 0) {
-    bits.push(0);
-  }
-
-  // Pad bytes
-  const padBytes = [0xEC, 0x11];
-  let padIdx = 0;
-  while (bits.length < totalBits) {
-    const pb = padBytes[padIdx % 2];
-    for (let i = 7; i >= 0; i--) {
-      bits.push((pb >> i) & 1);
-    }
-    padIdx++;
-  }
-
-  return bits.slice(0, totalBits);
-}
-
-function getDataCapacityBits(version: number): number {
-  // Data capacity in bits for each version (error correction level L)
-  const capacities = [152, 272, 440, 640, 864, 1088, 1248, 1552, 1856, 2192];
-  return capacities[Math.min(version, 10) - 1] || 152;
-}
-
-function placeDataBits(matrix: boolean[][], bits: number[], size: number) {
-  let bitIdx = 0;
-  let upward = true;
-
-  for (let col = size - 1; col > 0; col -= 2) {
-    if (col === 6) col = 5; // Skip timing column
-
-    const rows = upward
-      ? Array.from({ length: size }, (_, i) => size - 1 - i)
-      : Array.from({ length: size }, (_, i) => i);
-
-    for (const row of rows) {
-      for (let c = 0; c < 2; c++) {
-        const actualCol = col - c;
-        if (actualCol < 0 || actualCol >= size) continue;
-
-        // Skip function patterns
-        if (isReserved(matrix, row, actualCol, size)) continue;
-
-        if (bitIdx < bits.length) {
-          matrix[row][actualCol] = bits[bitIdx] === 1;
-          bitIdx++;
-        }
-      }
-    }
-    upward = !upward;
-  }
-}
-
-function isReserved(matrix: boolean[][], row: number, col: number, size: number): boolean {
-  // Finder patterns + separators
-  if (row < 9 && col < 9) return true;
-  if (row < 9 && col >= size - 8) return true;
-  if (row >= size - 8 && col < 9) return true;
-  // Timing patterns
-  if (row === 6 || col === 6) return true;
-  return false;
-}
-
-function applyMask(matrix: boolean[][], size: number) {
-  for (let row = 0; row < size; row++) {
-    for (let col = 0; col < size; col++) {
-      if (isReserved(matrix, row, col, size)) continue;
-      // Mask pattern 0: (row + col) % 2 === 0
-      if ((row + col) % 2 === 0) {
-        matrix[row][col] = !matrix[row][col];
-      }
-    }
-  }
-}
-
-function addFormatInfo(matrix: boolean[][], size: number) {
-  // Format info for mask 0, error correction L
-  // Pre-computed: 111011111000100
-  const formatBits = [1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 0, 0, 1, 0, 0];
-
-  for (let i = 0; i < 15; i++) {
-    const bit = formatBits[i] === 1;
-
-    // Around top-left finder
-    if (i < 6) {
-      matrix[8][i] = bit;
-    } else if (i < 8) {
-      matrix[8][i + 1] = bit;
-    } else if (i < 9) {
-      matrix[8 - (i - 8)][8] = bit; // This places at row 8 which is wrong, let me fix
-      matrix[7][8] = bit;
-    } else {
-      matrix[14 - i][8] = bit;
-    }
-
-    // Around other finders
-    if (i < 8) {
-      matrix[size - 1 - i][8] = bit;
-    } else {
-      matrix[8][size - 15 + i] = bit;
-    }
-  }
-
-  // Dark module
-  matrix[size - 8][8] = true;
-}
+const SIZE_OPTIONS = [128, 192, 256, 384, 512, 768, 1024];
 
 // ---- Component ----
 
 export default function QrCodeGeneratorPage() {
-  const [text, setText] = useState("");
+  // Core state
+  const [preset, setPreset] = useState<PresetType>("text");
+  const [rawText, setRawText] = useState("");
   const [size, setSize] = useState(256);
+  const [ecLevel, setEcLevel] = useState<ECLevel>("M");
   const [fgColor, setFgColor] = useState("#000000");
   const [bgColor, setBgColor] = useState("#ffffff");
-  const [copied, setCopied] = useState(false);
-  const canvasRef = useRef<HTMLCanvasElement>(null);
   const [error, setError] = useState<string | null>(null);
 
-  const drawQR = useCallback(() => {
-    const canvas = canvasRef.current;
-    if (!canvas || !text.trim()) return;
+  // Preset data
+  const [urlValue, setUrlValue] = useState("https://");
+  const [wifiData, setWifiData] = useState<WiFiData>({
+    ssid: "",
+    password: "",
+    encryption: "WPA",
+    hidden: false,
+  });
+  const [vcardData, setVcardData] = useState<VCardData>({
+    name: "",
+    phone: "",
+    email: "",
+    company: "",
+    title: "",
+    website: "",
+  });
+  const [emailData, setEmailData] = useState<EmailData>({
+    address: "",
+    subject: "",
+    body: "",
+  });
+  const [phoneValue, setPhoneValue] = useState("");
+  const [smsData, setSmsData] = useState<SMSData>({
+    number: "",
+    message: "",
+  });
+
+  // Bulk mode
+  const [bulkMode, setBulkMode] = useState(false);
+  const [bulkInput, setBulkInput] = useState("");
+  const [bulkResults, setBulkResults] = useState<
+    { text: string; dataUrl: string }[]
+  >([]);
+  const [bulkGenerating, setBulkGenerating] = useState(false);
+
+  // Single QR output
+  const [qrDataUrl, setQrDataUrl] = useState<string | null>(null);
+  const [qrSvg, setQrSvg] = useState<string | null>(null);
+  const [copied, setCopied] = useState(false);
+
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+
+  // Derive the text to encode based on preset
+  const getEncodedText = useCallback((): string => {
+    switch (preset) {
+      case "text":
+        return rawText;
+      case "url":
+        return urlValue;
+      case "wifi":
+        return buildWiFiString(wifiData);
+      case "vcard":
+        return buildVCardString(vcardData);
+      case "email":
+        return buildEmailString(emailData);
+      case "phone":
+        return phoneValue ? `tel:${phoneValue}` : "";
+      case "sms":
+        return buildSMSString(smsData);
+      default:
+        return rawText;
+    }
+  }, [preset, rawText, urlValue, wifiData, vcardData, emailData, phoneValue, smsData]);
+
+  // Generate QR code
+  const generateQR = useCallback(async () => {
+    const text = getEncodedText();
+    if (!text.trim()) {
+      setQrDataUrl(null);
+      setQrSvg(null);
+      setError(null);
+      return;
+    }
 
     try {
-      const matrix = generateQRMatrix(text);
-      const moduleCount = matrix.length;
-      const cellSize = Math.floor(size / (moduleCount + 8)); // Quiet zone
-      const offset = Math.floor((size - cellSize * moduleCount) / 2);
+      const opts: QRCode.QRCodeToDataURLOptions = {
+        errorCorrectionLevel: ecLevel,
+        width: size,
+        margin: 2,
+        color: { dark: fgColor, light: bgColor },
+      };
 
-      canvas.width = size;
-      canvas.height = size;
-      const ctx = canvas.getContext("2d");
-      if (!ctx) return;
+      const dataUrl = await QRCode.toDataURL(text, opts);
+      setQrDataUrl(dataUrl);
 
-      // Background
-      ctx.fillStyle = bgColor;
-      ctx.fillRect(0, 0, size, size);
-
-      // Modules
-      ctx.fillStyle = fgColor;
-      for (let row = 0; row < moduleCount; row++) {
-        for (let col = 0; col < moduleCount; col++) {
-          if (matrix[row][col]) {
-            ctx.fillRect(
-              offset + col * cellSize,
-              offset + row * cellSize,
-              cellSize,
-              cellSize
-            );
-          }
-        }
-      }
+      const svgString = await QRCode.toString(text, {
+        type: "svg",
+        errorCorrectionLevel: ecLevel,
+        margin: 2,
+        color: { dark: fgColor, light: bgColor },
+      });
+      setQrSvg(svgString);
 
       setError(null);
     } catch (e: unknown) {
       setError(e instanceof Error ? e.message : "Failed to generate QR code");
+      setQrDataUrl(null);
+      setQrSvg(null);
     }
-  }, [text, size, fgColor, bgColor]);
+  }, [getEncodedText, ecLevel, size, fgColor, bgColor]);
 
+  // Auto-generate on any setting change
   useEffect(() => {
-    if (text.trim()) {
-      drawQR();
-    } else {
-      const canvas = canvasRef.current;
-      if (canvas) {
-        const ctx = canvas.getContext("2d");
-        if (ctx) {
-          canvas.width = size;
-          canvas.height = size;
-          ctx.fillStyle = "#1e293b";
-          ctx.fillRect(0, 0, size, size);
-          ctx.fillStyle = "#475569";
-          ctx.font = "14px sans-serif";
-          ctx.textAlign = "center";
-          ctx.fillText("QR code will appear here", size / 2, size / 2);
-        }
+    generateQR();
+  }, [generateQR]);
+
+  // Bulk generate
+  const generateBulk = useCallback(async () => {
+    const lines = bulkInput
+      .split("\n")
+      .map((l) => l.trim())
+      .filter(Boolean);
+    if (lines.length === 0) return;
+
+    setBulkGenerating(true);
+    const results: { text: string; dataUrl: string }[] = [];
+
+    for (const line of lines.slice(0, 100)) {
+      try {
+        const dataUrl = await QRCode.toDataURL(line, {
+          errorCorrectionLevel: ecLevel,
+          width: size,
+          margin: 2,
+          color: { dark: fgColor, light: bgColor },
+        });
+        results.push({ text: line, dataUrl });
+      } catch {
+        results.push({ text: line, dataUrl: "" });
       }
     }
-  }, [text, size, fgColor, bgColor, drawQR]);
 
-  const downloadQR = useCallback(
-    (format: "png" | "svg") => {
-      const canvas = canvasRef.current;
-      if (!canvas || !text.trim()) return;
+    setBulkResults(results);
+    setBulkGenerating(false);
+  }, [bulkInput, ecLevel, size, fgColor, bgColor]);
 
-      if (format === "png") {
-        const link = document.createElement("a");
-        link.download = "qrcode.png";
-        link.href = canvas.toDataURL("image/png");
-        link.click();
-      } else {
-        // SVG export
-        try {
-          const matrix = generateQRMatrix(text);
-          const moduleCount = matrix.length;
-          const cellSize = 10;
-          const margin = 40;
-          const svgSize = moduleCount * cellSize + margin * 2;
+  // Downloads
+  const downloadPNG = useCallback(() => {
+    if (!qrDataUrl) return;
+    const link = document.createElement("a");
+    link.download = "qrcode.png";
+    link.href = qrDataUrl;
+    link.click();
+  }, [qrDataUrl]);
 
-          let svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${svgSize} ${svgSize}" width="${size}" height="${size}">`;
-          svg += `<rect width="${svgSize}" height="${svgSize}" fill="${bgColor}"/>`;
+  const downloadSVG = useCallback(() => {
+    if (!qrSvg) return;
+    const blob = new Blob([qrSvg], { type: "image/svg+xml" });
+    const link = document.createElement("a");
+    link.download = "qrcode.svg";
+    link.href = URL.createObjectURL(blob);
+    link.click();
+    URL.revokeObjectURL(link.href);
+  }, [qrSvg]);
 
-          for (let row = 0; row < moduleCount; row++) {
-            for (let col = 0; col < moduleCount; col++) {
-              if (matrix[row][col]) {
-                svg += `<rect x="${margin + col * cellSize}" y="${margin + row * cellSize}" width="${cellSize}" height="${cellSize}" fill="${fgColor}"/>`;
-              }
-            }
-          }
-          svg += "</svg>";
+  const downloadBulkZip = useCallback(async () => {
+    if (bulkResults.length === 0) return;
+    // Download each as individual PNGs via a simple approach
+    for (let i = 0; i < bulkResults.length; i++) {
+      const r = bulkResults[i];
+      if (!r.dataUrl) continue;
+      const link = document.createElement("a");
+      link.download = `qrcode-${i + 1}.png`;
+      link.href = r.dataUrl;
+      link.click();
+      // Small delay to avoid browser blocking multiple downloads
+      await new Promise((resolve) => setTimeout(resolve, 100));
+    }
+  }, [bulkResults]);
 
-          const blob = new Blob([svg], { type: "image/svg+xml" });
-          const link = document.createElement("a");
-          link.download = "qrcode.svg";
-          link.href = URL.createObjectURL(blob);
-          link.click();
-          URL.revokeObjectURL(link.href);
-        } catch {
-          setError("Failed to generate SVG");
-        }
-      }
-    },
-    [text, size, fgColor, bgColor]
-  );
-
-  const copyQR = useCallback(async () => {
-    const canvas = canvasRef.current;
-    if (!canvas || !text.trim()) return;
+  const copyToClipboard = useCallback(async () => {
+    if (!qrDataUrl) return;
     try {
-      const blob = await new Promise<Blob | null>((resolve) =>
-        canvas.toBlob(resolve, "image/png")
-      );
-      if (blob) {
-        await navigator.clipboard.write([
-          new ClipboardItem({ "image/png": blob }),
-        ]);
-        setCopied(true);
-        setTimeout(() => setCopied(false), 2000);
-      }
+      const response = await fetch(qrDataUrl);
+      const blob = await response.blob();
+      await navigator.clipboard.write([
+        new ClipboardItem({ "image/png": blob }),
+      ]);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
     } catch {
       setError("Copy to clipboard not supported in this browser");
     }
-  }, [text]);
+  }, [qrDataUrl]);
 
-  const textByteLength = new TextEncoder().encode(text).length;
-  const maxBytes = 271; // Version 10 byte mode capacity
+  const encodedText = getEncodedText();
+  const byteLength = new TextEncoder().encode(encodedText).length;
+
+  // Input classes
+  const inputClass =
+    "w-full bg-slate-900 border border-slate-600 rounded-lg px-4 py-2 text-sm text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500";
+  const labelClass = "text-sm font-medium text-slate-300 mb-1.5 block";
 
   return (
     <>
       <title>
-        QR Code Generator - Free Online Tool | DevTools Hub
+        Free QR Code Generator | devtools.page
       </title>
       <meta
         name="description"
-        content="Generate QR codes online for free. Create QR codes from any text, URL, or data. Customize colors and size. Download as PNG or SVG. No data sent to any server."
+        content="Free QR code generator. Create QR codes for URLs, Wi-Fi networks, vCard contacts, email, phone, and SMS. Customize size, colors, and error correction. Download as PNG or SVG. Bulk generate up to 100 QR codes."
+      />
+      <meta
+        name="keywords"
+        content="qr code generator, free qr code generator, qr code maker, create qr code, qr code for wifi, qr code for vcard, qr code download png svg, bulk qr code generator, qr code online"
       />
       <JsonLd
         data={[
           generateWebAppSchema({
             slug: "qr-code-generator",
             name: "QR Code Generator",
-            description: "Generate QR codes from text, URLs, Wi-Fi credentials, and more. Download as PNG or SVG",
-            category: "developer",
+            description:
+              "Free QR code generator for URLs, Wi-Fi, vCards, email, phone, and SMS. Download as PNG or SVG with custom colors and error correction.",
+            category: "generator",
           }),
           generateBreadcrumbSchema({
             slug: "qr-code-generator",
             name: "QR Code Generator",
-            description: "Generate QR codes from text, URLs, Wi-Fi credentials, and more. Download as PNG or SVG",
-            category: "developer",
+            description:
+              "Free QR code generator for URLs, Wi-Fi, vCards, email, phone, and SMS. Download as PNG or SVG with custom colors and error correction.",
+            category: "generator",
           }),
           generateFAQSchema([
-            { question: "What is a QR code?", answer: "A QR (Quick Response) code is a two-dimensional barcode that can store text, URLs, contact information, Wi-Fi credentials, and other data. QR codes can be scanned by smartphone cameras and dedicated barcode readers to quickly access the encoded information." },
-            { question: "What types of data can I encode?", answer: "You can encode any text data including website URLs, email addresses (mailto: links), phone numbers (tel: links), Wi-Fi network credentials (WIFI: format), vCard contact information, plain text messages, and more. The maximum capacity depends on the data type but is typically up to 271 bytes in byte mode." },
-            { question: "What's the difference between PNG and SVG downloads?", answer: "PNG is a raster format -- it has a fixed pixel resolution based on your size setting. SVG is a vector format that scales to any size without losing quality, making it ideal for print materials, business cards, and large format displays." },
-            { question: "Is my data safe?", answer: "Yes. The QR code is generated entirely in your browser using JavaScript and the Canvas API. No data is sent to any server. Your text, URLs, and credentials never leave your device." },
+            {
+              question: "What is a QR code?",
+              answer:
+                "A QR (Quick Response) code is a two-dimensional barcode that can store text, URLs, contact information, Wi-Fi credentials, and other data. QR codes can be scanned by smartphone cameras and dedicated barcode readers to quickly access the encoded information.",
+            },
+            {
+              question: "What types of data can I encode in a QR code?",
+              answer:
+                "You can encode website URLs, plain text, Wi-Fi network credentials (SSID, password, encryption type), vCard contact information (name, phone, email, company), email addresses with subject and body, phone numbers, and SMS messages. Each type uses a standard format recognized by QR code scanners.",
+            },
+            {
+              question: "What do error correction levels (L, M, Q, H) mean?",
+              answer:
+                "Error correction allows a QR code to remain scannable even if partially damaged. Level L recovers 7% of data, M recovers 15%, Q recovers 25%, and H recovers 30%. Higher correction means a denser QR code but more resilience. Use M for most cases, H if the QR code may be printed small or partially obscured.",
+            },
+            {
+              question:
+                "What is the difference between PNG and SVG downloads?",
+              answer:
+                "PNG is a raster format with fixed pixel dimensions based on your size setting. SVG is a vector format that scales to any size without losing quality, making it ideal for print materials, business cards, and large format displays.",
+            },
+            {
+              question: "Can I generate QR codes in bulk?",
+              answer:
+                "Yes. Switch to Bulk Mode and paste up to 100 URLs or text values (one per line). Click Generate All to create QR codes for each line, then download them individually or all at once.",
+            },
+            {
+              question: "Is my data safe?",
+              answer:
+                "Yes. All QR codes are generated entirely in your browser using JavaScript. No data is sent to any server. Your text, URLs, Wi-Fi passwords, and contact information never leave your device.",
+            },
           ]),
         ]}
       />
 
       <div className="min-h-screen bg-slate-900 text-slate-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          {/* Breadcrumb */}
-          <nav className="text-sm text-slate-400 mb-6" aria-label="Breadcrumb">
-            <ol className="flex items-center gap-2">
-              <li>
-                <a href="/" className="hover:text-white transition-colors">
-                  Home
-                </a>
-              </li>
-              <li>
-                <span className="mx-1">/</span>
-              </li>
-              <li>
-                <a href="/tools" className="hover:text-white transition-colors">
-                  Developer Tools
-                </a>
-              </li>
-              <li>
-                <span className="mx-1">/</span>
-              </li>
-              <li className="text-slate-200">QR Code Generator</li>
-            </ol>
-          </nav>
+          <ToolBreadcrumb slug="qr-code-generator" />
 
           {/* Header */}
           <div className="mb-8">
@@ -481,193 +381,645 @@ export default function QrCodeGeneratorPage() {
               QR Code Generator
             </h1>
             <p className="text-slate-400 max-w-2xl text-lg">
-              Generate QR codes from any text, URL, email, phone number, or Wi-Fi
-              credentials. Customize colors and size, then download as PNG or SVG.
-              Everything runs in your browser — no data is sent to any server.
+              Create QR codes for URLs, Wi-Fi networks, contacts, email, phone,
+              and SMS. Customize size, colors, and error correction level.
+              Download as PNG or SVG — everything runs in your browser.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            {/* Input Panel */}
-            <div>
-              {/* Text Input */}
-              <div className="mb-4">
-                <div className="flex items-center justify-between mb-2">
-                  <label className="text-sm font-medium text-slate-300">
-                    Content
-                  </label>
-                  <span
-                    className={`text-xs ${
-                      textByteLength > maxBytes
-                        ? "text-red-400"
-                        : "text-slate-500"
-                    }`}
+          {/* Mode toggle */}
+          <div className="flex gap-2 mb-6">
+            <button
+              onClick={() => setBulkMode(false)}
+              className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                !bulkMode
+                  ? "bg-blue-600 text-white"
+                  : "bg-slate-800 text-slate-400 hover:text-white"
+              }`}
+            >
+              Single QR
+            </button>
+            <button
+              onClick={() => setBulkMode(true)}
+              className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                bulkMode
+                  ? "bg-blue-600 text-white"
+                  : "bg-slate-800 text-slate-400 hover:text-white"
+              }`}
+            >
+              Bulk Mode
+            </button>
+          </div>
+
+          {!bulkMode ? (
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+              {/* Left: Input Panel */}
+              <div>
+                {/* Preset selector */}
+                <div className="mb-4">
+                  <label className={labelClass}>QR Code Type</label>
+                  <div className="flex flex-wrap gap-2">
+                    {(
+                      Object.entries(PRESET_LABELS) as [PresetType, string][]
+                    ).map(([key, label]) => (
+                      <button
+                        key={key}
+                        onClick={() => setPreset(key)}
+                        className={`px-3 py-1.5 text-xs rounded-lg border transition-colors ${
+                          preset === key
+                            ? "bg-blue-600 border-blue-500 text-white"
+                            : "bg-slate-800 border-slate-600 text-slate-300 hover:border-blue-500 hover:text-white"
+                        }`}
+                      >
+                        {label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Preset-specific forms */}
+                <div className="bg-slate-800 border border-slate-700 rounded-lg p-4 mb-4">
+                  {preset === "text" && (
+                    <div>
+                      <label className={labelClass}>Text Content</label>
+                      <textarea
+                        value={rawText}
+                        onChange={(e) => setRawText(e.target.value)}
+                        placeholder="Enter any text to encode..."
+                        className={`${inputClass} h-28 resize-none`}
+                        spellCheck={false}
+                      />
+                    </div>
+                  )}
+
+                  {preset === "url" && (
+                    <div>
+                      <label className={labelClass}>Website URL</label>
+                      <input
+                        type="url"
+                        value={urlValue}
+                        onChange={(e) => setUrlValue(e.target.value)}
+                        placeholder="https://example.com"
+                        className={inputClass}
+                      />
+                    </div>
+                  )}
+
+                  {preset === "wifi" && (
+                    <div className="space-y-3">
+                      <div>
+                        <label className={labelClass}>Network Name (SSID)</label>
+                        <input
+                          type="text"
+                          value={wifiData.ssid}
+                          onChange={(e) =>
+                            setWifiData({ ...wifiData, ssid: e.target.value })
+                          }
+                          placeholder="MyWiFiNetwork"
+                          className={inputClass}
+                        />
+                      </div>
+                      <div>
+                        <label className={labelClass}>Password</label>
+                        <input
+                          type="text"
+                          value={wifiData.password}
+                          onChange={(e) =>
+                            setWifiData({
+                              ...wifiData,
+                              password: e.target.value,
+                            })
+                          }
+                          placeholder="Enter password"
+                          className={inputClass}
+                        />
+                      </div>
+                      <div>
+                        <label className={labelClass}>Encryption</label>
+                        <select
+                          value={wifiData.encryption}
+                          onChange={(e) =>
+                            setWifiData({
+                              ...wifiData,
+                              encryption: e.target.value as WiFiData["encryption"],
+                            })
+                          }
+                          className={inputClass}
+                        >
+                          <option value="WPA">WPA/WPA2</option>
+                          <option value="WEP">WEP</option>
+                          <option value="nopass">None (Open)</option>
+                        </select>
+                      </div>
+                      <label className="flex items-center gap-2 text-sm text-slate-300 cursor-pointer">
+                        <input
+                          type="checkbox"
+                          checked={wifiData.hidden}
+                          onChange={(e) =>
+                            setWifiData({
+                              ...wifiData,
+                              hidden: e.target.checked,
+                            })
+                          }
+                          className="w-4 h-4 rounded bg-slate-700 border-slate-600 text-blue-500 focus:ring-blue-500"
+                        />
+                        Hidden network
+                      </label>
+                    </div>
+                  )}
+
+                  {preset === "vcard" && (
+                    <div className="space-y-3">
+                      <div>
+                        <label className={labelClass}>Full Name</label>
+                        <input
+                          type="text"
+                          value={vcardData.name}
+                          onChange={(e) =>
+                            setVcardData({ ...vcardData, name: e.target.value })
+                          }
+                          placeholder="John Doe"
+                          className={inputClass}
+                        />
+                      </div>
+                      <div className="grid grid-cols-2 gap-3">
+                        <div>
+                          <label className={labelClass}>Phone</label>
+                          <input
+                            type="tel"
+                            value={vcardData.phone}
+                            onChange={(e) =>
+                              setVcardData({
+                                ...vcardData,
+                                phone: e.target.value,
+                              })
+                            }
+                            placeholder="+1234567890"
+                            className={inputClass}
+                          />
+                        </div>
+                        <div>
+                          <label className={labelClass}>Email</label>
+                          <input
+                            type="email"
+                            value={vcardData.email}
+                            onChange={(e) =>
+                              setVcardData({
+                                ...vcardData,
+                                email: e.target.value,
+                              })
+                            }
+                            placeholder="john@example.com"
+                            className={inputClass}
+                          />
+                        </div>
+                      </div>
+                      <div className="grid grid-cols-2 gap-3">
+                        <div>
+                          <label className={labelClass}>Company</label>
+                          <input
+                            type="text"
+                            value={vcardData.company}
+                            onChange={(e) =>
+                              setVcardData({
+                                ...vcardData,
+                                company: e.target.value,
+                              })
+                            }
+                            placeholder="Acme Inc."
+                            className={inputClass}
+                          />
+                        </div>
+                        <div>
+                          <label className={labelClass}>Title</label>
+                          <input
+                            type="text"
+                            value={vcardData.title}
+                            onChange={(e) =>
+                              setVcardData({
+                                ...vcardData,
+                                title: e.target.value,
+                              })
+                            }
+                            placeholder="Software Engineer"
+                            className={inputClass}
+                          />
+                        </div>
+                      </div>
+                      <div>
+                        <label className={labelClass}>Website</label>
+                        <input
+                          type="url"
+                          value={vcardData.website}
+                          onChange={(e) =>
+                            setVcardData({
+                              ...vcardData,
+                              website: e.target.value,
+                            })
+                          }
+                          placeholder="https://example.com"
+                          className={inputClass}
+                        />
+                      </div>
+                    </div>
+                  )}
+
+                  {preset === "email" && (
+                    <div className="space-y-3">
+                      <div>
+                        <label className={labelClass}>Email Address</label>
+                        <input
+                          type="email"
+                          value={emailData.address}
+                          onChange={(e) =>
+                            setEmailData({
+                              ...emailData,
+                              address: e.target.value,
+                            })
+                          }
+                          placeholder="hello@example.com"
+                          className={inputClass}
+                        />
+                      </div>
+                      <div>
+                        <label className={labelClass}>Subject (optional)</label>
+                        <input
+                          type="text"
+                          value={emailData.subject}
+                          onChange={(e) =>
+                            setEmailData({
+                              ...emailData,
+                              subject: e.target.value,
+                            })
+                          }
+                          placeholder="Hello!"
+                          className={inputClass}
+                        />
+                      </div>
+                      <div>
+                        <label className={labelClass}>Body (optional)</label>
+                        <textarea
+                          value={emailData.body}
+                          onChange={(e) =>
+                            setEmailData({
+                              ...emailData,
+                              body: e.target.value,
+                            })
+                          }
+                          placeholder="Message body..."
+                          className={`${inputClass} h-20 resize-none`}
+                        />
+                      </div>
+                    </div>
+                  )}
+
+                  {preset === "phone" && (
+                    <div>
+                      <label className={labelClass}>Phone Number</label>
+                      <input
+                        type="tel"
+                        value={phoneValue}
+                        onChange={(e) => setPhoneValue(e.target.value)}
+                        placeholder="+1234567890"
+                        className={inputClass}
+                      />
+                    </div>
+                  )}
+
+                  {preset === "sms" && (
+                    <div className="space-y-3">
+                      <div>
+                        <label className={labelClass}>Phone Number</label>
+                        <input
+                          type="tel"
+                          value={smsData.number}
+                          onChange={(e) =>
+                            setSmsData({ ...smsData, number: e.target.value })
+                          }
+                          placeholder="+1234567890"
+                          className={inputClass}
+                        />
+                      </div>
+                      <div>
+                        <label className={labelClass}>
+                          Message (optional)
+                        </label>
+                        <textarea
+                          value={smsData.message}
+                          onChange={(e) =>
+                            setSmsData({ ...smsData, message: e.target.value })
+                          }
+                          placeholder="Your message..."
+                          className={`${inputClass} h-20 resize-none`}
+                        />
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Encoded output preview */}
+                  {encodedText.trim() && (
+                    <div className="mt-3 pt-3 border-t border-slate-700">
+                      <p className="text-xs text-slate-500 mb-1">
+                        Encoded data ({byteLength} bytes):
+                      </p>
+                      <code className="text-xs text-slate-400 font-mono break-all block max-h-16 overflow-y-auto">
+                        {encodedText}
+                      </code>
+                    </div>
+                  )}
+                </div>
+
+                {/* Customization */}
+                <div className="bg-slate-800 border border-slate-700 rounded-lg p-4 mb-4">
+                  <h3 className="text-sm font-semibold text-white mb-3">
+                    Customization
+                  </h3>
+                  <div className="space-y-4">
+                    {/* Size */}
+                    <div>
+                      <label className={labelClass}>
+                        Size: {size}px
+                      </label>
+                      <input
+                        type="range"
+                        min={128}
+                        max={1024}
+                        step={1}
+                        value={size}
+                        onChange={(e) => setSize(Number(e.target.value))}
+                        className="w-full accent-blue-500"
+                      />
+                      <div className="flex justify-between text-xs text-slate-500 mt-1">
+                        <span>128px</span>
+                        <span>1024px</span>
+                      </div>
+                      <div className="flex flex-wrap gap-1.5 mt-2">
+                        {SIZE_OPTIONS.map((s) => (
+                          <button
+                            key={s}
+                            onClick={() => setSize(s)}
+                            className={`px-2 py-1 text-xs rounded border transition-colors ${
+                              size === s
+                                ? "bg-blue-600 border-blue-500 text-white"
+                                : "bg-slate-900 border-slate-600 text-slate-400 hover:text-white"
+                            }`}
+                          >
+                            {s}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Error correction */}
+                    <div>
+                      <label className={labelClass}>Error Correction</label>
+                      <div className="flex gap-2">
+                        {(["L", "M", "Q", "H"] as ECLevel[]).map((level) => (
+                          <button
+                            key={level}
+                            onClick={() => setEcLevel(level)}
+                            className={`flex-1 px-3 py-2 text-xs rounded-lg border transition-colors ${
+                              ecLevel === level
+                                ? "bg-blue-600 border-blue-500 text-white"
+                                : "bg-slate-900 border-slate-600 text-slate-400 hover:text-white"
+                            }`}
+                          >
+                            <div className="font-bold">{level}</div>
+                            <div className="text-[10px] opacity-70">
+                              {EC_LABELS[level]}
+                            </div>
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Colors */}
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <label className={labelClass}>Foreground</label>
+                        <div className="flex items-center gap-2">
+                          <input
+                            type="color"
+                            value={fgColor}
+                            onChange={(e) => setFgColor(e.target.value)}
+                            className="w-10 h-10 rounded border border-slate-600 cursor-pointer bg-transparent"
+                          />
+                          <input
+                            type="text"
+                            value={fgColor}
+                            onChange={(e) => setFgColor(e.target.value)}
+                            className="flex-1 bg-slate-900 border border-slate-600 rounded-lg px-3 py-2 font-mono text-sm text-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                          />
+                        </div>
+                      </div>
+                      <div>
+                        <label className={labelClass}>Background</label>
+                        <div className="flex items-center gap-2">
+                          <input
+                            type="color"
+                            value={bgColor}
+                            onChange={(e) => setBgColor(e.target.value)}
+                            className="w-10 h-10 rounded border border-slate-600 cursor-pointer bg-transparent"
+                          />
+                          <input
+                            type="text"
+                            value={bgColor}
+                            onChange={(e) => setBgColor(e.target.value)}
+                            className="flex-1 bg-slate-900 border border-slate-600 rounded-lg px-3 py-2 font-mono text-sm text-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Action buttons */}
+                <div className="flex flex-wrap gap-3">
+                  <button
+                    onClick={downloadPNG}
+                    disabled={!qrDataUrl}
+                    className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
                   >
-                    {textByteLength} / {maxBytes} bytes
-                  </span>
+                    Download PNG
+                  </button>
+                  <button
+                    onClick={downloadSVG}
+                    disabled={!qrSvg}
+                    className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+                  >
+                    Download SVG
+                  </button>
+                  <button
+                    onClick={copyToClipboard}
+                    disabled={!qrDataUrl}
+                    className="px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white rounded-lg font-medium transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+                  >
+                    {copied ? "Copied!" : "Copy to Clipboard"}
+                  </button>
                 </div>
-                <textarea
-                  value={text}
-                  onChange={(e) => setText(e.target.value)}
-                  placeholder="Enter text, URL, or any data to encode..."
-                  className="w-full h-32 bg-slate-800 border border-slate-600 rounded-lg p-4 font-mono text-sm text-slate-200 placeholder-slate-500 resize-none focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  spellCheck={false}
-                  maxLength={500}
-                />
               </div>
 
-              {/* Quick Templates */}
-              <div className="mb-6">
-                <label className="text-sm font-medium text-slate-300 mb-2 block">
-                  Quick Templates
+              {/* Right: Preview Panel */}
+              <div className="flex flex-col items-center">
+                <label className="text-sm font-medium text-slate-300 mb-4 self-start">
+                  Preview
                 </label>
-                <div className="flex flex-wrap gap-2">
-                  {[
-                    { label: "URL", value: "https://example.com" },
-                    { label: "Email", value: "mailto:hello@example.com" },
-                    { label: "Phone", value: "tel:+1234567890" },
-                    {
-                      label: "Wi-Fi",
-                      value: "WIFI:T:WPA;S:MyNetwork;P:MyPassword;;",
-                    },
-                    { label: "vCard", value: "BEGIN:VCARD\nVERSION:3.0\nFN:John Doe\nTEL:+1234567890\nEMAIL:john@example.com\nEND:VCARD" },
-                  ].map((tpl) => (
-                    <button
-                      key={tpl.label}
-                      onClick={() => setText(tpl.value)}
-                      className="px-3 py-1.5 text-xs bg-slate-800 border border-slate-600 hover:border-blue-500 text-slate-300 hover:text-white rounded-lg transition-colors"
+                <div className="bg-white rounded-xl p-6 shadow-lg inline-block">
+                  {qrDataUrl ? (
+                    <img
+                      src={qrDataUrl}
+                      alt="Generated QR Code"
+                      width={Math.min(size, 400)}
+                      height={Math.min(size, 400)}
+                      className="block"
+                      style={{ imageRendering: "pixelated" }}
+                    />
+                  ) : (
+                    <div
+                      className="flex items-center justify-center bg-slate-100 rounded-lg"
+                      style={{
+                        width: Math.min(size, 400),
+                        height: Math.min(size, 400),
+                      }}
                     >
-                      {tpl.label}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              {/* Settings */}
-              <div className="space-y-4 mb-6">
-                <div>
-                  <label className="text-sm font-medium text-slate-300 mb-2 block">
-                    Size: {size}px
-                  </label>
-                  <input
-                    type="range"
-                    min={128}
-                    max={512}
-                    step={32}
-                    value={size}
-                    onChange={(e) => setSize(Number(e.target.value))}
-                    className="w-full accent-blue-500"
-                  />
-                  <div className="flex justify-between text-xs text-slate-500 mt-1">
-                    <span>128px</span>
-                    <span>512px</span>
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <label className="text-sm font-medium text-slate-300 mb-2 block">
-                      Foreground
-                    </label>
-                    <div className="flex items-center gap-2">
-                      <input
-                        type="color"
-                        value={fgColor}
-                        onChange={(e) => setFgColor(e.target.value)}
-                        className="w-10 h-10 rounded border border-slate-600 cursor-pointer bg-transparent"
-                      />
-                      <input
-                        type="text"
-                        value={fgColor}
-                        onChange={(e) => setFgColor(e.target.value)}
-                        className="flex-1 bg-slate-800 border border-slate-600 rounded-lg px-3 py-2 font-mono text-sm text-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                      />
+                      <p className="text-slate-400 text-sm text-center px-8">
+                        Enter content above to generate a QR code
+                      </p>
                     </div>
-                  </div>
-                  <div>
-                    <label className="text-sm font-medium text-slate-300 mb-2 block">
-                      Background
-                    </label>
-                    <div className="flex items-center gap-2">
-                      <input
-                        type="color"
-                        value={bgColor}
-                        onChange={(e) => setBgColor(e.target.value)}
-                        className="w-10 h-10 rounded border border-slate-600 cursor-pointer bg-transparent"
-                      />
-                      <input
-                        type="text"
-                        value={bgColor}
-                        onChange={(e) => setBgColor(e.target.value)}
-                        className="flex-1 bg-slate-800 border border-slate-600 rounded-lg px-3 py-2 font-mono text-sm text-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                      />
-                    </div>
-                  </div>
+                  )}
                 </div>
-              </div>
-
-              {/* Action Buttons */}
-              <div className="flex flex-wrap gap-3">
-                <button
-                  onClick={() => downloadQR("png")}
-                  disabled={!text.trim()}
-                  className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
-                >
-                  Download PNG
-                </button>
-                <button
-                  onClick={() => downloadQR("svg")}
-                  disabled={!text.trim()}
-                  className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
-                >
-                  Download SVG
-                </button>
-                <button
-                  onClick={copyQR}
-                  disabled={!text.trim()}
-                  className="px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white rounded-lg font-medium transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
-                >
-                  {copied ? "Copied!" : "Copy to Clipboard"}
-                </button>
-                <button
-                  onClick={() => {
-                    setText("");
-                    setFgColor("#000000");
-                    setBgColor("#ffffff");
-                    setSize(256);
-                  }}
-                  className="px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white rounded-lg font-medium transition-colors"
-                >
-                  Clear
-                </button>
+                {qrDataUrl && encodedText.trim() && (
+                  <p className="text-xs text-slate-500 mt-3">
+                    {size}&times;{size}px &bull; EC Level {ecLevel} &bull;{" "}
+                    {byteLength} bytes
+                  </p>
+                )}
+                <canvas ref={canvasRef} className="hidden" />
               </div>
             </div>
-
-            {/* Preview Panel */}
-            <div className="flex flex-col items-center">
-              <label className="text-sm font-medium text-slate-300 mb-4 self-start">
-                Preview
-              </label>
-              <div className="bg-white rounded-xl p-6 shadow-lg">
-                <canvas
-                  ref={canvasRef}
-                  width={size}
-                  height={size}
-                  className="block max-w-full h-auto"
-                  style={{ imageRendering: "pixelated" }}
-                />
-              </div>
-              {text.trim() && !error && (
-                <p className="text-xs text-slate-500 mt-3">
-                  {size}×{size}px • Version {getMinVersion(text)} • {textByteLength} bytes
+          ) : (
+            /* Bulk Mode */
+            <div>
+              <div className="bg-slate-800 border border-slate-700 rounded-lg p-6 mb-6">
+                <h2 className="text-lg font-semibold text-white mb-3">
+                  Bulk QR Code Generator
+                </h2>
+                <p className="text-sm text-slate-400 mb-4">
+                  Paste up to 100 URLs or text values, one per line. Each will
+                  generate a separate QR code with your current customization
+                  settings.
                 </p>
+                <textarea
+                  value={bulkInput}
+                  onChange={(e) => setBulkInput(e.target.value)}
+                  placeholder={"https://example.com\nhttps://google.com\nhttps://github.com"}
+                  className="w-full h-40 bg-slate-900 border border-slate-600 rounded-lg p-4 font-mono text-sm text-slate-200 placeholder-slate-500 resize-none focus:outline-none focus:ring-2 focus:ring-blue-500 mb-4"
+                  spellCheck={false}
+                />
+
+                {/* Inline settings for bulk */}
+                <div className="flex flex-wrap items-end gap-4 mb-4">
+                  <div>
+                    <label className={labelClass}>Size</label>
+                    <select
+                      value={size}
+                      onChange={(e) => setSize(Number(e.target.value))}
+                      className="bg-slate-900 border border-slate-600 text-white rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    >
+                      {SIZE_OPTIONS.map((s) => (
+                        <option key={s} value={s}>
+                          {s}px
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                  <div>
+                    <label className={labelClass}>Error Correction</label>
+                    <select
+                      value={ecLevel}
+                      onChange={(e) => setEcLevel(e.target.value as ECLevel)}
+                      className="bg-slate-900 border border-slate-600 text-white rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    >
+                      {(["L", "M", "Q", "H"] as ECLevel[]).map((l) => (
+                        <option key={l} value={l}>
+                          {l} — {EC_LABELS[l]}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
+
+                <div className="flex gap-3">
+                  <button
+                    onClick={generateBulk}
+                    disabled={
+                      !bulkInput.trim() || bulkGenerating
+                    }
+                    className="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+                  >
+                    {bulkGenerating ? "Generating..." : "Generate All"}
+                  </button>
+                  {bulkResults.length > 0 && (
+                    <button
+                      onClick={downloadBulkZip}
+                      className="px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white rounded-lg font-medium transition-colors"
+                    >
+                      Download All PNGs
+                    </button>
+                  )}
+                </div>
+              </div>
+
+              {/* Bulk results */}
+              {bulkResults.length > 0 && (
+                <div className="bg-slate-800 border border-slate-700 rounded-lg p-6">
+                  <h3 className="text-lg font-semibold text-white mb-4">
+                    Generated QR Codes ({bulkResults.length})
+                  </h3>
+                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+                    {bulkResults.map((result, i) => (
+                      <div
+                        key={i}
+                        className="bg-slate-900 rounded-lg p-3 flex flex-col items-center"
+                      >
+                        {result.dataUrl ? (
+                          <img
+                            src={result.dataUrl}
+                            alt={`QR code for ${result.text}`}
+                            className="w-full h-auto mb-2"
+                            style={{ imageRendering: "pixelated" }}
+                          />
+                        ) : (
+                          <div className="w-full aspect-square bg-red-900/30 rounded flex items-center justify-center mb-2">
+                            <span className="text-xs text-red-400">Error</span>
+                          </div>
+                        )}
+                        <p
+                          className="text-xs text-slate-400 truncate w-full text-center"
+                          title={result.text}
+                        >
+                          {result.text}
+                        </p>
+                        {result.dataUrl && (
+                          <a
+                            href={result.dataUrl}
+                            download={`qrcode-${i + 1}.png`}
+                            className="text-xs text-blue-400 hover:text-blue-300 mt-1"
+                          >
+                            Download
+                          </a>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </div>
               )}
             </div>
-          </div>
+          )}
 
           {/* Error */}
           {error && (
-            <div className="mt-6 p-3 bg-red-900/40 border border-red-700 rounded-lg text-red-300 text-sm font-mono">
+            <div className="mt-6 p-3 bg-red-900/40 border border-red-700 rounded-lg text-red-300 text-sm">
               <span className="font-bold">Error:</span> {error}
             </div>
           )}
@@ -699,11 +1051,26 @@ export default function QrCodeGeneratorPage() {
                   What types of data can I encode?
                 </h3>
                 <p className="text-slate-400">
-                  You can encode any text data including website URLs, email
-                  addresses (mailto: links), phone numbers (tel: links), Wi-Fi
-                  network credentials (WIFI: format), vCard contact information,
-                  plain text messages, and more. The maximum capacity depends on
-                  the data type but is typically up to 271 bytes in byte mode.
+                  This tool supports seven QR code types: plain text, website
+                  URLs, Wi-Fi network credentials (with SSID, password, and
+                  encryption type), vCard contacts (name, phone, email, company,
+                  title, website), email with subject and body, phone numbers,
+                  and SMS messages. Each type generates the correct standardized
+                  format recognized by all QR scanners.
+                </p>
+              </div>
+
+              <div>
+                <h3 className="text-lg font-semibold text-white mb-2">
+                  What do error correction levels mean?
+                </h3>
+                <p className="text-slate-400">
+                  Error correction allows a QR code to remain scannable even when
+                  partially damaged or obscured. Level L recovers up to 7% of
+                  data, M recovers 15%, Q recovers 25%, and H recovers 30%.
+                  Higher correction creates a denser code but increases
+                  reliability. Use M for most digital uses, Q or H for print
+                  materials that may get worn.
                 </p>
               </div>
 
@@ -712,10 +1079,24 @@ export default function QrCodeGeneratorPage() {
                   What&apos;s the difference between PNG and SVG downloads?
                 </h3>
                 <p className="text-slate-400">
-                  PNG is a raster format — it has a fixed pixel resolution based
-                  on your size setting. SVG is a vector format that scales to any
-                  size without losing quality, making it ideal for print
-                  materials, business cards, and large format displays.
+                  PNG is a raster format with a fixed pixel resolution based on
+                  your size setting (128px to 1024px). SVG is a vector format
+                  that scales to any size without losing quality, making it ideal
+                  for print materials, business cards, posters, and large format
+                  displays.
+                </p>
+              </div>
+
+              <div>
+                <h3 className="text-lg font-semibold text-white mb-2">
+                  Can I generate QR codes in bulk?
+                </h3>
+                <p className="text-slate-400">
+                  Yes. Switch to Bulk Mode at the top of the page and paste up to
+                  100 URLs or text values (one per line). Click Generate All to
+                  create QR codes for every line with your current size and error
+                  correction settings. You can download them individually or all
+                  at once.
                 </p>
               </div>
 
@@ -724,9 +1105,10 @@ export default function QrCodeGeneratorPage() {
                   Is my data safe?
                 </h3>
                 <p className="text-slate-400">
-                  Yes. The QR code is generated entirely in your browser using
-                  JavaScript and the Canvas API. No data is sent to any server.
-                  Your text, URLs, and credentials never leave your device.
+                  Yes. All QR codes are generated entirely in your browser using
+                  JavaScript. No data is ever sent to any server. Your text,
+                  URLs, Wi-Fi passwords, and contact information never leave your
+                  device.
                 </p>
               </div>
             </div>

@@ -3,6 +3,7 @@
 import { useState, useCallback, useEffect } from "react";
 import JsonLd from "@/components/JsonLd";
 import RelatedTools from "@/components/RelatedTools";
+import ToolBreadcrumb from "@/components/ToolBreadcrumb";
 import {
   generateFAQSchema,
   generateWebAppSchema,
@@ -193,13 +194,13 @@ export default function TimestampConverterPage() {
             slug: "timestamp-converter",
             name: "Timestamp Converter",
             description: "Convert between Unix timestamps and human-readable dates with timezone support",
-            category: "conversion",
+            category: "encoding",
           }),
           generateBreadcrumbSchema({
             slug: "timestamp-converter",
             name: "Timestamp Converter",
             description: "Convert between Unix timestamps and human-readable dates with timezone support",
-            category: "conversion",
+            category: "encoding",
           }),
           generateFAQSchema([
             { question: "What is a Unix timestamp?", answer: "A Unix timestamp (also called Epoch time or POSIX time) is the number of seconds that have elapsed since January 1, 1970 00:00:00 UTC. It provides a universal, timezone-independent way to represent a point in time and is used extensively in programming, databases, and APIs." },
@@ -212,24 +213,7 @@ export default function TimestampConverterPage() {
 
       <div className="min-h-screen bg-slate-900 text-slate-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          {/* Breadcrumb */}
-          <nav className="text-sm text-slate-400 mb-6" aria-label="Breadcrumb">
-            <ol className="flex items-center gap-2">
-              <li>
-                <a href="/" className="hover:text-white transition-colors">
-                  Home
-                </a>
-              </li>
-              <li><span className="mx-1">/</span></li>
-              <li>
-                <a href="/tools" className="hover:text-white transition-colors">
-                  Tools
-                </a>
-              </li>
-              <li><span className="mx-1">/</span></li>
-              <li className="text-slate-200">Timestamp Converter</li>
-            </ol>
-          </nav>
+          <ToolBreadcrumb slug="timestamp-converter" />
 
           {/* Header */}
           <div className="mb-8">

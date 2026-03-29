@@ -3,6 +3,7 @@
 import { useState, useCallback } from "react";
 import JsonLd from "@/components/JsonLd";
 import RelatedTools from "@/components/RelatedTools";
+import ToolBreadcrumb from "@/components/ToolBreadcrumb";
 import {
   generateFAQSchema,
   generateWebAppSchema,
@@ -145,13 +146,13 @@ export default function AspectRatioCalculatorPage() {
             slug: "aspect-ratio-calculator",
             name: "Aspect Ratio Calculator",
             description: "Calculate and convert aspect ratios for images, video, and responsive design",
-            category: "design",
+            category: "image",
           }),
           generateBreadcrumbSchema({
             slug: "aspect-ratio-calculator",
             name: "Aspect Ratio Calculator",
             description: "Calculate and convert aspect ratios for images, video, and responsive design",
-            category: "design",
+            category: "image",
           }),
           generateFAQSchema([
             { question: "What is an aspect ratio?", answer: "An aspect ratio describes the proportional relationship between an image's width and height. For example, 16:9 means for every 16 units of width, there are 9 units of height. It's commonly used in video, photography, and display design to ensure content looks correct across different sizes." },

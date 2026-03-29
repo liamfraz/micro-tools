@@ -1,0 +1,6 @@
+# devtools.page robots.txt
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://devtools.page/sitemap.xml

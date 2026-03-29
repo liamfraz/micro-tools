@@ -3,6 +3,7 @@
 import { useState, useCallback } from "react";
 import JsonLd from "@/components/JsonLd";
 import RelatedTools from "@/components/RelatedTools";
+import ToolBreadcrumb from "@/components/ToolBreadcrumb";
 import {
   generateFAQSchema,
   generateWebAppSchema,
@@ -252,13 +253,13 @@ export default function ColorConverterPage() {
             slug: "color-converter",
             name: "Color Converter",
             description: "Convert colors between HEX, RGB, HSL, and CMYK formats",
-            category: "design",
+            category: "css",
           }),
           generateBreadcrumbSchema({
             slug: "color-converter",
             name: "Color Converter",
             description: "Convert colors between HEX, RGB, HSL, and CMYK formats",
-            category: "design",
+            category: "css",
           }),
           generateFAQSchema([
             { question: "What is the difference between HSL and HSV?", answer: "HSL (Hue, Saturation, Lightness) and HSV (Hue, Saturation, Value) are both cylindrical color models, but they define brightness differently. In HSL, 50% lightness is the pure color, while 0% is black and 100% is white. In HSV, 100% value is the brightest version of the color. HSL is more common in CSS, while HSV is used in design tools like Photoshop and Figma." },
@@ -271,20 +272,7 @@ export default function ColorConverterPage() {
 
       <div className="min-h-screen bg-slate-900 text-slate-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          {/* Breadcrumb */}
-          <nav className="text-sm text-slate-400 mb-6" aria-label="Breadcrumb">
-            <ol className="flex items-center gap-2">
-              <li>
-                <a href="/" className="hover:text-white transition-colors">Home</a>
-              </li>
-              <li><span className="mx-1">/</span></li>
-              <li>
-                <a href="/tools" className="hover:text-white transition-colors">Design Tools</a>
-              </li>
-              <li><span className="mx-1">/</span></li>
-              <li className="text-slate-200">Color Converter</li>
-            </ol>
-          </nav>
+          <ToolBreadcrumb slug="color-converter" />
 
           {/* Header */}
           <div className="mb-8">

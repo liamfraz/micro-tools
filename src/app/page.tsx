@@ -3,12 +3,14 @@
 import { useState, useMemo } from "react";
 import ToolCard from "@/components/ToolCard";
 import manifest from "@/lib/tools-manifest.json";
+import Link from "next/link";
 
 const allTools = manifest.tools.filter((t) => t.status === "live");
 const categories = manifest.categories as Record<
   string,
   { label: string; color: string }
 >;
+const categoryOrder = Object.keys(categories);
 
 export default function HomePage() {
   const [search, setSearch] = useState("");
@@ -25,6 +27,17 @@ export default function HomePage() {
       return matchesSearch && matchesCategory;
     });
   }, [search, activeCategory]);
+
+  const isFiltering = !!search || !!activeCategory;
+
+  const groupedTools = useMemo(() => {
+    if (isFiltering) return null;
+    return categoryOrder.map((key) => ({
+      key,
+      label: categories[key].label,
+      tools: allTools.filter((t) => t.category === key),
+    }));
+  }, [isFiltering]);
 
   return (
     <>
@@ -79,7 +92,7 @@ export default function HomePage() {
               >
                 All
               </button>
-              {Object.entries(categories).map(([key, cat]) => (
+              {categoryOrder.map((key) => (
                 <button
                   key={key}
                   onClick={() =>
@@ -91,35 +104,85 @@ export default function HomePage() {
                       : "bg-slate-800 text-slate-400 hover:bg-slate-700 hover:text-white"
                   }`}
                 >
-                  {cat.label}
+                  {categories[key].label}
                 </button>
               ))}
             </div>
+
+            {/* Category quick-jump anchors */}
+            {!isFiltering && (
+              <div className="mt-4 flex flex-wrap items-center justify-center gap-x-4 gap-y-1 text-xs text-slate-500">
+                <span>Jump to:</span>
+                {categoryOrder.map((key) => (
+                  <a
+                    key={key}
+                    href={`#${key}`}
+                    className="hover:text-white transition-colors underline underline-offset-2"
+                  >
+                    {categories[key].label}
+                  </a>
+                ))}
+              </div>
+            )}
           </div>
         </div>
       </section>
 
-      {/* Tools grid */}
+      {/* Tools */}
       <section className="mx-auto max-w-6xl px-4 py-12 sm:px-6 lg:px-8">
-        {filteredTools.length === 0 ? (
-          <div className="py-16 text-center">
-            <p className="text-slate-500">
-              No tools match your search. Try a different query.
-            </p>
-          </div>
+        {isFiltering ? (
+          /* Flat filtered grid */
+          filteredTools.length === 0 ? (
+            <div className="py-16 text-center">
+              <p className="text-slate-500">
+                No tools match your search. Try a different query.
+              </p>
+            </div>
+          ) : (
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {filteredTools.map((tool) => (
+                <ToolCard
+                  key={tool.slug}
+                  name={tool.name}
+                  description={tool.description}
+                  href={`/tools/${tool.slug}`}
+                  category={tool.category}
+                  categoryLabel={
+                    categories[tool.category]?.label ?? tool.category
+                  }
+                />
+              ))}
+            </div>
+          )
         ) : (
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {filteredTools.map((tool) => (
-              <ToolCard
-                key={tool.slug}
-                name={tool.name}
-                description={tool.description}
-                href={`/tools/${tool.slug}`}
-                category={tool.category}
-                categoryLabel={
-                  categories[tool.category]?.label ?? tool.category
-                }
-              />
+          /* Grouped by category */
+          <div className="space-y-16">
+            {groupedTools?.map((group) => (
+              <div key={group.key} id={group.key}>
+                <div className="mb-6 flex items-center justify-between">
+                  <h2 className="text-2xl font-bold text-white">
+                    {group.label}
+                  </h2>
+                  <Link
+                    href={`/tools/category/${group.key}`}
+                    className="text-sm text-slate-400 hover:text-white transition-colors"
+                  >
+                    View all {group.tools.length} &rarr;
+                  </Link>
+                </div>
+                <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                  {group.tools.map((tool) => (
+                    <ToolCard
+                      key={tool.slug}
+                      name={tool.name}
+                      description={tool.description}
+                      href={`/tools/${tool.slug}`}
+                      category={tool.category}
+                      categoryLabel={group.label}
+                    />
+                  ))}
+                </div>
+              </div>
             ))}
           </div>
         )}

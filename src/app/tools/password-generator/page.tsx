@@ -4,6 +4,7 @@ import { useState, useCallback, useEffect } from "react";
 import JsonLd from "@/components/JsonLd";
 import RelatedTools from "@/components/RelatedTools";
 import ToolBreadcrumb from "@/components/ToolBreadcrumb";
+import AdUnit from "@/components/AdUnit";
 import {
   generateFAQSchema,
   generateWebAppSchema,
@@ -356,7 +357,7 @@ export default function PasswordGeneratorPage() {
 
   return (
     <>
-      <title>Free Password Generator | Strong &amp; Secure | devtools.page</title>
+      <title>Password Generator - Strong Random Passwords | DevTools</title>
       <meta
         name="description"
         content="Generate strong random passwords and passphrases with customizable length, character sets, and entropy-based strength analysis. Free online password generator using the Web Crypto API — no data sent anywhere."
@@ -414,6 +415,9 @@ export default function PasswordGeneratorPage() {
               <strong>Generated entirely in your browser.</strong> No passwords are stored or transmitted. Uses the Web Crypto API for cryptographic randomness.
             </p>
           </div>
+
+          {/* AdSense top unit */}
+          <AdUnit slot="TOP_SLOT" format="horizontal" className="mb-6" />
 
           {/* Generated Password Display */}
           <div className="bg-slate-800 border border-slate-700 rounded-lg p-6 mb-6">
@@ -740,6 +744,9 @@ export default function PasswordGeneratorPage() {
             </div>
           )}
 
+          {/* AdSense middle unit */}
+          <AdUnit slot="MIDDLE_SLOT" format="rectangle" className="mb-6" />
+
           {/* Password Tips */}
           <div className="bg-slate-800 border border-slate-700 rounded-lg p-6 mb-6">
             <h2 className="text-lg font-semibold text-white mb-4">
@@ -770,6 +777,9 @@ export default function PasswordGeneratorPage() {
           </div>
 
           <RelatedTools currentSlug="password-generator" />
+
+          {/* AdSense bottom unit */}
+          <AdUnit slot="BOTTOM_SLOT" format="auto" className="my-8" />
 
           {/* FAQ Section */}
           <section className="mt-16 border-t border-slate-700 pt-10">

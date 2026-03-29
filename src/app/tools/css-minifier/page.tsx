@@ -3,6 +3,7 @@
 import { useState, useCallback } from "react";
 import JsonLd from "@/components/JsonLd";
 import RelatedTools from "@/components/RelatedTools";
+import ToolBreadcrumb from "@/components/ToolBreadcrumb";
 import {
   generateFAQSchema,
   generateWebAppSchema,
@@ -274,13 +275,13 @@ export default function CssMinifierPage() {
             slug: "css-minifier",
             name: "CSS Minifier",
             description: "Minify CSS code by removing whitespace, comments, and unnecessary characters",
-            category: "developer",
+            category: "css",
           }),
           generateBreadcrumbSchema({
             slug: "css-minifier",
             name: "CSS Minifier",
             description: "Minify CSS code by removing whitespace, comments, and unnecessary characters",
-            category: "developer",
+            category: "css",
           }),
           generateFAQSchema([
             { question: "What is CSS minification?", answer: "CSS minification removes unnecessary characters like whitespace, comments, and redundant semicolons without changing the stylesheet's behavior. This reduces file size, which means faster downloads and improved page load times. Typical savings range from 20-50% depending on the input." },
@@ -293,20 +294,7 @@ export default function CssMinifierPage() {
 
       <div className="min-h-screen bg-slate-900 text-slate-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          {/* Breadcrumb */}
-          <nav className="text-sm text-slate-400 mb-6" aria-label="Breadcrumb">
-            <ol className="flex items-center gap-2">
-              <li>
-                <a href="/" className="hover:text-white transition-colors">Home</a>
-              </li>
-              <li><span className="mx-1">/</span></li>
-              <li>
-                <a href="/tools" className="hover:text-white transition-colors">Developer Tools</a>
-              </li>
-              <li><span className="mx-1">/</span></li>
-              <li className="text-slate-200">CSS Minifier</li>
-            </ol>
-          </nav>
+          <ToolBreadcrumb slug="css-minifier" />
 
           {/* Header */}
           <div className="mb-8">

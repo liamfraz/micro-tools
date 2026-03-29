@@ -3,6 +3,7 @@
 import { useState, useCallback } from "react";
 import JsonLd from "@/components/JsonLd";
 import RelatedTools from "@/components/RelatedTools";
+import ToolBreadcrumb from "@/components/ToolBreadcrumb";
 import {
   generateFAQSchema,
   generateWebAppSchema,
@@ -439,13 +440,13 @@ export default function JsonSchemaValidatorPage() {
             slug: "json-schema-validator",
             name: "JSON Schema Validator",
             description: "Validate JSON data against a JSON Schema with detailed error reporting",
-            category: "developer",
+            category: "json",
           }),
           generateBreadcrumbSchema({
             slug: "json-schema-validator",
             name: "JSON Schema Validator",
             description: "Validate JSON data against a JSON Schema with detailed error reporting",
-            category: "developer",
+            category: "json",
           }),
           generateFAQSchema([
             { question: "What is JSON Schema?", answer: "JSON Schema is a vocabulary that allows you to annotate and validate JSON documents. It defines the shape of your data \u2014 types, required fields, string patterns, number ranges, and more. It's widely used for API request/response validation, configuration files, and form generation." },
@@ -458,16 +459,7 @@ export default function JsonSchemaValidatorPage() {
 
       <main className="min-h-screen bg-slate-900 text-white">
         <div className="max-w-6xl mx-auto px-4 py-12">
-          {/* Breadcrumb */}
-          <nav className="text-sm text-slate-400 mb-6" aria-label="Breadcrumb">
-            <ol className="flex items-center gap-2">
-              <li><a href="/" className="hover:text-white transition-colors">Home</a></li>
-              <li><span className="mx-1">/</span></li>
-              <li><a href="/tools" className="hover:text-white transition-colors">Developer Tools</a></li>
-              <li><span className="mx-1">/</span></li>
-              <li className="text-slate-200">JSON Schema Validator</li>
-            </ol>
-          </nav>
+          <ToolBreadcrumb slug="json-schema-validator" />
 
           {/* Header */}
           <div className="mb-8">

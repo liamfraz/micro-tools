@@ -9,13 +9,29 @@ const categoryStyles: Record<string, { badge: string; accent: string }> = {
     badge: "bg-green-500/10 text-green-400 ring-green-500/20",
     accent: "group-hover:border-green-500/40",
   },
-  design: {
+  json: {
+    badge: "bg-amber-500/10 text-amber-400 ring-amber-500/20",
+    accent: "group-hover:border-amber-500/40",
+  },
+  image: {
     badge: "bg-purple-500/10 text-purple-400 ring-purple-500/20",
     accent: "group-hover:border-purple-500/40",
   },
-  conversion: {
+  encoding: {
     badge: "bg-orange-500/10 text-orange-400 ring-orange-500/20",
     accent: "group-hover:border-orange-500/40",
+  },
+  generator: {
+    badge: "bg-pink-500/10 text-pink-400 ring-pink-500/20",
+    accent: "group-hover:border-pink-500/40",
+  },
+  css: {
+    badge: "bg-cyan-500/10 text-cyan-400 ring-cyan-500/20",
+    accent: "group-hover:border-cyan-500/40",
+  },
+  finance: {
+    badge: "bg-emerald-500/10 text-emerald-400 ring-emerald-500/20",
+    accent: "group-hover:border-emerald-500/40",
   },
 };
 

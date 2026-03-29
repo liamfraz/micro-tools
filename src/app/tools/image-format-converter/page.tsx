@@ -3,6 +3,7 @@
 import { useState, useCallback, useRef } from "react";
 import JsonLd from "@/components/JsonLd";
 import RelatedTools from "@/components/RelatedTools";
+import ToolBreadcrumb from "@/components/ToolBreadcrumb";
 import {
   generateFAQSchema,
   generateWebAppSchema,
@@ -175,13 +176,13 @@ export default function ImageFormatConverterPage() {
             slug: "image-format-converter",
             name: "Image Format Converter",
             description: "Convert images between JPEG, PNG, WebP, and GIF formats instantly in your browser",
-            category: "conversion",
+            category: "image",
           }),
           generateBreadcrumbSchema({
             slug: "image-format-converter",
             name: "Image Format Converter",
             description: "Convert images between JPEG, PNG, WebP, and GIF formats instantly in your browser",
-            category: "conversion",
+            category: "image",
           }),
           generateFAQSchema([
             { question: "How do I convert PNG to JPG?", answer: "Upload your PNG image by dragging it onto the upload area or clicking to browse. Select \"JPEG\" as the output format, adjust the quality slider if desired, then click Convert. The tool handles the conversion entirely in your browser \u2014 no files are uploaded to any server." },

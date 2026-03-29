@@ -3,6 +3,7 @@
 import { useState, useCallback, useRef, useEffect } from "react";
 import JsonLd from "@/components/JsonLd";
 import RelatedTools from "@/components/RelatedTools";
+import ToolBreadcrumb from "@/components/ToolBreadcrumb";
 import {
   generateFAQSchema,
   generateWebAppSchema,
@@ -458,13 +459,13 @@ export default function BarcodeGeneratorPage() {
             slug: "barcode-generator",
             name: "Barcode Generator",
             description: "Generate barcodes in Code128, EAN-13, UPC-A, and more formats — download as PNG or SVG",
-            category: "developer",
+            category: "generator",
           }),
           generateBreadcrumbSchema({
             slug: "barcode-generator",
             name: "Barcode Generator",
             description: "Generate barcodes in Code128, EAN-13, UPC-A, and more formats — download as PNG or SVG",
-            category: "developer",
+            category: "generator",
           }),
           generateFAQSchema([
             { question: "What is the difference between Code 128, EAN-13, and UPC-A?", answer: "Code 128 is a versatile barcode that encodes any ASCII character and is commonly used in logistics and shipping. EAN-13 is the international standard for retail products, encoding 13 digits. UPC-A is the North American retail standard, encoding 12 digits. EAN-13 is a superset of UPC-A (a UPC-A code is an EAN-13 with a leading zero)." },
@@ -477,24 +478,7 @@ export default function BarcodeGeneratorPage() {
 
       <div className="min-h-screen bg-slate-900 text-slate-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          {/* Breadcrumb */}
-          <nav className="text-sm text-slate-400 mb-6" aria-label="Breadcrumb">
-            <ol className="flex items-center gap-2">
-              <li>
-                <a href="/" className="hover:text-white transition-colors">
-                  Home
-                </a>
-              </li>
-              <li><span className="mx-1">/</span></li>
-              <li>
-                <a href="/tools" className="hover:text-white transition-colors">
-                  Developer Tools
-                </a>
-              </li>
-              <li><span className="mx-1">/</span></li>
-              <li className="text-slate-200">Barcode Generator</li>
-            </ol>
-          </nav>
+          <ToolBreadcrumb slug="barcode-generator" />
 
           {/* Header */}
           <div className="mb-8">

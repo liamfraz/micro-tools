@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import Image from "next/image";
 import "./globals.css";
 import { generateOrgSchema, generateWebSiteSchema } from "@/lib/jsonld";
+import GoogleAnalytics from "@/components/GoogleAnalytics";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -69,17 +70,13 @@ export default function RootLayout({
         <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
         <link rel="preconnect" href="https://pagead2.googlesyndication.com" />
         <link rel="dns-prefetch" href="https://pagead2.googlesyndication.com" />
-        <script
-          async
-          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5516095417661827"
-          crossOrigin="anonymous"
-        />
-        <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZLF2PP7RR1" />
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-ZLF2PP7RR1');`,
-          }}
-        />
+        {process.env.NEXT_PUBLIC_ADSENSE_ID && (
+          <script
+            async
+            src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${process.env.NEXT_PUBLIC_ADSENSE_ID}`}
+            crossOrigin="anonymous"
+          />
+        )}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -96,6 +93,7 @@ export default function RootLayout({
       <body
         className={`${inter.className} min-h-screen bg-slate-900 text-white antialiased`}
       >
+        <GoogleAnalytics />
         <div className="flex min-h-screen flex-col">
           {/* Header */}
           <header className="border-b border-slate-800 bg-slate-900/80 backdrop-blur-sm sticky top-0 z-50">
@@ -139,6 +137,12 @@ export default function RootLayout({
                     className="text-xs text-slate-500 hover:text-slate-300 transition-colors"
                   >
                     Privacy Policy
+                  </a>
+                  <a
+                    href="/terms"
+                    className="text-xs text-slate-500 hover:text-slate-300 transition-colors"
+                  >
+                    Terms of Service
                   </a>
                   <p className="text-xs text-slate-500">
                     &copy; {new Date().getFullYear()} DevTools Hub. All rights
