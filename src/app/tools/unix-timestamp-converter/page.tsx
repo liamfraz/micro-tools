@@ -12,9 +12,20 @@ import {
 
 type InputMode = "toDate" | "toTimestamp";
 
+type TimestampUnit = "seconds" | "milliseconds" | "microseconds" | "nanoseconds";
+
+const UNIT_DIVISORS: Record<TimestampUnit, number> = {
+  seconds: 1,
+  milliseconds: 1_000,
+  microseconds: 1_000_000,
+  nanoseconds: 1_000_000_000,
+};
+
 interface ConversionResult {
   unix: number;
   unixMs: number;
+  unixUs: number;
+  unixNs: string;
   iso8601: string;
   utc: string;
   localFormatted: string;
@@ -56,7 +67,7 @@ const REFERENCE_TIMESTAMPS = [
   { label: "Year 2010", ts: 1262304000, date: "Jan 1, 2010 00:00:00 UTC" },
   { label: "Year 2020", ts: 1577836800, date: "Jan 1, 2020 00:00:00 UTC" },
   { label: "Year 2025", ts: 1735689600, date: "Jan 1, 2025 00:00:00 UTC" },
-  { label: "32-bit Max", ts: 2147483647, date: "Jan 19, 2038 03:14:07 UTC" },
+  { label: "32-bit Max (Y2038)", ts: 2147483647, date: "Jan 19, 2038 03:14:07 UTC" },
   { label: "Year 2050", ts: 2524608000, date: "Jan 1, 2050 00:00:00 UTC" },
   { label: "Year 2100", ts: 4102444800, date: "Jan 1, 2100 00:00:00 UTC" },
 ];
@@ -67,7 +78,7 @@ export default function UnixTimestampConverterPage() {
   const [dateInput, setDateInput] = useState("");
   const [timeInput, setTimeInput] = useState("");
   const [timezone, setTimezone] = useState("UTC");
-  const [useMilliseconds, setUseMilliseconds] = useState(false);
+  const [timestampUnit, setTimestampUnit] = useState<TimestampUnit>("seconds");
   const [error, setError] = useState<string | null>(null);
   const [result, setResult] = useState<ConversionResult | null>(null);
   const [liveTimestamp, setLiveTimestamp] = useState<number | null>(null);
@@ -170,6 +181,8 @@ export default function UnixTimestampConverterPage() {
       setResult({
         unix: unixSeconds,
         unixMs: unixSeconds * 1000,
+        unixUs: unixSeconds * 1_000_000,
+        unixNs: String(BigInt(Math.round(unixSeconds)) * BigInt(1_000_000_000)),
         iso8601: date.toISOString(),
         utc: date.toUTCString(),
         localFormatted,
@@ -192,20 +205,15 @@ export default function UnixTimestampConverterPage() {
       return;
     }
 
-    let num = Number(input);
+    const num = Number(input);
     if (isNaN(num)) {
-      setError("Invalid number. Enter a Unix timestamp in seconds or milliseconds.");
+      setError("Invalid number. Enter a numeric Unix timestamp.");
       return;
     }
 
-    if (useMilliseconds) {
-      num = Math.floor(num / 1000);
-    } else if (num > 1e12) {
-      num = Math.floor(num / 1000);
-    }
-
-    buildResult(num);
-  }, [timestampInput, useMilliseconds, buildResult]);
+    const seconds = num / UNIT_DIVISORS[timestampUnit];
+    buildResult(seconds);
+  }, [timestampInput, timestampUnit, buildResult]);
 
   const handleDateConvert = useCallback(() => {
     const d = dateInput.trim();
@@ -241,7 +249,6 @@ export default function UnixTimestampConverterPage() {
         const offset = tzDate.getTime() - date.getTime();
         date = new Date(date.getTime() - offset);
       } catch {
-        // fallback: parse as-is
         date = new Date(dateStr);
       }
     }
@@ -263,13 +270,29 @@ export default function UnixTimestampConverterPage() {
     }
   }, [inputMode, handleTimestampConvert, handleDateConvert]);
 
+  const formatLiveForUnit = useCallback(
+    (ts: number): string => {
+      switch (timestampUnit) {
+        case "seconds":
+          return String(ts);
+        case "milliseconds":
+          return String(ts * 1000);
+        case "microseconds":
+          return String(ts * 1_000_000);
+        case "nanoseconds":
+          return String(BigInt(ts) * BigInt(1_000_000_000));
+      }
+    },
+    [timestampUnit]
+  );
+
   const useCurrentTime = useCallback(() => {
     const now = Math.floor(Date.now() / 1000);
     if (inputMode === "toDate") {
-      setTimestampInput(useMilliseconds ? String(now * 1000) : String(now));
+      setTimestampInput(formatLiveForUnit(now));
     }
     buildResult(now);
-  }, [inputMode, useMilliseconds, buildResult]);
+  }, [inputMode, formatLiveForUnit, buildResult]);
 
   const copyValue = useCallback(async (label: string, value: string) => {
     await navigator.clipboard.writeText(value);
@@ -279,11 +302,13 @@ export default function UnixTimestampConverterPage() {
 
   const resultRows = useMemo(() => {
     if (!result) return [];
-    const rows = [
-      { label: "Unix Timestamp (seconds)", value: String(result.unix) },
-      { label: "Unix Timestamp (milliseconds)", value: String(result.unixMs) },
+    return [
+      { label: "Unix (seconds)", value: String(result.unix) },
+      { label: "Unix (milliseconds)", value: String(result.unixMs) },
+      { label: "Unix (microseconds)", value: String(result.unixUs) },
+      { label: "Unix (nanoseconds)", value: result.unixNs },
       { label: "ISO 8601", value: result.iso8601 },
-      { label: "UTC", value: result.utc },
+      { label: "RFC 2822 / UTC", value: result.utc },
       { label: `Time in ${timezone}`, value: result.localFormatted },
       { label: "Relative", value: result.relative },
       { label: "Day of Week", value: result.dayOfWeek },
@@ -291,19 +316,25 @@ export default function UnixTimestampConverterPage() {
       { label: "ISO Week", value: String(result.weekNumber) },
       { label: "Leap Year", value: result.isLeapYear ? "Yes" : "No" },
     ];
-    return rows;
   }, [result, timezone]);
+
+  const unitPlaceholders: Record<TimestampUnit, string> = {
+    seconds: "e.g. 1700000000",
+    milliseconds: "e.g. 1700000000000",
+    microseconds: "e.g. 1700000000000000",
+    nanoseconds: "e.g. 1700000000000000000",
+  };
 
   return (
     <>
       <title>Unix Timestamp Converter - Epoch Time Tool | DevTools</title>
       <meta
         name="description"
-        content="Convert Unix timestamps to human-readable dates and dates to epoch time. Live counter, timezone selector, milliseconds toggle, and common timestamps reference."
+        content="Convert Unix timestamps to human-readable dates and dates to epoch time. Supports seconds, milliseconds, microseconds, nanoseconds. Live counter, timezone selector, and common timestamps reference."
       />
       <meta
         name="keywords"
-        content="unix timestamp converter, epoch converter, unix time, epoch time, timestamp to date, date to timestamp, unix epoch"
+        content="unix timestamp converter, epoch converter, unix time, epoch time, timestamp to date, date to timestamp, unix epoch, milliseconds converter"
       />
       <JsonLd
         data={[
@@ -311,7 +342,7 @@ export default function UnixTimestampConverterPage() {
             slug: "unix-timestamp-converter",
             name: "Unix Timestamp Converter",
             description:
-              "Convert Unix timestamps to human-readable dates and dates to epoch time with timezone support and milliseconds toggle.",
+              "Convert Unix timestamps to human-readable dates and dates to epoch time. Supports seconds, milliseconds, microseconds, and nanoseconds with timezone support.",
             category: "date-time",
           }),
           generateBreadcrumbSchema({
@@ -330,12 +361,12 @@ export default function UnixTimestampConverterPage() {
             {
               question: "How do I convert a Unix timestamp to a date?",
               answer:
-                "Enter the Unix timestamp (in seconds or milliseconds) in the input field and click Convert. The tool will display the corresponding date in multiple formats including ISO 8601, UTC, and your selected timezone.",
+                "Enter the Unix timestamp in the input field, select the unit (seconds, milliseconds, microseconds, or nanoseconds), and click Convert. The tool will display the corresponding date in multiple formats including ISO 8601, UTC, RFC 2822, and your selected timezone.",
             },
             {
-              question: "What is the difference between seconds and milliseconds timestamps?",
+              question: "What is the difference between seconds, milliseconds, microseconds, and nanoseconds timestamps?",
               answer:
-                "A Unix timestamp in seconds is typically 10 digits (e.g. 1700000000), while milliseconds timestamps are 13 digits (e.g. 1700000000000). JavaScript's Date.now() returns milliseconds. Toggle the milliseconds switch to tell the tool which format you are using.",
+                "Seconds timestamps are typically 10 digits (e.g. 1700000000). Milliseconds are 13 digits — JavaScript's Date.now() returns milliseconds. Microseconds are 16 digits, used in some databases and languages. Nanoseconds are 19 digits, used in Go's time.UnixNano() and high-precision systems.",
             },
             {
               question: "What is the Year 2038 problem?",
@@ -357,7 +388,8 @@ export default function UnixTimestampConverterPage() {
             </h1>
             <p className="text-slate-400 max-w-2xl text-lg">
               Convert between Unix epoch timestamps and human-readable dates.
-              Timezone selector, milliseconds toggle, and live counter. All
+              Supports seconds, milliseconds, microseconds, and nanoseconds.
+              Timezone selector, live counter, and relative time display. All
               processing happens in your browser.
             </p>
           </div>
@@ -368,15 +400,14 @@ export default function UnixTimestampConverterPage() {
               <div>
                 <span className="text-sm text-slate-400">Current Unix Timestamp:</span>
                 <span className="ml-2 font-mono text-xl text-white font-bold">
-                  {liveTimestamp !== null ? (useMilliseconds ? liveTimestamp * 1000 : liveTimestamp) : "—"}
+                  {liveTimestamp !== null ? formatLiveForUnit(liveTimestamp) : "\u2014"}
                 </span>
               </div>
               <div className="flex items-center gap-4">
                 <button
                   onClick={() => {
                     if (liveTimestamp !== null) {
-                      const val = useMilliseconds ? String(liveTimestamp * 1000) : String(liveTimestamp);
-                      copyValue("live", val);
+                      copyValue("live", formatLiveForUnit(liveTimestamp));
                     }
                   }}
                   className="text-xs px-3 py-1 bg-slate-700 hover:bg-slate-600 text-slate-300 rounded transition-colors"
@@ -386,11 +417,11 @@ export default function UnixTimestampConverterPage() {
               </div>
             </div>
             <div className="mt-2 text-sm text-slate-400 font-mono">
-              {liveTimestamp !== null ? new Date(liveTimestamp * 1000).toUTCString() : "—"}
+              {liveTimestamp !== null ? new Date(liveTimestamp * 1000).toUTCString() : "\u2014"}
             </div>
           </div>
 
-          {/* Controls row: timezone + ms toggle */}
+          {/* Controls row: timezone + unit selector */}
           <div className="bg-slate-800 border border-slate-700 rounded-lg p-4 mb-6 flex flex-wrap items-center gap-4">
             <div className="flex items-center gap-2">
               <label htmlFor="tz-select" className="text-sm text-slate-400">
@@ -418,27 +449,20 @@ export default function UnixTimestampConverterPage() {
             </div>
 
             <div className="flex items-center gap-2">
-              <label htmlFor="ms-toggle" className="text-sm text-slate-400">
-                Milliseconds:
+              <label htmlFor="unit-select" className="text-sm text-slate-400">
+                Input unit:
               </label>
-              <button
-                id="ms-toggle"
-                role="switch"
-                aria-checked={useMilliseconds}
-                onClick={() => setUseMilliseconds((prev) => !prev)}
-                className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-                  useMilliseconds ? "bg-blue-600" : "bg-slate-600"
-                }`}
+              <select
+                id="unit-select"
+                value={timestampUnit}
+                onChange={(e) => setTimestampUnit(e.target.value as TimestampUnit)}
+                className="bg-slate-900 border border-slate-600 rounded-lg px-3 py-1.5 text-sm text-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
-                <span
-                  className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-                    useMilliseconds ? "translate-x-6" : "translate-x-1"
-                  }`}
-                />
-              </button>
-              <span className="text-xs text-slate-500">
-                {useMilliseconds ? "Input is milliseconds" : "Input is seconds"}
-              </span>
+                <option value="seconds">Seconds</option>
+                <option value="milliseconds">Milliseconds</option>
+                <option value="microseconds">Microseconds</option>
+                <option value="nanoseconds">Nanoseconds</option>
+              </select>
             </div>
           </div>
 
@@ -454,7 +478,7 @@ export default function UnixTimestampConverterPage() {
                     : "bg-slate-700 text-slate-300 hover:bg-slate-600"
                 }`}
               >
-                Timestamp → Date
+                Timestamp &rarr; Date
               </button>
               <button
                 onClick={() => setInputMode("toTimestamp")}
@@ -464,7 +488,7 @@ export default function UnixTimestampConverterPage() {
                     : "bg-slate-700 text-slate-300 hover:bg-slate-600"
                 }`}
               >
-                Date → Timestamp
+                Date &rarr; Timestamp
               </button>
             </div>
 
@@ -478,11 +502,7 @@ export default function UnixTimestampConverterPage() {
                     setError(null);
                   }}
                   onKeyDown={(e) => e.key === "Enter" && handleConvert()}
-                  placeholder={
-                    useMilliseconds
-                      ? "e.g. 1700000000000 (milliseconds)"
-                      : "e.g. 1700000000 (seconds)"
-                  }
+                  placeholder={unitPlaceholders[timestampUnit]}
                   className="flex-1 bg-slate-900 border border-slate-600 rounded-lg px-4 py-2 font-mono text-sm text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
                   spellCheck={false}
                 />
@@ -570,7 +590,7 @@ export default function UnixTimestampConverterPage() {
                     className="flex items-center justify-between px-4 py-3 group hover:bg-slate-750"
                   >
                     <span className="text-sm text-slate-400 w-52 shrink-0">{row.label}</span>
-                    <code className="text-sm font-mono text-slate-200 flex-1 text-right select-all">
+                    <code className="text-sm font-mono text-slate-200 flex-1 text-right select-all break-all">
                       {row.value}
                     </code>
                     <button
@@ -595,9 +615,7 @@ export default function UnixTimestampConverterPage() {
                 <button
                   key={item.label}
                   onClick={() => {
-                    setTimestampInput(
-                      useMilliseconds ? String(item.ts * 1000) : String(item.ts)
-                    );
+                    setTimestampInput(String(item.ts * UNIT_DIVISORS[timestampUnit]));
                     setInputMode("toDate");
                     buildResult(item.ts);
                   }}
@@ -605,7 +623,7 @@ export default function UnixTimestampConverterPage() {
                 >
                   <div className="text-sm font-medium text-white">{item.label}</div>
                   <div className="text-xs text-slate-400 font-mono">
-                    {useMilliseconds ? item.ts * 1000 : item.ts}
+                    {item.ts * UNIT_DIVISORS[timestampUnit]}
                   </div>
                   <div className="text-xs text-slate-500">{item.date}</div>
                 </button>
@@ -637,21 +655,23 @@ export default function UnixTimestampConverterPage() {
                   How do I convert a Unix timestamp to a date?
                 </h3>
                 <p className="text-slate-400">
-                  Enter the Unix timestamp (in seconds or milliseconds) in the
-                  input field and click Convert. The tool displays the
-                  corresponding date in multiple formats including ISO 8601, UTC,
-                  and your selected timezone.
+                  Enter the Unix timestamp in the input field, select your unit
+                  (seconds, milliseconds, microseconds, or nanoseconds), and
+                  click Convert. The tool displays the corresponding date in
+                  multiple formats including ISO 8601, RFC 2822, UTC, and your
+                  selected timezone.
                 </p>
               </div>
               <div>
                 <h3 className="text-lg font-semibold text-white mb-2">
-                  What is the difference between seconds and milliseconds?
+                  What is the difference between timestamp units?
                 </h3>
                 <p className="text-slate-400">
-                  A Unix timestamp in seconds is typically 10 digits (e.g.
-                  1700000000), while milliseconds are 13 digits (e.g.
-                  1700000000000). JavaScript&apos;s Date.now() returns milliseconds. Use
-                  the milliseconds toggle to specify your input format.
+                  Seconds timestamps are typically 10 digits (e.g. 1700000000).
+                  Milliseconds are 13 digits &mdash; JavaScript&apos;s Date.now() returns
+                  milliseconds. Microseconds (16 digits) are used in some databases.
+                  Nanoseconds (19 digits) are used in Go&apos;s time.UnixNano() and
+                  high-precision systems.
                 </p>
               </div>
               <div>
