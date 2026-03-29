@@ -926,6 +926,15 @@
       "searchVolume": "high",
       "status": "live",
       "dateAdded": "2026-03-29"
+    },
+    {
+      "slug": "text-diff-compare",
+      "name": "Text Diff & Compare",
+      "description": "Compare two texts and see differences highlighted side by side. Line-by-line and word-by-word diff with options to ignore whitespace and case. Shows stats for lines added, removed, and unchanged. Free online diff checker.",
+      "category": "text",
+      "searchVolume": "high",
+      "status": "live",
+      "dateAdded": "2026-03-29"
     }
   ],
   "categories": {
@@ -942,7 +951,7 @@
     "construction": { "label": "Construction & Trades", "color": "yellow" }
   },
   "meta": {
-    "totalTools": 92,
+    "totalTools": 93,
     "lastUpdated": "2026-03-29",
     "nextPriority": ["text-to-handwriting", "open-graph-preview", "svg-blob-generator"]
   }
