@@ -917,6 +917,15 @@
       "searchVolume": "high",
       "status": "live",
       "dateAdded": "2026-03-29"
+    },
+    {
+      "slug": "markdown-to-html-converter",
+      "name": "Markdown to HTML Converter",
+      "description": "Convert Markdown to clean HTML online. Live preview, raw HTML view, copy button. Supports headings, tables, code blocks, lists, links, images, blockquotes, horizontal rules. 100% client-side.",
+      "category": "developer",
+      "searchVolume": "high",
+      "status": "live",
+      "dateAdded": "2026-03-29"
     }
   ],
   "categories": {
@@ -933,7 +942,7 @@
     "construction": { "label": "Construction & Trades", "color": "yellow" }
   },
   "meta": {
-    "totalTools": 91,
+    "totalTools": 92,
     "lastUpdated": "2026-03-29",
     "nextPriority": ["text-to-handwriting", "open-graph-preview", "svg-blob-generator"]
   }
