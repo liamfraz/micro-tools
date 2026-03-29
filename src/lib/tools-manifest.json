@@ -19,6 +19,15 @@
       "dateAdded": "2026-03-10"
     },
     {
+      "slug": "base64-image-encoder",
+      "name": "Base64 Image Encoder & Decoder",
+      "description": "Convert images to Base64 data URIs and decode Base64 strings back to images. Supports PNG, JPEG, GIF, WebP, and SVG. Copy as raw Base64, data URI, HTML img tag, or CSS background-image.",
+      "category": "encoding",
+      "searchVolume": "medium",
+      "status": "live",
+      "dateAdded": "2026-03-29"
+    },
+    {
       "slug": "word-counter",
       "name": "Word & Character Counter",
       "description": "Count words, characters, sentences, and paragraphs in your text",
