@@ -191,8 +191,8 @@
     },
     {
       "slug": "xml-formatter",
-      "name": "XML Formatter & Beautifier",
-      "description": "Format, beautify, and minify XML with proper indentation, comment handling, and attribute sorting",
+      "name": "XML Formatter & Validator",
+      "description": "Format, validate, beautify, and minify XML online. Syntax highlighting with line numbers, well-formed XML checking with error location, and download as .xml file.",
       "category": "developer",
       "searchVolume": "high",
       "status": "live",
