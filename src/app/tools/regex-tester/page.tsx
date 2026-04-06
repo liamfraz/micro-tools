@@ -1,9 +1,10 @@
 "use client";
 
-import { useState, useMemo, useCallback } from "react";
+import { useState, useMemo, useCallback, useEffect } from "react";
 import JsonLd from "@/components/JsonLd";
 import RelatedTools from "@/components/RelatedTools";
 import ToolBreadcrumb from "@/components/ToolBreadcrumb";
+import AdUnit from "@/components/AdUnit";
 import {
   generateFAQSchema,
   generateWebAppSchema,
@@ -497,6 +498,40 @@ export default function RegexTesterPage() {
     setError(null);
   }, []);
 
+  // Load state from URL parameters on mount
+  const [shareUrl, setShareUrl] = useState<string | null>(null);
+  const [shareCopied, setShareCopied] = useState(false);
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const p = params.get("pattern");
+    const t = params.get("text");
+    const f = params.get("flags");
+    if (p !== null) setPattern(p);
+    if (t !== null) setTestString(t);
+    if (f !== null) {
+      const newFlags = { g: false, i: false, m: false, s: false, u: false };
+      for (const ch of f) {
+        if (ch in newFlags) newFlags[ch as keyof typeof newFlags] = true;
+      }
+      setFlags(newFlags);
+    }
+  }, []);
+
+  const shareRegex = useCallback(() => {
+    const params = new URLSearchParams();
+    if (pattern) params.set("pattern", pattern);
+    if (testString) params.set("text", testString);
+    if (flagString) params.set("flags", flagString);
+    const url = `${window.location.origin}${window.location.pathname}?${params.toString()}`;
+    setShareUrl(url);
+    navigator.clipboard.writeText(url);
+    setShareCopied(true);
+    setTimeout(() => setShareCopied(false), 2000);
+    // Update URL without reload
+    window.history.replaceState(null, "", url);
+  }, [pattern, testString, flagString]);
+
   return (
     <>
       <title>
@@ -587,6 +622,13 @@ export default function RegexTesterPage() {
                     Regular Expression
                   </label>
                   <div className="flex items-center gap-2">
+                    <button
+                      onClick={shareRegex}
+                      disabled={!pattern}
+                      className="px-3 py-1 bg-blue-600 hover:bg-blue-500 text-white rounded text-xs font-medium transition-colors disabled:opacity-40"
+                    >
+                      {shareCopied ? "Link Copied!" : "Share URL"}
+                    </button>
                     <button
                       onClick={copyRegex}
                       disabled={!pattern}
@@ -903,6 +945,9 @@ export default function RegexTesterPage() {
                 </div>
               </div>
 
+              {/* Ad Slot — Sidebar */}
+              <AdUnit slot="SIDEBAR_SLOT" format="rectangle" className="my-4" />
+
               {/* Cheat Sheet Accordion */}
               <div className="bg-slate-800 border border-slate-700 rounded-lg p-5">
                 <h2 className="text-sm font-semibold text-white mb-3">
@@ -963,6 +1008,9 @@ export default function RegexTesterPage() {
               </div>
             </div>
           </div>
+
+          {/* Ad Slot — Bottom Banner */}
+          <AdUnit slot="BOTTOM_SLOT" format="horizontal" className="mt-10" />
 
           <RelatedTools currentSlug="regex-tester" />
 

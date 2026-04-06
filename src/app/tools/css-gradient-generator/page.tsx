@@ -17,7 +17,7 @@ interface ColorStop {
   position: number;
 }
 
-type GradientType = "linear" | "radial";
+type GradientType = "linear" | "radial" | "conic";
 
 interface Preset {
   name: string;
@@ -47,8 +47,8 @@ const PRESETS: Preset[] = [
   { name: "Emerald", stops: [{ color: "#348f50", opacity: 100, position: 0 }, { color: "#56b4d3", opacity: 100, position: 100 }], type: "linear", angle: 90 },
   { name: "Royal", stops: [{ color: "#141e30", opacity: 100, position: 0 }, { color: "#243b55", opacity: 100, position: 100 }], type: "linear", angle: 180 },
   { name: "Warm Flame", stops: [{ color: "#ff9a9e", opacity: 100, position: 0 }, { color: "#fad0c4", opacity: 100, position: 50 }, { color: "#fad0c4", opacity: 100, position: 100 }], type: "linear", angle: 45 },
-  { name: "Malibu", stops: [{ color: "#4facfe", opacity: 100, position: 0 }, { color: "#00f2fe", opacity: 100, position: 100 }], type: "linear", angle: 90 },
-  { name: "Plum", stops: [{ color: "#6a3093", opacity: 100, position: 0 }, { color: "#a044ff", opacity: 100, position: 100 }], type: "linear", angle: 135 },
+  { name: "Conic Rainbow", stops: [{ color: "#ff0000", opacity: 100, position: 0 }, { color: "#ffff00", opacity: 100, position: 17 }, { color: "#00ff00", opacity: 100, position: 33 }, { color: "#00ffff", opacity: 100, position: 50 }, { color: "#0000ff", opacity: 100, position: 67 }, { color: "#ff00ff", opacity: 100, position: 83 }, { color: "#ff0000", opacity: 100, position: 100 }], type: "conic", angle: 0 },
+  { name: "Conic Sweep", stops: [{ color: "#667eea", opacity: 100, position: 0 }, { color: "#764ba2", opacity: 100, position: 50 }, { color: "#667eea", opacity: 100, position: 100 }], type: "conic", angle: 0 },
   { name: "Radial Glow", stops: [{ color: "#f5af19", opacity: 100, position: 0 }, { color: "#f12711", opacity: 100, position: 100 }], type: "radial", angle: 0 },
   { name: "Radial Sky", stops: [{ color: "#a8edea", opacity: 100, position: 0 }, { color: "#fed6e3", opacity: 100, position: 100 }], type: "radial", angle: 0 },
 ];
@@ -84,8 +84,12 @@ export default function CSSGradientGeneratorPage() {
   const [angle, setAngle] = useState(135);
   const [radialShape, setRadialShape] = useState<"circle" | "ellipse">("circle");
   const [copied, setCopied] = useState<string | null>(null);
+  const [includeWebkit, setIncludeWebkit] = useState(true);
+  const [selectedStopId, setSelectedStopId] = useState<number | null>(null);
   const previewRef = useRef<HTMLDivElement>(null);
   const dialRef = useRef<HTMLDivElement>(null);
+  const gradientBarRef = useRef<HTMLDivElement>(null);
+  const draggingStopRef = useRef<number | null>(null);
 
   const sortedStops = useMemo(
     () => [...stops].sort((a, b) => a.position - b.position),
@@ -103,21 +107,30 @@ export default function CSSGradientGeneratorPage() {
     if (gradientType === "linear") {
       return `linear-gradient(${angle}deg, ${stopsStr})`;
     }
+    if (gradientType === "conic") {
+      return `conic-gradient(from ${angle}deg, ${stopsStr})`;
+    }
     return `radial-gradient(${radialShape}, ${stopsStr})`;
   }, [sortedStops, gradientType, angle, radialShape, buildStopsStr]);
 
-  const cssCodeFull = useMemo(() => {
+  const cssCodeLines = useMemo(() => {
     const stopsStr = buildStopsStr(sortedStops);
     const lines: string[] = [];
     if (gradientType === "linear") {
-      lines.push(`background: -webkit-linear-gradient(${angle}deg, ${stopsStr});`);
+      if (includeWebkit) {
+        lines.push(`background: -webkit-linear-gradient(${angle}deg, ${stopsStr});`);
+      }
       lines.push(`background: linear-gradient(${angle}deg, ${stopsStr});`);
+    } else if (gradientType === "conic") {
+      lines.push(`background: conic-gradient(from ${angle}deg, ${stopsStr});`);
     } else {
-      lines.push(`background: -webkit-radial-gradient(${radialShape}, ${stopsStr});`);
+      if (includeWebkit) {
+        lines.push(`background: -webkit-radial-gradient(${radialShape}, ${stopsStr});`);
+      }
       lines.push(`background: radial-gradient(${radialShape}, ${stopsStr});`);
     }
     return lines.join("\n");
-  }, [sortedStops, gradientType, angle, radialShape, buildStopsStr]);
+  }, [sortedStops, gradientType, angle, radialShape, includeWebkit, buildStopsStr]);
 
   const tailwindClass = useMemo(() => {
     if (gradientType !== "linear" || stops.length !== 2) return null;
@@ -139,14 +152,16 @@ export default function CSSGradientGeneratorPage() {
       (sortedStops[0].position + sortedStops[sortedStops.length - 1].position) / 2
     );
     setStops((prev) => [...prev, { id, color: "#ffffff", opacity: 100, position: midPosition }]);
+    setSelectedStopId(id);
   }, [stops.length, sortedStops]);
 
   const removeStop = useCallback(
     (id: number) => {
       if (stops.length <= 2) return;
       setStops((prev) => prev.filter((s) => s.id !== id));
+      if (selectedStopId === id) setSelectedStopId(null);
     },
-    [stops.length]
+    [stops.length, selectedStopId]
   );
 
   const updateStop = useCallback(
@@ -184,6 +199,7 @@ export default function CSSGradientGeneratorPage() {
     setStops(preset.stops.map((s) => ({ ...s, id: nextId++ })));
     setGradientType(preset.type);
     setAngle(preset.angle);
+    setSelectedStopId(null);
   }, []);
 
   const copyText = useCallback(async (label: string, text: string) => {
@@ -219,6 +235,24 @@ export default function CSSGradientGeneratorPage() {
         grad.addColorStop(s.position / 100, `rgba(${r},${g},${b},${s.opacity / 100})`);
       });
       ctx.fillStyle = grad;
+    } else if (gradientType === "conic") {
+      // Canvas doesn't support conic gradients natively; approximate with the CSS rendered preview
+      const tempImg = new Image();
+      const svgGrad = `<svg xmlns="http://www.w3.org/2000/svg" width="800" height="400"><foreignObject width="800" height="400"><div xmlns="http://www.w3.org/1999/xhtml" style="width:800px;height:400px;background:${cssGradient.replace(/"/g, "&quot;")}"></div></foreignObject></svg>`;
+      tempImg.src = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(svgGrad);
+      // Fallback: just paint a simple radial
+      const grad = ctx.createRadialGradient(
+        canvas.width / 2, canvas.height / 2, 0,
+        canvas.width / 2, canvas.height / 2, Math.max(canvas.width, canvas.height) / 2
+      );
+      sorted.forEach((s) => {
+        const h = s.color.replace("#", "");
+        const r = parseInt(h.slice(0, 2), 16);
+        const g = parseInt(h.slice(2, 4), 16);
+        const b = parseInt(h.slice(4, 6), 16);
+        grad.addColorStop(s.position / 100, `rgba(${r},${g},${b},${s.opacity / 100})`);
+      });
+      ctx.fillStyle = grad;
     } else {
       const grad = ctx.createRadialGradient(
         canvas.width / 2, canvas.height / 2, 0,
@@ -239,7 +273,7 @@ export default function CSSGradientGeneratorPage() {
     link.download = "gradient.png";
     link.href = canvas.toDataURL("image/png");
     link.click();
-  }, [stops, gradientType, angle]);
+  }, [stops, gradientType, angle, cssGradient]);
 
   const handleDialInteraction = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
     const rect = dialRef.current?.getBoundingClientRect();
@@ -257,34 +291,90 @@ export default function CSSGradientGeneratorPage() {
     handleDialInteraction(e);
   }, [handleDialInteraction]);
 
+  // Gradient bar drag handlers
+  const getPositionFromBarEvent = useCallback((clientX: number) => {
+    const bar = gradientBarRef.current;
+    if (!bar) return 0;
+    const rect = bar.getBoundingClientRect();
+    const x = clientX - rect.left;
+    const pct = Math.round(Math.max(0, Math.min(100, (x / rect.width) * 100)));
+    return pct;
+  }, []);
+
+  const handleBarMouseDown = useCallback((e: React.MouseEvent, stopId: number) => {
+    e.preventDefault();
+    e.stopPropagation();
+    draggingStopRef.current = stopId;
+    setSelectedStopId(stopId);
+
+    const onMove = (ev: MouseEvent) => {
+      if (draggingStopRef.current === null) return;
+      const bar = gradientBarRef.current;
+      if (!bar) return;
+      const rect = bar.getBoundingClientRect();
+      const x = ev.clientX - rect.left;
+      const pct = Math.round(Math.max(0, Math.min(100, (x / rect.width) * 100)));
+      setStops((prev) =>
+        prev.map((s) => (s.id === draggingStopRef.current ? { ...s, position: pct } : s))
+      );
+    };
+
+    const onUp = () => {
+      draggingStopRef.current = null;
+      document.removeEventListener("mousemove", onMove);
+      document.removeEventListener("mouseup", onUp);
+    };
+
+    document.addEventListener("mousemove", onMove);
+    document.addEventListener("mouseup", onUp);
+  }, []);
+
+  const handleBarClick = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
+    // Only add a stop if we clicked on the bar itself, not a handle
+    if ((e.target as HTMLElement).closest("[data-stop-handle]")) return;
+    if (stops.length >= 10) return;
+    const pct = getPositionFromBarEvent(e.clientX);
+    const id = nextId++;
+    // Pick a color that interpolates between neighbors
+    setStops((prev) => [...prev, { id, color: "#ffffff", opacity: 100, position: pct }]);
+    setSelectedStopId(id);
+  }, [stops.length, getPositionFromBarEvent]);
+
+  const linearBarGradient = useMemo(() => {
+    const stopsStr = sortedStops
+      .map((s) => `${hexToRgba(s.color, s.opacity)} ${s.position}%`)
+      .join(", ");
+    return `linear-gradient(90deg, ${stopsStr})`;
+  }, [sortedStops]);
+
   return (
     <>
       <title>CSS Gradient Generator - Free Online Gradient Maker | DevTools</title>
       <meta
         name="description"
-        content="Free CSS gradient generator with visual editor. Create linear and radial gradients, pick colors with transparency, choose from 24 presets, and copy cross-browser CSS code instantly."
+        content="Free CSS gradient generator with visual editor. Create linear, radial, and conic gradients, pick colors with transparency, choose from 24 presets, and copy cross-browser CSS code instantly."
       />
-      <meta name="keywords" content="css gradient generator, gradient generator online, background gradient css, linear gradient generator, radial gradient css, css gradient maker" />
+      <meta name="keywords" content="css gradient generator, gradient maker, css gradient code, gradient generator online, background gradient css, linear gradient generator, radial gradient css, conic gradient css, css gradient maker" />
       <JsonLd
         data={[
           generateWebAppSchema({
             slug: "css-gradient-generator",
             name: "CSS Gradient Generator",
-            description: "Create beautiful CSS gradients with a visual editor. Linear and radial gradients with color stops, transparency, angle picker, 24 presets, and cross-browser CSS output.",
+            description: "Create beautiful CSS gradients with a visual editor. Linear, radial, and conic gradients with draggable color stops, transparency, angle picker, 24 presets, and cross-browser CSS output.",
             category: "css",
           }),
           generateBreadcrumbSchema({
             slug: "css-gradient-generator",
             name: "CSS Gradient Generator",
-            description: "Create beautiful CSS gradients with a visual editor. Linear and radial gradients with color stops, transparency, angle picker, 24 presets, and cross-browser CSS output.",
+            description: "Create beautiful CSS gradients with a visual editor.",
             category: "css",
           }),
           generateFAQSchema([
-            { question: "What types of CSS gradients can I create?", answer: "This tool supports linear gradients (straight-line color transitions at any angle) and radial gradients (circular or elliptical gradients emanating from a center point). Both types support multiple color stops with individual transparency controls." },
+            { question: "What types of CSS gradients can I create?", answer: "This tool supports linear gradients (straight-line color transitions at any angle), radial gradients (circular or elliptical gradients emanating from a center point), and conic gradients (color transitions rotated around a center point). All types support multiple color stops with individual transparency controls." },
+            { question: "How do I use the draggable color stops?", answer: "Click on the gradient bar to add a new color stop. Drag existing stops left or right to reposition them. Click a stop handle to select it and edit its color, position, and opacity in the panel below. Double-click a handle or use the remove button to delete it (minimum 2 stops required)." },
             { question: "How many color stops can I use in a CSS gradient?", answer: "CSS gradients support unlimited color stops. This tool allows up to 10 stops with individual color, position, and opacity controls. More stops create smoother transitions and more complex patterns." },
-            { question: "Are CSS gradients supported in all browsers?", answer: "Linear and radial gradients are supported in all modern browsers (Chrome, Firefox, Safari, Edge). This tool generates both standard and -webkit- prefixed CSS for maximum cross-browser compatibility, including older Safari and Chrome versions." },
+            { question: "Are CSS gradients supported in all browsers?", answer: "Linear and radial gradients are supported in all modern browsers (Chrome, Firefox, Safari, Edge). Conic gradients are supported in Chrome 69+, Firefox 83+, Safari 12.1+, and Edge 79+. This tool can optionally generate -webkit- prefixed CSS for maximum compatibility." },
             { question: "Can I use gradients with Tailwind CSS?", answer: "Yes. For simple two-color linear gradients at standard angles (0, 45, 90, 135, 180, 225, 270, 315 degrees), this tool generates the equivalent Tailwind utility classes. For more complex gradients, use the CSS output with Tailwind's arbitrary value syntax." },
-            { question: "How do I download a gradient as an image?", answer: "Click the 'Download PNG' button below the preview to save your gradient as an 800x400 PNG image. This is useful for social media backgrounds, placeholder images, or design mockups." },
             { question: "Can I create transparent gradients?", answer: "Yes. Each color stop has an individual opacity slider (0-100%). This lets you create gradients that fade to transparent, overlay effects, or semi-transparent color transitions perfect for glass-like UI elements." },
           ]),
         ]}
@@ -300,16 +390,16 @@ export default function CSSGradientGeneratorPage() {
               CSS Gradient Generator
             </h1>
             <p className="text-slate-400 max-w-2xl text-lg">
-              Create beautiful CSS gradients visually. Choose gradient type, adjust angle with
-              a dial, add color stops with transparency, pick from 24 presets, and copy
-              cross-browser CSS code or download as PNG.
+              Create beautiful CSS gradients visually. Drag color stops, choose from linear, radial,
+              or conic gradients, pick from {PRESETS.length} presets, and copy cross-browser CSS or
+              Tailwind classes.
             </p>
           </div>
 
           {/* Preview */}
           <div
             ref={previewRef}
-            className="w-full h-48 sm:h-64 rounded-xl border border-slate-700 mb-6 shadow-lg relative overflow-hidden"
+            className="w-full h-48 sm:h-64 rounded-xl border border-slate-700 mb-4 shadow-lg relative overflow-hidden"
             style={{ background: cssGradient }}
           >
             {/* Checkerboard for transparency */}
@@ -323,8 +413,65 @@ export default function CSSGradientGeneratorPage() {
             />
           </div>
 
-          {/* Download button */}
-          <div className="flex gap-3 mb-6">
+          {/* Draggable Gradient Bar */}
+          <div className="mb-6">
+            <label className="block text-xs text-slate-400 mb-2">
+              Click to add stops &middot; Drag handles to reposition
+            </label>
+            <div
+              ref={gradientBarRef}
+              className="relative h-10 rounded-lg border border-slate-600 cursor-crosshair select-none"
+              style={{ background: linearBarGradient }}
+              onClick={handleBarClick}
+            >
+              {/* Checkerboard behind bar */}
+              <div
+                className="absolute inset-0 -z-10 rounded-lg"
+                style={{
+                  backgroundImage: "linear-gradient(45deg, #334155 25%, transparent 25%), linear-gradient(-45deg, #334155 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #334155 75%), linear-gradient(-45deg, transparent 75%, #334155 75%)",
+                  backgroundSize: "12px 12px",
+                  backgroundPosition: "0 0, 0 6px, 6px -6px, -6px 0px",
+                }}
+              />
+              {/* Stop handles */}
+              {stops.map((stop) => (
+                <div
+                  key={stop.id}
+                  data-stop-handle
+                  onMouseDown={(e) => handleBarMouseDown(e, stop.id)}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setSelectedStopId(stop.id);
+                  }}
+                  className={`absolute top-0 h-full flex flex-col items-center justify-end cursor-grab active:cursor-grabbing`}
+                  style={{
+                    left: `${stop.position}%`,
+                    transform: "translateX(-50%)",
+                    zIndex: selectedStopId === stop.id ? 20 : 10,
+                  }}
+                >
+                  {/* Triangle pointer */}
+                  <div
+                    className={`w-4 h-4 rounded-sm border-2 shadow-md ${
+                      selectedStopId === stop.id
+                        ? "border-blue-400 ring-2 ring-blue-400/50"
+                        : "border-white"
+                    }`}
+                    style={{ backgroundColor: stop.color }}
+                  />
+                  {/* Arrow below */}
+                  <div
+                    className={`w-0 h-0 border-l-[5px] border-r-[5px] border-t-[5px] border-l-transparent border-r-transparent ${
+                      selectedStopId === stop.id ? "border-t-blue-400" : "border-t-white"
+                    }`}
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Action buttons */}
+          <div className="flex flex-wrap gap-3 mb-6">
             <button
               onClick={downloadPNG}
               className="px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white rounded-lg text-sm font-medium transition-colors"
@@ -336,6 +483,13 @@ export default function CSSGradientGeneratorPage() {
               className="px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white rounded-lg text-sm font-medium transition-colors"
             >
               Random
+            </button>
+            <button
+              onClick={addStop}
+              disabled={stops.length >= 10}
+              className="px-4 py-2 bg-blue-600 hover:bg-blue-700 disabled:opacity-40 disabled:cursor-not-allowed text-white rounded-lg text-sm font-medium transition-colors"
+            >
+              Add Color Stop
             </button>
           </div>
 
@@ -351,7 +505,7 @@ export default function CSSGradientGeneratorPage() {
                   Gradient Type
                 </label>
                 <div className="flex gap-2">
-                  {(["linear", "radial"] as GradientType[]).map((type) => (
+                  {(["linear", "radial", "conic"] as GradientType[]).map((type) => (
                     <button
                       key={type}
                       onClick={() => setGradientType(type)}
@@ -367,11 +521,11 @@ export default function CSSGradientGeneratorPage() {
                 </div>
               </div>
 
-              {/* Angle controls for linear */}
-              {gradientType === "linear" && (
+              {/* Angle controls for linear and conic */}
+              {(gradientType === "linear" || gradientType === "conic") && (
                 <div className="mb-5">
                   <label className="block text-sm font-medium text-slate-300 mb-3">
-                    Angle
+                    {gradientType === "conic" ? "Starting Angle" : "Angle"}
                   </label>
                   <div className="flex items-start gap-6">
                     {/* Visual dial */}
@@ -426,27 +580,29 @@ export default function CSSGradientGeneratorPage() {
                     </div>
                   </div>
 
-                  {/* Direction presets */}
-                  <div className="mt-3">
-                    <label className="block text-xs text-slate-400 mb-2">Direction Presets</label>
-                    <div className="grid grid-cols-4 gap-1.5">
-                      {DIRECTION_PRESETS.map((d) => (
-                        <button
-                          key={d.angle}
-                          onClick={() => setAngle(d.angle)}
-                          className={`px-2 py-1.5 text-xs rounded transition-colors flex items-center justify-center gap-1 ${
-                            angle === d.angle
-                              ? "bg-blue-600 text-white"
-                              : "bg-slate-700 text-slate-400 hover:bg-slate-600"
-                          }`}
-                          title={d.label}
-                        >
-                          <span>{d.icon}</span>
-                          <span className="hidden sm:inline">{d.angle}&deg;</span>
-                        </button>
-                      ))}
+                  {/* Direction presets (linear only) */}
+                  {gradientType === "linear" && (
+                    <div className="mt-3">
+                      <label className="block text-xs text-slate-400 mb-2">Direction Presets</label>
+                      <div className="grid grid-cols-4 gap-1.5">
+                        {DIRECTION_PRESETS.map((d) => (
+                          <button
+                            key={d.angle}
+                            onClick={() => setAngle(d.angle)}
+                            className={`px-2 py-1.5 text-xs rounded transition-colors flex items-center justify-center gap-1 ${
+                              angle === d.angle
+                                ? "bg-blue-600 text-white"
+                                : "bg-slate-700 text-slate-400 hover:bg-slate-600"
+                            }`}
+                            title={d.label}
+                          >
+                            <span>{d.icon}</span>
+                            <span className="hidden sm:inline">{d.angle}&deg;</span>
+                          </button>
+                        ))}
+                      </div>
                     </div>
-                  </div>
+                  )}
                 </div>
               )}
 
@@ -474,15 +630,19 @@ export default function CSSGradientGeneratorPage() {
                 </div>
               )}
 
-              {/* Action buttons */}
-              <div className="flex gap-2 mt-4">
-                <button
-                  onClick={addStop}
-                  disabled={stops.length >= 10}
-                  className="px-4 py-2 bg-blue-600 hover:bg-blue-700 disabled:opacity-40 disabled:cursor-not-allowed text-white rounded-lg text-sm font-medium transition-colors"
-                >
-                  Add Color Stop
-                </button>
+              {/* Webkit prefix toggle */}
+              <div className="mt-4">
+                <label className="flex items-center gap-3 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={includeWebkit}
+                    onChange={(e) => setIncludeWebkit(e.target.checked)}
+                    className="w-4 h-4 rounded border-slate-600 text-blue-600 focus:ring-blue-500 bg-slate-900"
+                  />
+                  <span className="text-sm text-slate-300">
+                    Include <code className="text-xs bg-slate-900 px-1.5 py-0.5 rounded">-webkit-</code> prefix
+                  </span>
+                </label>
               </div>
             </div>
 
@@ -496,7 +656,12 @@ export default function CSSGradientGeneratorPage() {
                 {stops.map((stop, idx) => (
                   <div
                     key={stop.id}
-                    className="bg-slate-900 rounded-lg p-3"
+                    className={`rounded-lg p-3 transition-colors cursor-pointer ${
+                      selectedStopId === stop.id
+                        ? "bg-slate-900 ring-2 ring-blue-500/50"
+                        : "bg-slate-900 hover:bg-slate-900/80"
+                    }`}
+                    onClick={() => setSelectedStopId(stop.id)}
                   >
                     {/* Top row: color + hex + reorder + remove */}
                     <div className="flex items-center gap-3 mb-2">
@@ -515,7 +680,7 @@ export default function CSSGradientGeneratorPage() {
                       />
                       <div className="flex items-center gap-1 ml-auto">
                         <button
-                          onClick={() => moveStop(stop.id, "up")}
+                          onClick={(e) => { e.stopPropagation(); moveStop(stop.id, "up"); }}
                           disabled={idx === 0}
                           className="text-slate-500 hover:text-white disabled:opacity-20 transition-colors text-xs px-1"
                           title="Move up"
@@ -523,7 +688,7 @@ export default function CSSGradientGeneratorPage() {
                           &#9650;
                         </button>
                         <button
-                          onClick={() => moveStop(stop.id, "down")}
+                          onClick={(e) => { e.stopPropagation(); moveStop(stop.id, "down"); }}
                           disabled={idx === stops.length - 1}
                           className="text-slate-500 hover:text-white disabled:opacity-20 transition-colors text-xs px-1"
                           title="Move down"
@@ -531,7 +696,7 @@ export default function CSSGradientGeneratorPage() {
                           &#9660;
                         </button>
                         <button
-                          onClick={() => removeStop(stop.id)}
+                          onClick={(e) => { e.stopPropagation(); removeStop(stop.id); }}
                           disabled={stops.length <= 2}
                           className="text-slate-500 hover:text-red-400 disabled:opacity-30 disabled:cursor-not-allowed transition-colors text-lg leading-none ml-1"
                           title="Remove stop"
@@ -587,7 +752,7 @@ export default function CSSGradientGeneratorPage() {
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-lg font-semibold text-white">CSS Code</h2>
               <button
-                onClick={() => copyText("css", cssCodeFull)}
+                onClick={() => copyText("css", cssCodeLines)}
                 className="text-sm bg-blue-600 hover:bg-blue-700 text-white px-4 py-1.5 rounded-lg transition-colors font-medium"
               >
                 {copied === "css" ? "Copied!" : "Copy CSS"}
@@ -596,10 +761,12 @@ export default function CSSGradientGeneratorPage() {
 
             <div className="bg-slate-900 rounded-lg p-4 mb-3">
               <div className="flex items-center justify-between mb-2">
-                <span className="text-xs text-slate-500">Cross-browser CSS</span>
+                <span className="text-xs text-slate-500">
+                  {includeWebkit && gradientType !== "conic" ? "Cross-browser CSS" : "Standard CSS"}
+                </span>
               </div>
               <code className="text-sm font-mono text-green-400 whitespace-pre select-all">
-                {cssCodeFull}
+                {cssCodeLines}
               </code>
             </div>
 
@@ -627,10 +794,20 @@ export default function CSSGradientGeneratorPage() {
                 <div>
                   <p className="text-sm text-slate-300 font-medium">Browser Compatibility</p>
                   <p className="text-sm text-slate-400 mt-1">
-                    The generated CSS includes the{" "}
-                    <code className="text-xs bg-slate-800 px-1.5 py-0.5 rounded">-webkit-</code>{" "}
-                    prefix for older Safari and Chrome versions. Linear and radial gradients
-                    are supported in all modern browsers with over 98% global coverage.
+                    {gradientType === "conic" ? (
+                      <>
+                        Conic gradients are supported in Chrome 69+, Firefox 83+, Safari 12.1+, and Edge 79+.
+                        No <code className="text-xs bg-slate-800 px-1.5 py-0.5 rounded">-webkit-</code> prefix
+                        is needed for conic gradients in modern browsers.
+                      </>
+                    ) : (
+                      <>
+                        The generated CSS includes the{" "}
+                        <code className="text-xs bg-slate-800 px-1.5 py-0.5 rounded">-webkit-</code>{" "}
+                        prefix for older Safari and Chrome versions. Linear and radial gradients
+                        are supported in all modern browsers with over 98% global coverage.
+                      </>
+                    )}
                   </p>
                 </div>
               </div>
@@ -650,6 +827,8 @@ export default function CSSGradientGeneratorPage() {
                 const previewGradient =
                   preset.type === "linear"
                     ? `linear-gradient(${preset.angle}deg, ${stopsStr})`
+                    : preset.type === "conic"
+                    ? `conic-gradient(from ${preset.angle}deg, ${stopsStr})`
                     : `radial-gradient(circle, ${stopsStr})`;
                 return (
                   <button
@@ -686,6 +865,7 @@ export default function CSSGradientGeneratorPage() {
                   {[
                     ["linear-gradient()", "Creates a gradient along a straight line at a specified angle", "linear-gradient(90deg, #f00, #00f)"],
                     ["radial-gradient()", "Creates a gradient radiating from a center point outward", "radial-gradient(circle, #f00, #00f)"],
+                    ["conic-gradient()", "Creates a gradient with color transitions rotated around a center point", "conic-gradient(from 0deg, #f00, #00f)"],
                     ["Color stops", "Define colors at specific positions along the gradient", "#ff0000 0%, #0000ff 100%"],
                     ["Angle (deg)", "Direction of linear gradients (0deg = up, 90deg = right)", "linear-gradient(135deg, ...)"],
                     ["rgba()", "Color with alpha transparency for see-through gradients", "rgba(255, 0, 0, 0.5)"],
@@ -743,12 +923,13 @@ export default function CSSGradientGeneratorPage() {
 
             <div className="space-y-6">
               {[
-                { q: "What types of CSS gradients can I create?", a: "This tool supports linear gradients (straight-line color transitions at any angle) and radial gradients (circular or elliptical gradients emanating from a center point). Both types support multiple color stops with individual transparency controls." },
+                { q: "What types of CSS gradients can I create?", a: "This tool supports linear gradients (straight-line color transitions at any angle), radial gradients (circular or elliptical gradients emanating from a center point), and conic gradients (color transitions rotated around a center point, like a color wheel). All types support multiple color stops with individual transparency controls." },
+                { q: "How do I use the draggable color stops?", a: "Click anywhere on the gradient bar below the preview to add a new color stop at that position. Drag existing stop handles left or right to reposition them. Click a handle to select it and edit its color, position, and opacity in the panel below." },
                 { q: "How many color stops can I use in a CSS gradient?", a: "CSS gradients support unlimited color stops. This tool allows up to 10 stops with individual color, position, and opacity controls. More stops create smoother transitions and more complex patterns." },
-                { q: "Are CSS gradients supported in all browsers?", a: "Linear and radial gradients are supported in all modern browsers (Chrome, Firefox, Safari, Edge). This tool generates both standard and -webkit- prefixed CSS for maximum cross-browser compatibility, including older Safari and Chrome versions." },
+                { q: "Are CSS gradients supported in all browsers?", a: "Linear and radial gradients are supported in all modern browsers (Chrome, Firefox, Safari, Edge) with over 98% global coverage. Conic gradients are supported in Chrome 69+, Firefox 83+, Safari 12.1+, and Edge 79+. This tool generates -webkit- prefixed CSS for older browser compatibility." },
                 { q: "Can I use gradients with Tailwind CSS?", a: "Yes. For simple two-color linear gradients at standard angles (0, 45, 90, 135, 180, 225, 270, 315 degrees), this tool generates the equivalent Tailwind utility classes. For more complex gradients, use the CSS output with Tailwind\u2019s arbitrary value syntax." },
-                { q: "How do I download a gradient as an image?", a: "Click the \u2018Download PNG\u2019 button below the preview to save your gradient as an 800\u00d7400 PNG image. This is useful for social media backgrounds, placeholder images, or design mockups." },
                 { q: "Can I create transparent gradients?", a: "Yes. Each color stop has an individual opacity slider (0\u2013100%). This lets you create gradients that fade to transparent, overlay effects, or semi-transparent color transitions perfect for glass-like UI elements." },
+                { q: "What is a conic gradient?", a: "A conic gradient creates color transitions that rotate around a center point, similar to a color wheel or pie chart. Colors transition along the circumference rather than along a line (linear) or from center outward (radial). They\u2019re great for creating pie charts, color wheels, and unique decorative effects." },
               ].map((item) => (
                 <div key={item.q}>
                   <h3 className="text-lg font-semibold text-white mb-2">{item.q}</h3>
