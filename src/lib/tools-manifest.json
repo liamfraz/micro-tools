@@ -307,6 +307,15 @@
       "dateAdded": "2026-03-11"
     },
     {
+      "slug": "html-entity",
+      "name": "HTML Entity Encoder / Decoder",
+      "description": "Encode special characters to HTML entities or decode entities back to plain text. Supports named (&amp;), decimal (&#38;), and hex (&#x26;) formats. Live preview as you type.",
+      "category": "encoding",
+      "searchVolume": "high",
+      "status": "live",
+      "dateAdded": "2026-04-07"
+    },
+    {
       "slug": "html-entity-encoder",
       "name": "HTML Entity Encoder & Decoder",
       "description": "Encode special characters to HTML entities or decode entities back to text with named, decimal, and hex formats",
