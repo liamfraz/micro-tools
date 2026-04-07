@@ -116,6 +116,18 @@ export default function RootLayout({
                 >
                   Tools
                 </a>
+                <a
+                  href="/blog"
+                  className="hover:text-white transition-colors"
+                >
+                  Blog
+                </a>
+                <a
+                  href="/about"
+                  className="hover:text-white transition-colors"
+                >
+                  About
+                </a>
               </nav>
             </div>
           </header>
@@ -132,6 +144,18 @@ export default function RootLayout({
                   <span>DevTools Hub</span>
                 </div>
                 <div className="flex items-center gap-4">
+                  <a
+                    href="/blog"
+                    className="text-xs text-slate-500 hover:text-slate-300 transition-colors"
+                  >
+                    Blog
+                  </a>
+                  <a
+                    href="/about"
+                    className="text-xs text-slate-500 hover:text-slate-300 transition-colors"
+                  >
+                    About
+                  </a>
                   <a
                     href="/privacy"
                     className="text-xs text-slate-500 hover:text-slate-300 transition-colors"

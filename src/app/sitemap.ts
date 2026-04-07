@@ -65,6 +65,48 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.9,
     },
     {
+      url: `${BASE_URL}/about`,
+      lastModified: new Date("2026-04-07"),
+      changeFrequency: "monthly" as const,
+      priority: 0.7,
+    },
+    {
+      url: `${BASE_URL}/blog`,
+      lastModified: new Date("2026-04-07"),
+      changeFrequency: "weekly" as const,
+      priority: 0.9,
+    },
+    {
+      url: `${BASE_URL}/blog/what-is-base64-encoding`,
+      lastModified: new Date("2026-04-07"),
+      changeFrequency: "monthly" as const,
+      priority: 0.7,
+    },
+    {
+      url: `${BASE_URL}/blog/json-guide-for-developers`,
+      lastModified: new Date("2026-04-07"),
+      changeFrequency: "monthly" as const,
+      priority: 0.7,
+    },
+    {
+      url: `${BASE_URL}/blog/css-tools-every-developer-should-know`,
+      lastModified: new Date("2026-04-07"),
+      changeFrequency: "monthly" as const,
+      priority: 0.7,
+    },
+    {
+      url: `${BASE_URL}/blog/regular-expressions-practical-guide`,
+      lastModified: new Date("2026-04-07"),
+      changeFrequency: "monthly" as const,
+      priority: 0.7,
+    },
+    {
+      url: `${BASE_URL}/blog/url-encoding-explained`,
+      lastModified: new Date("2026-04-07"),
+      changeFrequency: "monthly" as const,
+      priority: 0.7,
+    },
+    {
       url: `${BASE_URL}/privacy`,
       lastModified: new Date("2026-03-12"),
       changeFrequency: "yearly" as const,
