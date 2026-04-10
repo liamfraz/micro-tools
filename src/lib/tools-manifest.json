@@ -138,9 +138,9 @@
     {
       "slug": "url-encoder",
       "name": "URL Encoder & Decoder",
-      "description": "Encode and decode URLs with encodeURIComponent, encodeURI, and query string modes",
+      "description": "Free online URL encoder decoder. Encode and decode URLs instantly with encodeURIComponent, encodeURI, or query string mode. Auto-detect, parse URL components, and copy results. 100% browser-based.",
       "category": "encoding",
-      "searchVolume": "medium",
+      "searchVolume": "high",
       "status": "live",
       "dateAdded": "2026-03-11"
     },

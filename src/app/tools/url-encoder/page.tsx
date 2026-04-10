@@ -10,7 +10,7 @@ import {
   generateBreadcrumbSchema,
 } from "@/lib/jsonld";
 
-type EncodeMode = "component" | "full" | "query";
+type EncodeMode = "component" | "full" | "query" | "auto";
 
 export default function UrlEncoderPage() {
   const [plainText, setPlainText] = useState("");
@@ -19,6 +19,8 @@ export default function UrlEncoderPage() {
   const [copied, setCopied] = useState<"plain" | "encoded" | null>(null);
   const [mode, setMode] = useState<EncodeMode>("component");
   const [parseResult, setParseResult] = useState<URLParts | null>(null);
+  const [doubleEncodeWarning, setDoubleEncodeWarning] = useState<boolean>(false);
+  const [autoDetectStatus, setAutoDetectStatus] = useState<string | null>(null);
 
   interface URLParts {
     protocol: string;
@@ -29,13 +31,28 @@ export default function UrlEncoderPage() {
     params: [string, string][];
   }
 
+  const isLikelyEncoded = (text: string): boolean => {
+    // Check for percent-encoded sequences (%XX where X is hex digit)
+    return /%[0-9A-Fa-f]{2}/.test(text);
+  };
+
   const encode = useCallback(() => {
     setError(null);
     setParseResult(null);
+    setAutoDetectStatus(null);
+    setDoubleEncodeWarning(false);
+
     if (!plainText.trim()) {
       setEncodedText("");
       return;
     }
+
+    // Check for double-encoding warning (only for explicit encode, not auto-detect)
+    if (mode !== "auto" && isLikelyEncoded(plainText)) {
+      setDoubleEncodeWarning(true);
+      return;
+    }
+
     try {
       let result: string;
       switch (mode) {
@@ -49,6 +66,7 @@ export default function UrlEncoderPage() {
           // Encode as application/x-www-form-urlencoded (spaces become +)
           result = encodeURIComponent(plainText).replace(/%20/g, "+");
           break;
+        case "auto":
         default:
           result = encodeURIComponent(plainText);
       }
@@ -61,6 +79,9 @@ export default function UrlEncoderPage() {
   const decode = useCallback(() => {
     setError(null);
     setParseResult(null);
+    setAutoDetectStatus(null);
+    setDoubleEncodeWarning(false);
+
     if (!encodedText.trim()) {
       setPlainText("");
       return;
@@ -79,6 +100,7 @@ export default function UrlEncoderPage() {
         case "query":
           result = decodeURIComponent(input);
           break;
+        case "auto":
         default:
           result = decodeURIComponent(input);
       }
@@ -87,6 +109,42 @@ export default function UrlEncoderPage() {
       setError(e instanceof Error ? e.message : "Invalid encoded string");
     }
   }, [encodedText, mode]);
+
+  const autoDetect = useCallback(() => {
+    setError(null);
+    setParseResult(null);
+    setDoubleEncodeWarning(false);
+
+    const plainToUse = plainText.trim();
+    const encodedToUse = encodedText.trim();
+
+    if (!plainToUse && !encodedToUse) {
+      setError("Enter text in either field to auto-detect.");
+      return;
+    }
+
+    // Prefer the field with content; if both have content, prefer plainText
+    const inputText = plainToUse || encodedToUse;
+    const isEncoded = isLikelyEncoded(inputText);
+
+    try {
+      if (isEncoded) {
+        // Looks encoded → decode it
+        const decoded = decodeURIComponent(inputText.replace(/\+/g, "%20"));
+        setPlainText(decoded);
+        setEncodedText("");
+        setAutoDetectStatus("Detected: encoded → decoded as decodeURIComponent");
+      } else {
+        // Looks plain → encode it with encodeURIComponent
+        const encoded = encodeURIComponent(inputText);
+        setEncodedText(encoded);
+        setPlainText("");
+        setAutoDetectStatus("Detected: plain → encoded as encodeURIComponent");
+      }
+    } catch (e: unknown) {
+      setError(e instanceof Error ? e.message : "Auto-detect failed");
+    }
+  }, [plainText, encodedText]);
 
   const parseURL = useCallback(() => {
     setError(null);
@@ -130,6 +188,8 @@ export default function UrlEncoderPage() {
     setEncodedText("");
     setError(null);
     setParseResult(null);
+    setDoubleEncodeWarning(false);
+    setAutoDetectStatus(null);
   }, []);
 
   const loadExample = useCallback(() => {
@@ -141,7 +201,7 @@ export default function UrlEncoderPage() {
 
   return (
     <>
-      <title>URL Encoder & Decoder - Free Online Tool | DevTools Hub</title>
+      <title>URL Encoder Decoder Online – Free URL Encode & Decode Tool</title>
       <meta
         name="description"
         content="Encode and decode URLs online for free. Supports encodeURIComponent, encodeURI, and query string encoding. Parse URLs into components. All processing in your browser."
@@ -199,6 +259,14 @@ export default function UrlEncoderPage() {
             >
               Decode
             </button>
+            {mode === "auto" && (
+              <button
+                onClick={autoDetect}
+                className="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg font-medium transition-colors"
+              >
+                Auto-detect & Convert
+              </button>
+            )}
             <button
               onClick={parseURL}
               className="px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white rounded-lg font-medium transition-colors"
@@ -228,6 +296,7 @@ export default function UrlEncoderPage() {
                 <option value="component">encodeURIComponent</option>
                 <option value="full">encodeURI</option>
                 <option value="query">Query String (+)</option>
+                <option value="auto">Auto-detect</option>
               </select>
             </div>
           </div>
@@ -240,12 +309,65 @@ export default function UrlEncoderPage() {
               "encodeURI: Encodes special characters but preserves URL structure characters (:/?#[]@!$&'()*+,;=) — use for full URLs."}
             {mode === "query" &&
               "Query String: Like encodeURIComponent but encodes spaces as + instead of %20 — matches HTML form submission behavior."}
+            {mode === "auto" &&
+              "Auto-detect: Automatically detects whether input is encoded or plain, then converts it to the other format."}
           </p>
 
           {/* Error */}
           {error && (
             <div className="mb-4 p-3 bg-red-900/40 border border-red-700 rounded-lg text-red-300 text-sm font-mono">
               <span className="font-bold">Error:</span> {error}
+            </div>
+          )}
+
+          {/* Double-encode warning */}
+          {doubleEncodeWarning && (
+            <div className="mb-4 p-4 bg-yellow-900/40 border border-yellow-700 rounded-lg text-yellow-200 text-sm">
+              <p className="mb-3">
+                <span className="font-bold">Warning:</span> Input appears already encoded. Encoding again will double-encode (e.g., %20 → %2520). Continue?
+              </p>
+              <div className="flex gap-3">
+                <button
+                  onClick={() => {
+                    setDoubleEncodeWarning(false);
+                    try {
+                      let result: string;
+                      switch (mode) {
+                        case "component":
+                          result = encodeURIComponent(plainText);
+                          break;
+                        case "full":
+                          result = encodeURI(plainText);
+                          break;
+                        case "query":
+                          result = encodeURIComponent(plainText).replace(/%20/g, "+");
+                          break;
+                        default:
+                          result = encodeURIComponent(plainText);
+                      }
+                      setEncodedText(result);
+                    } catch (e: unknown) {
+                      setError(e instanceof Error ? e.message : "Encoding failed");
+                    }
+                  }}
+                  className="px-3 py-1 bg-yellow-600 hover:bg-yellow-700 text-white rounded font-medium transition-colors text-sm"
+                >
+                  Encode Anyway
+                </button>
+                <button
+                  onClick={() => setDoubleEncodeWarning(false)}
+                  className="px-3 py-1 bg-slate-700 hover:bg-slate-600 text-white rounded font-medium transition-colors text-sm"
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
+          )}
+
+          {/* Auto-detect status */}
+          {autoDetectStatus && (
+            <div className="mb-4 p-3 bg-blue-900/40 border border-blue-700 rounded-lg text-blue-300 text-sm font-mono">
+              <span className="font-bold">Auto-detect:</span> {autoDetectStatus}
             </div>
           )}
 
