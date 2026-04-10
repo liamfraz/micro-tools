@@ -953,6 +953,15 @@
       "searchVolume": "high",
       "status": "live",
       "dateAdded": "2026-04-10"
+    },
+    {
+      "slug": "og-generator",
+      "name": "Open Graph & Meta Tag Generator",
+      "description": "Generate Open Graph and Twitter Card meta tags instantly. Preview how your page looks when shared on social media. Copy ready-to-paste HTML.",
+      "category": "developer",
+      "searchVolume": "high",
+      "status": "live",
+      "dateAdded": "2026-04-10"
     }
   ],
   "categories": {
