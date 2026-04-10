@@ -1,11 +1,19 @@
 "use client";
 
 import { useState, useCallback, useEffect } from "react";
-import ToolLayout from "@/components/ToolLayout";
+import JsonLd from "@/components/JsonLd";
+import RelatedTools from "@/components/RelatedTools";
+import ToolBreadcrumb from "@/components/ToolBreadcrumb";
+import AdUnit from "@/components/AdUnit";
+import {
+  generateFAQSchema,
+  generateWebAppSchema,
+  generateBreadcrumbSchema,
+} from "@/lib/jsonld";
 
-type EncodeMode = "named" | "decimal" | "hex";
 type Direction = "encode" | "decode";
 
+// Essential HTML entities map
 const NAMED_ENTITIES: Record<string, string> = {
   "&": "&amp;",
   "<": "&lt;",
@@ -18,77 +26,31 @@ const NAMED_ENTITIES: Record<string, string> = {
   "\u2122": "&trade;",
   "\u20AC": "&euro;",
   "\u00A3": "&pound;",
-  "\u00A5": "&yen;",
-  "\u00A2": "&cent;",
-  "\u00B0": "&deg;",
-  "\u00B1": "&plusmn;",
-  "\u00D7": "&times;",
-  "\u00F7": "&divide;",
-  "\u2260": "&ne;",
-  "\u2264": "&le;",
-  "\u2265": "&ge;",
-  "\u221E": "&infin;",
-  "\u00BD": "&frac12;",
-  "\u00BC": "&frac14;",
-  "\u00BE": "&frac34;",
-  "\u2014": "&mdash;",
-  "\u2013": "&ndash;",
-  "\u2026": "&hellip;",
-  "\u2022": "&bull;",
-  "\u201C": "&ldquo;",
-  "\u201D": "&rdquo;",
-  "\u2018": "&lsquo;",
-  "\u2019": "&rsquo;",
-  "\u00AB": "&laquo;",
-  "\u00BB": "&raquo;",
-  "\u2190": "&larr;",
-  "\u2192": "&rarr;",
-  "\u2191": "&uarr;",
-  "\u2193": "&darr;",
 };
 
+// Reverse lookup
 const ENTITY_TO_CHAR: Record<string, string> = {};
-for (const [char, entity] of Object.entries(NAMED_ENTITIES)) {
-  ENTITY_TO_CHAR[entity] = char;
+for (const key of Object.keys(NAMED_ENTITIES)) {
+  ENTITY_TO_CHAR[NAMED_ENTITIES[key]] = key;
 }
 
-function encodeHTML(input: string, mode: EncodeMode): string {
+function encodeHTML(input: string): string {
   let result = "";
   for (let i = 0; i < input.length; i++) {
     const char = input[i];
-    const code = input.charCodeAt(i);
-
-    if (mode === "named" && NAMED_ENTITIES[char]) {
+    if (NAMED_ENTITIES[char]) {
       result += NAMED_ENTITIES[char];
-      continue;
+    } else {
+      result += char;
     }
-
-    if (
-      char === "&" ||
-      char === "<" ||
-      char === ">" ||
-      char === '"' ||
-      char === "'" ||
-      code > 127
-    ) {
-      if (mode === "decimal") {
-        result += `&#${code};`;
-      } else if (mode === "hex") {
-        result += `&#x${code.toString(16).toUpperCase()};`;
-      } else {
-        // named fallback for non-mapped chars: use decimal
-        result += `&#${code};`;
-      }
-      continue;
-    }
-
-    result += char;
   }
   return result;
 }
 
 function decodeHTML(input: string): string {
   let result = input;
+
+  // Decode named entities
   result = result.replace(/&[a-zA-Z]+;/g, (match) => {
     if (ENTITY_TO_CHAR[match]) return ENTITY_TO_CHAR[match];
     if (typeof document !== "undefined") {
@@ -98,55 +60,59 @@ function decodeHTML(input: string): string {
     }
     return match;
   });
+
+  // Decode decimal entities (&#123;)
   result = result.replace(/&#(\d+);/g, (_, code) =>
     String.fromCharCode(parseInt(code, 10))
   );
+
+  // Decode hex entities (&#xAB; or &#xab;)
   result = result.replace(/&#x([0-9a-fA-F]+);/g, (_, hex) =>
     String.fromCharCode(parseInt(hex, 16))
   );
+
   return result;
 }
 
-const QUICK_EXAMPLES = [
-  { label: "<script>", value: '<script>alert("XSS")</script>' },
-  { label: "& symbols", value: "AT&T, H&M, R&D — 5 > 3 & 2 < 4" },
-  { label: "Quotes", value: 'She said "hello" & it\'s fine' },
-  { label: "Currency", value: "€50 or £30 or ¥500 or ©2024" },
+const REFERENCE_ENTITIES = [
+  { entity: "&amp;", char: "&", description: "Ampersand" },
+  { entity: "&lt;", char: "<", description: "Less than" },
+  { entity: "&gt;", char: ">", description: "Greater than" },
+  { entity: "&quot;", char: '"', description: "Double quote" },
+  { entity: "&apos;", char: "'", description: "Apostrophe" },
 ];
 
 export default function HtmlEntityPage() {
   const [input, setInput] = useState("");
   const [output, setOutput] = useState("");
-  const [mode, setMode] = useState<EncodeMode>("named");
   const [direction, setDirection] = useState<Direction>("encode");
   const [copied, setCopied] = useState(false);
-  const [charCount, setCharCount] = useState(0);
 
+  // Live preview as you type
   useEffect(() => {
     if (!input) {
       setOutput("");
-      setCharCount(0);
       return;
     }
-    setCharCount(input.length);
-    if (direction === "encode") {
-      setOutput(encodeHTML(input, mode));
-    } else {
-      setOutput(decodeHTML(input));
+    try {
+      if (direction === "encode") {
+        setOutput(encodeHTML(input));
+      } else {
+        setOutput(decodeHTML(input));
+      }
+    } catch {
+      setOutput("");
     }
-  }, [input, mode, direction]);
+  }, [input, direction]);
 
-  const copyOutput = useCallback(async () => {
+  const copyToClipboard = useCallback(async () => {
     if (!output) return;
-    await navigator.clipboard.writeText(output);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 1500);
-  }, [output]);
-
-  const handleSwap = useCallback(() => {
-    if (output) {
-      setInput(output);
-      setDirection((d) => (d === "encode" ? "decode" : "encode"));
+    try {
+      await navigator.clipboard.writeText(output);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1500);
+    } catch {
+      /* ignore */
     }
   }, [output]);
 
@@ -155,223 +121,286 @@ export default function HtmlEntityPage() {
     setOutput("");
   }, []);
 
-  const loadExample = useCallback((value: string) => {
-    setInput(value);
-    setDirection("encode");
-  }, []);
-
   return (
-    <ToolLayout
-      title="HTML Entity Encoder / Decoder"
-      description="Encode special characters to HTML entities or decode entities back to plain text. Supports named (&amp;amp;), decimal (&amp;#38;), and hex (&amp;#x26;) formats."
-      category="encoding"
-    >
-      {/* Direction + Mode controls */}
-      <div className="flex flex-wrap items-center gap-3 mb-5">
-        {/* Encode / Decode toggle */}
-        <div className="flex rounded-lg overflow-hidden border border-slate-700">
-          <button
-            onClick={() => setDirection("encode")}
-            className={`px-4 py-2 text-sm font-medium transition-colors ${
-              direction === "encode"
-                ? "bg-blue-600 text-white"
-                : "bg-slate-800 text-slate-300 hover:bg-slate-700"
-            }`}
-          >
-            Encode
-          </button>
-          <button
-            onClick={() => setDirection("decode")}
-            className={`px-4 py-2 text-sm font-medium transition-colors ${
-              direction === "decode"
-                ? "bg-blue-600 text-white"
-                : "bg-slate-800 text-slate-300 hover:bg-slate-700"
-            }`}
-          >
-            Decode
-          </button>
-        </div>
+    <>
+      <title>
+        HTML Entity Encoder / Decoder - Encode &amp; Decode HTML Entities |
+        DevTools Hub
+      </title>
+      <meta
+        name="description"
+        content="Encode special characters to HTML entities or decode entities back to text. Free, fast, and works entirely in your browser. Live preview as you type."
+      />
+      <meta
+        name="keywords"
+        content="html entity encoder, html entity decoder, html entities, encode html, decode html, &amp;, &lt;, &gt;, html special characters"
+      />
+      <JsonLd
+        data={[
+          generateWebAppSchema({
+            slug: "html-entity",
+            name: "HTML Entity Encoder / Decoder",
+            description:
+              "Encode special characters to HTML entities or decode entities back to text with live preview",
+            category: "encoding",
+          }),
+          generateBreadcrumbSchema({
+            slug: "html-entity",
+            name: "HTML Entity Encoder / Decoder",
+            description:
+              "Encode special characters to HTML entities or decode entities back to text",
+            category: "encoding",
+          }),
+          generateFAQSchema([
+            {
+              question: "What are HTML entities?",
+              answer:
+                "HTML entities are special character codes that represent reserved characters or symbols in HTML. For example, &amp; represents &, &lt; represents <, and &gt; represents >. They prevent browsers from interpreting characters as HTML markup.",
+            },
+            {
+              question: "When should I encode text to HTML entities?",
+              answer:
+                "You should encode user-supplied text before displaying it in HTML to prevent XSS (cross-site scripting) attacks and to display special characters correctly. You also need to encode the 5 essential characters: &, <, >, \", and ' in HTML attributes.",
+            },
+            {
+              question: "Can I decode HTML entities back to text?",
+              answer:
+                "Yes, this tool can decode named entities (&amp;), decimal entities (&#38;), and hexadecimal entities (&#x26;) back to their original characters. Just switch to Decode mode and paste the encoded text.",
+            },
+            {
+              question: "Is my data safe?",
+              answer:
+                "Yes, absolutely. All encoding and decoding happens entirely in your browser using JavaScript. No data is sent to any server or stored anywhere.",
+            },
+          ]),
+        ]}
+      />
 
-        {/* Format selector (encode only) */}
-        {direction === "encode" && (
-          <div className="flex items-center gap-2">
-            <span className="text-sm text-slate-400">Format:</span>
-            <div className="flex rounded-lg overflow-hidden border border-slate-700">
-              {(["named", "decimal", "hex"] as EncodeMode[]).map((m) => (
-                <button
-                  key={m}
-                  onClick={() => setMode(m)}
-                  className={`px-3 py-2 text-xs font-medium transition-colors ${
-                    mode === m
-                      ? "bg-slate-600 text-white"
-                      : "bg-slate-800 text-slate-400 hover:bg-slate-700"
-                  }`}
-                >
-                  {m === "named" ? "Named" : m === "decimal" ? "Decimal" : "Hex"}
-                </button>
-              ))}
+      <div className="min-h-screen bg-slate-900 text-slate-200">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <ToolBreadcrumb slug="html-entity" />
+
+          {/* Header */}
+          <div className="mb-8">
+            <h1 className="text-3xl sm:text-4xl font-bold text-white mb-3">
+              HTML Entity Encoder / Decoder
+            </h1>
+            <p className="text-slate-400 max-w-2xl text-lg">
+              Encode special characters to HTML entities or decode them back to
+              text. Live preview as you type. No data leaves your browser.
+            </p>
+          </div>
+
+          <AdUnit slot="TOP_SLOT" format="horizontal" className="mb-6" />
+
+          {/* Direction Toggle */}
+          <div className="flex gap-3 mb-6">
+            <div className="flex rounded-lg overflow-hidden border border-slate-600">
+              <button
+                onClick={() => setDirection("encode")}
+                className={`px-4 py-2 text-sm font-medium transition-colors ${
+                  direction === "encode"
+                    ? "bg-blue-600 text-white"
+                    : "bg-slate-800 text-slate-300 hover:bg-slate-700"
+                }`}
+              >
+                Encode
+              </button>
+              <button
+                onClick={() => setDirection("decode")}
+                className={`px-4 py-2 text-sm font-medium transition-colors ${
+                  direction === "decode"
+                    ? "bg-blue-600 text-white"
+                    : "bg-slate-800 text-slate-300 hover:bg-slate-700"
+                }`}
+              >
+                Decode
+              </button>
             </div>
           </div>
-        )}
 
-        <div className="flex gap-2 ml-auto">
-          <button
-            onClick={handleSwap}
-            disabled={!output}
-            title="Swap input/output and flip direction"
-            className="px-3 py-2 bg-slate-700 hover:bg-slate-600 disabled:opacity-40 disabled:cursor-not-allowed text-slate-200 rounded-lg text-sm transition-colors"
-          >
-            ⇄ Swap
-          </button>
-          <button
-            onClick={handleClear}
-            className="px-3 py-2 bg-slate-700 hover:bg-slate-600 text-slate-200 rounded-lg text-sm transition-colors"
-          >
-            Clear
-          </button>
-        </div>
-      </div>
+          {/* Input/Output Panels */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-6">
+            {/* Input */}
+            <div>
+              <label className="block text-sm font-medium text-slate-300 mb-2">
+                Input
+              </label>
+              <textarea
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                placeholder={
+                  direction === "encode"
+                    ? 'Enter text to encode (e.g., <script>alert("XSS")</script>)'
+                    : "Enter HTML entities to decode (e.g., &lt;div&gt;)"
+                }
+                className="w-full bg-slate-800 border border-slate-600 rounded-lg p-3 font-mono text-sm text-slate-200 placeholder-slate-500 resize-none focus:outline-none focus:ring-2 focus:ring-blue-500 h-48"
+                spellCheck={false}
+              />
+            </div>
 
-      {/* Quick examples */}
-      <div className="flex flex-wrap items-center gap-2 mb-4">
-        <span className="text-xs text-slate-500">Try:</span>
-        {QUICK_EXAMPLES.map((ex) => (
-          <button
-            key={ex.label}
-            onClick={() => loadExample(ex.value)}
-            className="px-2 py-1 text-xs bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 rounded transition-colors"
-          >
-            {ex.label}
-          </button>
-        ))}
-      </div>
-
-      {/* Editor panels */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-        {/* Input */}
-        <div className="flex flex-col">
-          <div className="flex items-center justify-between mb-2">
-            <label className="text-sm font-medium text-slate-300">
-              {direction === "encode" ? "Plain Text" : "HTML Entities"}
-            </label>
-            <span className="text-xs text-slate-500">{charCount} chars</span>
+            {/* Output */}
+            <div>
+              <label className="block text-sm font-medium text-slate-300 mb-2">
+                Output
+              </label>
+              <textarea
+                value={output}
+                readOnly
+                className="w-full bg-slate-800 border border-slate-600 rounded-lg p-3 font-mono text-sm text-slate-200 resize-none focus:outline-none h-48"
+                spellCheck={false}
+              />
+            </div>
           </div>
-          <textarea
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            placeholder={
-              direction === "encode"
-                ? 'Paste text to encode, e.g. <div class="example">'
-                : "Paste HTML entities to decode, e.g. &lt;div&gt;"
-            }
-            className="flex-1 min-h-[180px] w-full bg-slate-800 border border-slate-600 rounded-lg p-4 font-mono text-sm text-slate-200 placeholder-slate-500 resize-y focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors"
-            spellCheck={false}
-          />
-        </div>
 
-        {/* Output */}
-        <div className="flex flex-col">
-          <div className="flex items-center justify-between mb-2">
-            <label className="text-sm font-medium text-slate-300">
-              {direction === "encode" ? "HTML Entities" : "Plain Text"}
-            </label>
+          {/* Action Buttons */}
+          <div className="flex gap-3 mb-6">
             <button
-              onClick={copyOutput}
+              onClick={copyToClipboard}
               disabled={!output}
-              className={`flex items-center gap-1.5 px-3 py-1 rounded text-xs font-medium transition-all disabled:opacity-40 disabled:cursor-not-allowed ${
-                copied
-                  ? "bg-green-600 text-white"
-                  : "bg-slate-700 hover:bg-slate-600 text-slate-200"
-              }`}
+              className="px-4 py-2 bg-blue-600 hover:bg-blue-700 disabled:bg-slate-700 disabled:cursor-not-allowed text-white rounded-lg font-medium transition-colors text-sm"
             >
-              {copied ? (
-                <>
-                  <svg className="w-3 h-3" viewBox="0 0 20 20" fill="currentColor">
-                    <path
-                      fillRule="evenodd"
-                      d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                  Copied!
-                </>
-              ) : (
-                <>
-                  <svg
-                    className="w-3 h-3"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    strokeWidth={2}
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"
-                    />
-                  </svg>
-                  Copy
-                </>
-              )}
+              {copied ? "Copied!" : "Copy Output"}
+            </button>
+            <button
+              onClick={handleClear}
+              className="px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white rounded-lg font-medium transition-colors text-sm"
+            >
+              Clear
             </button>
           </div>
-          <textarea
-            value={output}
-            readOnly
-            className="flex-1 min-h-[180px] w-full bg-slate-900 border border-slate-700 rounded-lg p-4 font-mono text-sm text-slate-200 resize-y focus:outline-none"
-            spellCheck={false}
-          />
-        </div>
-      </div>
 
-      {/* Entity reference */}
-      <div className="mt-8 bg-slate-800/60 border border-slate-700 rounded-lg p-5">
-        <h2 className="text-sm font-semibold text-white mb-4">
-          Common HTML Entities
-        </h2>
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2 text-xs">
-          {[
-            { char: "&", entity: "&amp;", label: "Ampersand" },
-            { char: "<", entity: "&lt;", label: "Less than" },
-            { char: ">", entity: "&gt;", label: "Greater than" },
-            { char: '"', entity: "&quot;", label: "Double quote" },
-            { char: "'", entity: "&apos;", label: "Apostrophe" },
-            { char: "\u00A0", entity: "&nbsp;", label: "Non-breaking space" },
-            { char: "©", entity: "&copy;", label: "Copyright" },
-            { char: "®", entity: "&reg;", label: "Registered" },
-            { char: "™", entity: "&trade;", label: "Trademark" },
-            { char: "€", entity: "&euro;", label: "Euro" },
-            { char: "£", entity: "&pound;", label: "Pound" },
-            { char: "—", entity: "&mdash;", label: "Em dash" },
-            { char: "–", entity: "&ndash;", label: "En dash" },
-            { char: "…", entity: "&hellip;", label: "Ellipsis" },
-            { char: "×", entity: "&times;", label: "Multiplication" },
-            { char: "÷", entity: "&divide;", label: "Division" },
-          ].map(({ char, entity, label }) => (
-            <button
-              key={entity}
-              onClick={() => {
-                navigator.clipboard.writeText(entity);
-              }}
-              title={`Copy ${entity}`}
-              className="flex items-center gap-2 px-2.5 py-2 bg-slate-800 hover:bg-slate-700 border border-slate-700 hover:border-slate-600 rounded transition-colors text-left group"
-            >
-              <span className="text-base w-5 text-center text-slate-200 group-hover:text-white">
-                {char === "\u00A0" ? "·" : char}
-              </span>
-              <span className="flex-1 min-w-0">
-                <span className="block font-mono text-blue-400 truncate">
-                  {entity}
-                </span>
-                <span className="block text-slate-500 truncate">{label}</span>
-              </span>
-            </button>
-          ))}
+          {/* Essential Reference */}
+          <div className="bg-slate-800 border border-slate-700 rounded-lg p-6 mb-6">
+            <h2 className="text-lg font-semibold text-white mb-4">
+              Essential HTML Entities
+            </h2>
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="border-b border-slate-700">
+                    <th className="text-left py-2 px-3 text-slate-400 font-medium">
+                      Entity
+                    </th>
+                    <th className="text-left py-2 px-3 text-slate-400 font-medium">
+                      Character
+                    </th>
+                    <th className="text-left py-2 px-3 text-slate-400 font-medium">
+                      Description
+                    </th>
+                  </tr>
+                </thead>
+                <tbody className="text-slate-300">
+                  {REFERENCE_ENTITIES.map((item) => (
+                    <tr
+                      key={item.entity}
+                      className="border-b border-slate-700/30 hover:bg-slate-700/30"
+                    >
+                      <td className="py-2 px-3 font-mono text-blue-400">
+                        {item.entity}
+                      </td>
+                      <td className="py-2 px-3 text-center text-lg">
+                        {item.char}
+                      </td>
+                      <td className="py-2 px-3 text-slate-400">
+                        {item.description}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          {/* Info Box */}
+          <div className="bg-slate-800 border border-slate-700 rounded-lg p-6 mb-6">
+            <h2 className="text-lg font-semibold text-white mb-3">
+              How It Works
+            </h2>
+            <ul className="space-y-2 text-sm text-slate-400">
+              <li>
+                <strong className="text-white">Encode:</strong> Converts special
+                characters to their HTML entity equivalents (&amp;, &lt;, &gt;,
+                etc.)
+              </li>
+              <li>
+                <strong className="text-white">Decode:</strong> Converts HTML
+                entities back to their original characters
+              </li>
+              <li>
+                <strong className="text-white">Live Preview:</strong> Output
+                updates instantly as you type
+              </li>
+              <li>
+                <strong className="text-white">100% Safe:</strong> All
+                processing happens in your browser — nothing is sent to any
+                server
+              </li>
+            </ul>
+          </div>
+
+          <AdUnit slot="BOTTOM_SLOT" format="auto" className="my-8" />
+
+          <RelatedTools currentSlug="html-entity" />
+
+          {/* FAQ */}
+          <section className="mt-16 border-t border-slate-700 pt-10">
+            <h2 className="text-2xl font-bold text-white mb-6">
+              Frequently Asked Questions
+            </h2>
+            <div className="space-y-6">
+              <div>
+                <h3 className="text-lg font-semibold text-white mb-2">
+                  What are HTML entities?
+                </h3>
+                <p className="text-slate-400">
+                  HTML entities are special character codes that represent
+                  reserved characters or symbols in HTML. For example, &amp;amp;
+                  represents &amp;, &amp;lt; represents &lt;, and &amp;gt;
+                  represents &gt;. They prevent browsers from interpreting
+                  characters as HTML markup.
+                </p>
+              </div>
+
+              <div>
+                <h3 className="text-lg font-semibold text-white mb-2">
+                  When should I encode text to HTML entities?
+                </h3>
+                <p className="text-slate-400">
+                  You should encode user-supplied text before displaying it in
+                  HTML to prevent XSS (cross-site scripting) attacks and to
+                  display special characters correctly. You also need to encode
+                  the 5 essential characters: &amp;amp;, &amp;lt;, &amp;gt;,
+                  &amp;quot;, and &amp;apos; in HTML attributes.
+                </p>
+              </div>
+
+              <div>
+                <h3 className="text-lg font-semibold text-white mb-2">
+                  Can I decode HTML entities back to text?
+                </h3>
+                <p className="text-slate-400">
+                  Yes, absolutely. This tool can decode named entities
+                  (&amp;amp;), decimal entities (&amp;#38;), and hexadecimal
+                  entities (&amp;#x26;) back to their original characters. Just
+                  switch to Decode mode and paste the encoded text.
+                </p>
+              </div>
+
+              <div>
+                <h3 className="text-lg font-semibold text-white mb-2">
+                  Is my data safe?
+                </h3>
+                <p className="text-slate-400">
+                  Yes, absolutely. All encoding and decoding happens entirely in
+                  your browser using JavaScript. No data is sent to any server
+                  or stored anywhere.
+                </p>
+              </div>
+            </div>
+          </section>
         </div>
-        <p className="mt-3 text-xs text-slate-500">
-          Click any entity to copy it to your clipboard.
-        </p>
       </div>
-    </ToolLayout>
+    </>
   );
 }

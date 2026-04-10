@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useCallback, useEffect } from "react";
+import AdUnit from "@/components/AdUnit";
 import JsonLd from "@/components/JsonLd";
 import RelatedTools from "@/components/RelatedTools";
 import ToolBreadcrumb from "@/components/ToolBreadcrumb";
@@ -307,6 +308,8 @@ export default function HtmlEntityEncoderPage() {
             </p>
           </div>
 
+          <AdUnit slot="TOP_SLOT" format="horizontal" className="mb-6" />
+
           {/* Controls bar */}
           <div className="flex flex-wrap items-center gap-3 mb-4">
             <div className="flex rounded-lg overflow-hidden border border-slate-600">
@@ -389,9 +392,23 @@ export default function HtmlEntityEncoderPage() {
                 <label className="text-sm font-medium text-slate-300">
                   {direction === "encode" ? "Text (input)" : "HTML Entities (input)"}
                 </label>
-                <span className="text-xs text-slate-500">
-                  {input.length} chars
-                </span>
+                <div className="flex items-center gap-3">
+                  <span className="text-xs text-slate-500">
+                    {input.length} chars
+                  </span>
+                  <button
+                    onClick={async () => {
+                      try {
+                        const text = await navigator.clipboard.readText();
+                        setInput(text);
+                        setError("");
+                      } catch { /* ignore */ }
+                    }}
+                    className="text-xs text-slate-400 hover:text-white transition-colors"
+                  >
+                    Paste
+                  </button>
+                </div>
               </div>
               <textarea
                 value={input}
@@ -422,13 +439,18 @@ export default function HtmlEntityEncoderPage() {
                     ? "HTML Entities (output)"
                     : "Text (output)"}
                 </label>
-                <button
-                  onClick={() => copyToClipboard(output, "output")}
-                  disabled={!output}
-                  className="text-xs text-slate-400 hover:text-white disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
-                >
-                  {copied === "output" ? "Copied!" : "Copy"}
-                </button>
+                <div className="flex items-center gap-3">
+                  <span className="text-xs text-slate-500">
+                    {output.length} chars
+                  </span>
+                  <button
+                    onClick={() => copyToClipboard(output, "output")}
+                    disabled={!output}
+                    className="text-xs text-slate-400 hover:text-white disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+                  >
+                    {copied === "output" ? "Copied!" : "Copy"}
+                  </button>
+                </div>
               </div>
               <textarea
                 value={output}
@@ -608,6 +630,8 @@ export default function HtmlEntityEncoderPage() {
               ))}
             </div>
           </div>
+
+          <AdUnit slot="BOTTOM_SLOT" format="auto" className="my-8" />
 
           <RelatedTools currentSlug="html-entity-encoder" />
 

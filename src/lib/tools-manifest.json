@@ -318,9 +318,9 @@
     {
       "slug": "html-entity-encoder",
       "name": "HTML Entity Encoder & Decoder",
-      "description": "Encode special characters to HTML entities or decode entities back to text with named, decimal, and hex formats",
+      "description": "Free HTML entity encoder decoder online. Encode HTML special characters (&amp;, &lt;, &gt;, &quot;) to named, decimal, or hex entities. Decode HTML entities back to text instantly. Live preview, entity reference table, bulk mode. 100% browser-based.",
       "category": "encoding",
-      "searchVolume": "medium",
+      "searchVolume": "high",
       "status": "live",
       "dateAdded": "2026-03-11"
     },
@@ -944,6 +944,15 @@
       "searchVolume": "high",
       "status": "live",
       "dateAdded": "2026-03-29"
+    },
+    {
+      "slug": "og-meta-tag-generator",
+      "name": "Open Graph & Meta Tag Generator",
+      "description": "Free Open Graph and meta tag generator. Create og:title, og:description, og:image, Twitter Card tags and more. Live preview shows exactly how your page looks when shared on Facebook, Twitter/X, LinkedIn, Discord, and Slack.",
+      "category": "developer",
+      "searchVolume": "high",
+      "status": "live",
+      "dateAdded": "2026-04-10"
     }
   ],
   "categories": {
@@ -960,8 +969,8 @@
     "construction": { "label": "Construction & Trades", "color": "yellow" }
   },
   "meta": {
-    "totalTools": 93,
-    "lastUpdated": "2026-03-29",
-    "nextPriority": ["text-to-handwriting", "open-graph-preview", "svg-blob-generator"]
+    "totalTools": 94,
+    "lastUpdated": "2026-04-10",
+    "nextPriority": ["text-to-handwriting", "svg-blob-generator"]
   }
 }
